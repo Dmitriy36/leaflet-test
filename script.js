@@ -4,7 +4,7 @@ let markers = {};
 let southWest = L.latLng(5.49955, -170), // Approximate SW corner (adjust as needed)
   northEast = L.latLng(83.162102, -50), // Approximate NE corner (adjust as needed)
   bounds = L.latLngBounds(southWest, northEast);
-
+let myPolylines = [];
 let VAMClist = [
   {
     STA3N: 703,
@@ -37,8 +37,18 @@ function initMaps() {
     // attribution: "© OpenStreetMap contributors",
   }).addTo(mainMap);
 
-  DrawLine(VAMClist[0].Geo);
-  DrawLine(VAMClist[1].Geo);
+  mainMap.on("zoomend moveend", function () {
+    myPolylines.forEach(function (polyline) {
+      mainMap.removeLayer(polyline);
+    });
+    // alert("zoomed!");
+    renderThings();
+  });
+
+  function renderThings() {
+    DrawLine(VAMClist[0].Geo);
+    DrawLine(VAMClist[1].Geo);
+  }
 
   function DrawLine(geo) {
     let markerLatLng = geo;
@@ -58,6 +68,7 @@ function initMaps() {
       color: "blue",
       weight: 1,
     }).addTo(mainMap);
+    myPolylines.push(myPolyline);
   }
 
   alaskaMap = L.map("alaska-inset", {
