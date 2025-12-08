@@ -5,6 +5,23 @@ let southWest = L.latLng(5.49955, -170), // Approximate SW corner (adjust as nee
   northEast = L.latLng(83.162102, -50), // Approximate NE corner (adjust as needed)
   bounds = L.latLngBounds(southWest, northEast);
 
+let VAMClist = [
+  {
+    STA3N: 703,
+    Name: "Northeast Vet Center",
+    Address: "609 Lowell Ave, Lowell NC 28098",
+    Geo: L.latLng(35.26633, -81.092299),
+  },
+  {
+    STA3N: 704,
+    Name: "Northwest Vet Center",
+    Address: "300 W. 10th · Topeka, KS 66612",
+    Geo: L.latLng(39.047962, -95.677975),
+  },
+];
+
+// have an array for "selected"
+
 // Initialize maps
 function initMaps() {
   mainMap = L.map("main-map", {
@@ -19,6 +36,29 @@ function initMaps() {
     bounds: bounds,
     // attribution: "© OpenStreetMap contributors",
   }).addTo(mainMap);
+
+  DrawLine(VAMClist[0].Geo);
+  DrawLine(VAMClist[1].Geo);
+
+  function DrawLine(geo) {
+    let markerLatLng = geo;
+    let myDiv = document.getElementById("db-symbol");
+    let divRect = myDiv.getBoundingClientRect();
+
+    let mapContainerRect = mainMap.getContainer().getBoundingClientRect();
+    let divCenterX = divRect.left + divRect.width / 2 - mapContainerRect.left;
+    let divCenterY = divRect.top + divRect.height / 2 - mapContainerRect.top;
+
+    let divLatLng = mainMap.containerPointToLatLng([divCenterX, divCenterY]);
+
+    let marker = L.marker(geo).addTo(mainMap);
+
+    let polylinePoints = [markerLatLng, divLatLng];
+    let myPolyline = L.polyline(polylinePoints, {
+      color: "blue",
+      weight: 1,
+    }).addTo(mainMap);
+  }
 
   alaskaMap = L.map("alaska-inset", {
     attributionControl: false,
