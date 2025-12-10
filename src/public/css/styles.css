@@ -1,0 +1,136 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #f0f4f8;
+}
+
+#container {
+  display: flex;
+  height: 100vh;
+}
+
+#sidebar {
+  width: 25vw;
+  background: white;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  padding: 20px;
+}
+
+#top-buffer {
+  height: 1vh;
+}
+
+#top-buffer2 {
+  height: 1vh;
+}
+
+#db-symbol {
+  height: 150px;
+  width: 150px;
+  max-width: 100%;
+  max-height: 100%;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  border: 2px solid #333;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  background: white;
+  z-index: 1000;
+}
+
+img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
+#map-container {
+  flex: 1;
+  position: relative;
+  border: 3px solid blue;
+}
+
+#controls-container {
+  width: 100%;
+  height: 15%;
+  border: 1px solid red;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  justify-content: center;
+  align-items: center;
+}
+
+#main-map {
+  display: flex;
+
+  width: 100%;
+  height: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  border: 3px solid black;
+}
+
+#alaska-inset,
+#hawaii-inset {
+  position: absolute;
+  background: white;
+  border: 2px solid #333;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+#alaska-inset {
+  width: 250px;
+  height: 150px;
+  bottom: 20px;
+  left: 20px;
+}
+
+#hawaii-inset {
+  width: 250px;
+  height: 150px;
+  bottom: 20px;
+  left: 290px;
+}
+
+h1 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+  font-size: 24px;
+}
+
+.subtitle {
+  color: #7f8c8d;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+button:hover {
+  background: #11ea01;
+}
+
+button:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+}
