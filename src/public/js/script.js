@@ -20,6 +20,9 @@ let VAMClist = [
   },
 ];
 
+fetch("/api/users")
+  .then((response) => response.json())
+  .then((users) => console.log(users));
 // have an array for "selected"
 
 // Initialize maps
