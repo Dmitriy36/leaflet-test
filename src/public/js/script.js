@@ -26,7 +26,7 @@ fetch("/api/users")
 // have an array for "selected"
 
 // fetch("/api/dbTest").then((response) => console.log(response));
-fetch("/api/nondbTest")
+fetch("/api/answer")
   .then((response) => response.json())
   .then((thingy)=>console.log(thingy));
 
