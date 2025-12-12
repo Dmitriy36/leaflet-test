@@ -18,8 +18,8 @@ const connectAndQuery = async () => {
     console.log("Database connected successfully.");
 
     // Execute a simple query
-    // const result = await sql.query`SELECT top 5 * FROM YourTableName`; // Use input parameters to prevent SQL injection
-
+    const result = await sql.query`select name from [Inventory].[establishConnectivity] where id=1`; // Use input parameters to prevent SQL injection
+    res.json(result);
     // return result.recordsets[0];
   } catch (err) {
     console.error("Database connection or query failed:", err);
@@ -30,9 +30,9 @@ const connectAndQuery = async () => {
 connectAndQuery();
 app.use(express.static(path.join(__dirname, "public")));
 
-// app.get("/api/dbTest", (req, res) => {
-//   res.json(connectAndQuery);
-// });
+app.get("/api/dbTest", (req, res) => {
+  res.json(connectAndQuery);
+});
 
 app.get("/api/users", (req, res) => {
   const users = [
