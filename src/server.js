@@ -30,7 +30,7 @@ const connectAndQuery = async () => {
   }
 };
 
-// connectAndQuery();
+
 
 
 app.get("/api/dbTest", (req, res) => {  
@@ -38,7 +38,6 @@ res.json(connResult + ", " +connErr)
 });
 
 app.get("/api/nondbTest", (req, res) => {  
-  // res.json(connectAndQuery);
 const testString = "I can see.";
 res.json(testString)
 });
