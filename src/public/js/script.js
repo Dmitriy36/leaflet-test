@@ -20,10 +20,10 @@ let VAMClist = [
   },
 ];
 
-fetch("/api/users")
-  .then((response) => response.json())
-  .then((users) => console.log(users));
-// have an array for "selected"
+// fetch("/api/users")
+//   .then((response) => response.json())
+//   .then((users) => console.log(users));
+
 
 fetch("/api/forks")
   .then((response) => response.json())
