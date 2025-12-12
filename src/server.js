@@ -1,12 +1,13 @@
+// require("dotenv").config();
 const sql = require("mssql");
 const dbConfig = require("./dbConfig");
 const express = require("express");
 const path = require("path");
 const app = express();
 
-const dbPort = process.env.PORT;
-const dbUser = process.env.DB_USER;
-const dbPass = process.env.DB_PASS;
+// const dbPort = process.env.PORT;
+// const dbUser = process.env.DB_USER;
+// const dbPass = process.env.DB_PASS;
 
 // console.log(dbUser, dbPort, dbPass);
 

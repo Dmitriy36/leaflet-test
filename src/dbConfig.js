@@ -4,10 +4,10 @@ const dbConfig = {
   server: "integrated-apar-apat.c1vwa9fou9fe.us-east-2.rds.amazonaws.com",
   database: "integrated-apar-apat",
   port: 1433,
-  // options: {
-  //     encrypt: false,
-  //     trustServerCertificate: truedb
-  // }
+  options: {
+    encrypt: false,
+    trustServerCertificate: true,
+  },
 };
 
 module.exports = dbConfig;
