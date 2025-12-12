@@ -25,9 +25,7 @@ fetch("/api/users")
   .then((users) => console.log(users));
 // have an array for "selected"
 
-fetch("/api/secrets")
-  .then((response) => response.json())
-  .then((secrets) => console.log(secrets));
+// fetch("/api/dbTest").then((response) => console.log(response));
 
 // Initialize maps
 function initMaps() {

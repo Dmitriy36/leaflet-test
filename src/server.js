@@ -1,6 +1,5 @@
-require("dotenv").config();
 const sql = require("mssql");
-const dbConfig = require(".dbConfig");
+const dbConfig = require("./dbConfig");
 const express = require("express");
 const path = require("path");
 const app = express();
@@ -9,7 +8,7 @@ const dbPort = process.env.PORT;
 const dbUser = process.env.DB_USER;
 const dbPass = process.env.DB_PASS;
 
-console.log(dbUser, dbPort, dbPass);
+// console.log(dbUser, dbPort, dbPass);
 
 const connectAndQuery = async () => {
   try {
@@ -27,11 +26,12 @@ const connectAndQuery = async () => {
   }
 };
 
+connectAndQuery();
 app.use(express.static(path.join(__dirname, "public")));
 
-app.get("/api/secrets", (req, res) => {
-  res.json(dbUser + "," + port + "," + dbPass);
-});
+// app.get("/api/dbTest", (req, res) => {
+//   res.json(connectAndQuery);
+// });
 
 app.get("/api/users", (req, res) => {
   const users = [
