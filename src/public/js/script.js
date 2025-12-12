@@ -25,7 +25,7 @@ fetch("/api/users")
   .then((users) => console.log(users));
 // have an array for "selected"
 
-fetch("api/dbTest")
+fetch("api/forks")
   .then((response) => response.json())
   .then((thing) => console.log(thing))
 
