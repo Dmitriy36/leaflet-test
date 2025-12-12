@@ -61,7 +61,7 @@ app.get("/api/users", (req, res) => {
 
 app.get("/api/answer", (req, res) => {
   const answer = "yes"
-  res.json(answer);
+  res.send(answer)
 });
 
 app.use(express.static(path.join(__dirname, "public")));
@@ -69,3 +69,5 @@ app.use(express.static(path.join(__dirname, "public")));
 app.listen(8080, () => {
   console.log("server is listening on port 8080");
 });
+
+app._router.stack.forEach((middleware))
