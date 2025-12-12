@@ -20,14 +20,14 @@ let VAMClist = [
   },
 ];
 
-// fetch("/api/users")
-//   .then((response) => response.json())
-//   .then((users) => console.log(users));
-
-
-fetch("/api/forks")
+fetch("/api/users")
   .then((response) => response.json())
-  .then((thing) => console.log(thing))
+  .then((users) => console.log(users));
+
+
+// fetch("/api/forks")
+//   .then((response) => response.json())
+//   .then((thing) => console.log(thing))
 
 
 // Initialize maps
