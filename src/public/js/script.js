@@ -20,15 +20,15 @@ let VAMClist = [
   },
 ];
 
-// fetch("/api/users")
-//   .then((response) => response.json())
-//   .then((users) => console.log(users));
-// // have an array for "selected"
+fetch("/api/users")
+  .then((response) => response.json())
+  .then((users) => console.log(users));
+// have an array for "selected"
 
-// // fetch("/api/dbTest").then((response) => console.log(response));
-// fetch("/api/answer")
-//   .then((response) => response.json())
-//   .then((thingy)=>console.log(thingy));
+// fetch("/api/dbTest").then((response) => console.log(response));
+fetch("/api/answer")
+  .then((response) => response.json())
+  .then((thingy)=>console.log(thingy));
 
 
 // Initialize maps
