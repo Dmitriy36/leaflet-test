@@ -28,7 +28,7 @@ const app = express();
 // };
 
 // connectAndQuery();
-app.use(express.static(path.join(__dirname, "public")));
+
 
 app.get("/api/dbTest", (req, res) => {  
   // res.json(connectAndQuery);
@@ -58,6 +58,8 @@ app.get("/api/users", (req, res) => {
   ];
   res.json(users);
 });
+
+app.use(express.static(path.join(__dirname, "public")));
 
 app.listen(8080, () => {
   console.log("server is listening on port 8080");
