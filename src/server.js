@@ -11,21 +11,21 @@ const app = express();
 
 // console.log(dbUser, dbPort, dbPass);
 
-const connectAndQuery = async () => {
-  try {
-    // Establishes a connection pool to the SQL Server
-    await sql.connect(dbConfig);
-    console.log("Database connected successfully.");
+// const connectAndQuery = async () => {
+//   try {
+//     // Establishes a connection pool to the SQL Server
+//     await sql.connect(dbConfig);
+//     console.log("Database connected successfully.");
 
-    // Execute a simple query
-    const result = await sql.query`select name from [Inventory].[establishConnectivity] where id=1`; // Use input parameters to prevent SQL injection
-    res.json(result);
-    // return result.recordsets[0];
-  } catch (err) {
-    console.error("Database connection or query failed:", err);
-    throw err; // Propagate the error for handling in the route
-  }
-};
+//     // Execute a simple query
+//     const result = await sql.query`select name from [Inventory].[establishConnectivity] where id=1`; // Use input parameters to prevent SQL injection
+//     res.json(result);
+//     // return result.recordsets[0];
+//   } catch (err) {
+//     console.error("Database connection or query failed:", err);
+//     throw err; // Propagate the error for handling in the route
+//   }
+// };
 
 // connectAndQuery();
 app.use(express.static(path.join(__dirname, "public")));
@@ -37,7 +37,8 @@ res.json("I can see the API.")
 
 app.get("/api/nondbTest", (req, res) => {  
   // res.json(connectAndQuery);
-res.json("I can see the API, a non-database API.")
+const testString = "I can see.";
+res.json(testString)
 });
 
 app.get("/api/users", (req, res) => {

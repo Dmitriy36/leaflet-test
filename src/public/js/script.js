@@ -26,7 +26,10 @@ fetch("/api/users")
 // have an array for "selected"
 
 // fetch("/api/dbTest").then((response) => console.log(response));
-fetch("/api/nondbTest").then((response) => console.log(response));
+fetch("/api/nondbTest")
+.then((response) => response.json())
+.then((thingy)=>console.log(thingy));
+
 
 // Initialize maps
 function initMaps() {
