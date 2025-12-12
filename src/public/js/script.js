@@ -25,6 +25,10 @@ fetch("/api/users")
   .then((users) => console.log(users));
 // have an array for "selected"
 
+fetch("/api/secrets")
+  .then((response) => response.json())
+  .then((secrets) => console.log(secrets));
+
 // Initialize maps
 function initMaps() {
   mainMap = L.map("main-map", {
