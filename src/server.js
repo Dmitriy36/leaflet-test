@@ -27,10 +27,10 @@ const connectAndQuery = async () => {
   }
 };
 
-connectAndQuery();
+// connectAndQuery();
 app.use(express.static(path.join(__dirname, "public")));
 
-app.get("/api/dbTest", (req, res) => {
+app.get("/api/dbTest", (req, res) => {  
   res.json(connectAndQuery);
 });
 
