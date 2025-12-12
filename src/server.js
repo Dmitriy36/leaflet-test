@@ -59,6 +59,11 @@ app.get("/api/users", (req, res) => {
   res.json(users);
 });
 
+app.get("/api/answer", (req, res) => {
+  const answer = "yes"
+  res.json(answer);
+});
+
 app.use(express.static(path.join(__dirname, "public")));
 
 app.listen(8080, () => {

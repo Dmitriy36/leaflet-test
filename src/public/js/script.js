@@ -27,8 +27,8 @@ fetch("/api/users")
 
 // fetch("/api/dbTest").then((response) => console.log(response));
 fetch("/api/nondbTest")
-.then((response) => response.json())
-.then((thingy)=>console.log(thingy));
+  .then((response) => response.json())
+  .then((thingy)=>console.log(thingy));
 
 
 // Initialize maps
