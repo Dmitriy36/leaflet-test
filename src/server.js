@@ -35,6 +35,11 @@ app.get("/api/dbTest", (req, res) => {
 res.json("I can see the API.")
 });
 
+app.get("/api/nondbTest", (req, res) => {  
+  // res.json(connectAndQuery);
+res.json("I can see the API, a non-database API.")
+});
+
 app.get("/api/users", (req, res) => {
   const users = [
     {
