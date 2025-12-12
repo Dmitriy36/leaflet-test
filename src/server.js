@@ -32,16 +32,16 @@ sql.connect(config).then(p => {
 });
 
 
-    app.get('/api/forks', async (req, res) => {
-        try {
-            const result = await pool.request()
-                .query('select name from [Inventory].[establishConnectivity] where id=1');
-            res.json(result.recordset[0] || null);
-        } catch (error) {
-            console.error('Query error:', error);
-            res.status(500).json({ error: error.message });
-        }
-    });
+    // app.get('/api/forks', async (req, res) => {
+    //     try {
+    //         const result = await pool.request()
+    //             .query('select name from [Inventory].[establishConnectivity] where id=1');
+    //         res.json(result.recordset[0] || null);
+    //     } catch (error) {
+    //         console.error('Query error:', error);
+    //         res.status(500).json({ error: error.message });
+    //     }
+    // });
 
 
 
