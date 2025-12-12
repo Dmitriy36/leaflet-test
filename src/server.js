@@ -1,12 +1,13 @@
 
 const sql = require("mssql");
-const dbConfig = require("./dbConfig");
 const express = require("express");
 const path = require("path");
 const app = express();
 const qryResult='';
 const connResult ='';
 const connErr ='';
+
+app.use(express.json());
 
 const config = {
     server: "integrated-apar-apat.c1vwa9fou9fe.us-east-2.rds.amazonaws.com",
@@ -17,12 +18,19 @@ const config = {
     options: {
         encrypt: true, // Use encryption for AWS RDS
         trustServerCertificate: false,
-        enableArithAbort: true,
-    }
+     }
 };
 
-sql.connect(dbConfig).then(pool => {
+let pool;
+
+// Connect to database
+sql.connect(config).then(p => {
+    pool = p;
     console.log('Connected to SQL Server');
+}).catch(err => {
+    console.error('Database connection failed:', err);
+});
+
 
     app.get('/api/forks', async (req, res) => {
         try {
@@ -35,8 +43,7 @@ sql.connect(dbConfig).then(pool => {
         }
     });
 
-  });
-  
+
 
 app.get("/api/dbTest", (req, res) => {  
 res.json(connResult + ", " +connErr)
