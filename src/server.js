@@ -31,7 +31,8 @@ const connectAndQuery = async () => {
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/api/dbTest", (req, res) => {  
-  res.json(connectAndQuery);
+  // res.json(connectAndQuery);
+res.json("I can see the API.")
 });
 
 app.get("/api/users", (req, res) => {
