@@ -18,8 +18,8 @@ const connectAndQuery = async () => {
     console.log("Database connected successfully.");
 
     // Execute a simple query
-    qryResult = await sql.query`select name from [Inventory].[establishConnectivity] where id=1`; // Use input parameters to prevent SQL injection
-    res.json(result);
+    qryResult = await sql.query`select * from [Inventory].[establishConnectivity]`; // Use input parameters to prevent SQL injection
+    // res.json(result);
     // return result.recordsets[0];
   } catch (err) {
     console.error("Database connection or query failed:", err);
