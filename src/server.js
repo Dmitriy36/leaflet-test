@@ -6,6 +6,7 @@ const path = require("path");
 const app = express();
 const qryResult='';
 const connResult ='';
+const connErr ='';
 // const dbPort = process.env.PORT;
 // const dbUser = process.env.DB_USER;
 // const dbPass = process.env.DB_PASS;
@@ -23,6 +24,7 @@ const connectAndQuery = async () => {
     // res.json(result);
     // return result.recordsets[0];
   } catch (err) {
+    connErr="error connecting to db"
     console.error("Database connection or query failed:", err);
     throw err; // Propagate the error for handling in the route
   }
@@ -32,7 +34,7 @@ const connectAndQuery = async () => {
 
 
 app.get("/api/dbTest", (req, res) => {  
-res.json(connResult)
+res.json(connResult + ", " +connErr)
 });
 
 app.get("/api/nondbTest", (req, res) => {  
