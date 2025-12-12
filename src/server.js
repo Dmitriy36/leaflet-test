@@ -4,7 +4,7 @@ const dbConfig = require("./dbConfig");
 const express = require("express");
 const path = require("path");
 const app = express();
-
+const qryResult='';
 // const dbPort = process.env.PORT;
 // const dbUser = process.env.DB_USER;
 // const dbPass = process.env.DB_PASS;
@@ -18,7 +18,7 @@ const connectAndQuery = async () => {
     console.log("Database connected successfully.");
 
     // Execute a simple query
-    const result = await sql.query`select name from [Inventory].[establishConnectivity] where id=1`; // Use input parameters to prevent SQL injection
+    qryResult = await sql.query`select name from [Inventory].[establishConnectivity] where id=1`; // Use input parameters to prevent SQL injection
     res.json(result);
     // return result.recordsets[0];
   } catch (err) {
@@ -31,8 +31,7 @@ const connectAndQuery = async () => {
 
 
 app.get("/api/dbTest", (req, res) => {  
-  res.json(connectAndQuery);
-res.json("I can see the API.")
+res.json(qryResult)
 });
 
 app.get("/api/nondbTest", (req, res) => {  
