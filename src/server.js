@@ -35,7 +35,7 @@ sql.connect(dbConfig).then(pool => {
         }
     });
 
-  });
+
 
 app.get("/api/dbTest", (req, res) => {  
 res.json(connResult + ", " +connErr)
@@ -69,7 +69,10 @@ app.get("/api/answer", (req, res) => {
   res.send(json(answer))
 });
 
+  });
+  
 app.use(express.static(path.join(__dirname, "public")));
+
 
 app.listen(8080, () => {
   console.log("server is listening on port 8080");
