@@ -40,6 +40,8 @@ function initMaps() {
     // attribution: "© OpenStreetMap contributors",
   }).addTo(mainMap);
 
+  renderThings();
+
   mainMap.on("zoomend moveend", function () {
     myPolylines.forEach(function (polyline) {
       mainMap.removeLayer(polyline);
