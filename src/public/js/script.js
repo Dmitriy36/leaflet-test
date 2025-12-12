@@ -42,8 +42,6 @@ function initMaps() {
 
   renderThings();
 
-  renderThings();
-
   mainMap.on("zoomend moveend", function () {
     myPolylines.forEach(function (polyline) {
       mainMap.removeLayer(polyline);
