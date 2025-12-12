@@ -27,7 +27,6 @@ fetch("/api/users")
 
 // fetch("/api/dbTest").then((response) => console.log(response));
 fetch("/api/answer")
-  .then((response) => response.json())
   .then((thingy)=>console.log(thingy));
 
 
