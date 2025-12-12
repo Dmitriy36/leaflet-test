@@ -1,4 +1,4 @@
-// require("dotenv").config();
+
 const sql = require("mssql");
 const dbConfig = require("./dbConfig");
 const express = require("express");
@@ -7,30 +7,32 @@ const app = express();
 const qryResult='';
 const connResult ='';
 const connErr ='';
-// const dbPort = process.env.PORT;
-// const dbUser = process.env.DB_USER;
-// const dbPass = process.env.DB_PASS;
 
-// console.log(dbUser, dbPort, dbPass);
-
-const connectAndQuery = async () => {
-  try {
-    // Establishes a connection pool to the SQL Server
-    await sql.connect(dbConfig);
-    connResult="Database connected successfully.";
-
-    // Execute a simple query
-    qryResult = await sql.query`select * from [Inventory].[establishConnectivity]`; // Use input parameters to prevent SQL injection
-    // res.json(result);
-    // return result.recordsets[0];
-  } catch (err) {
-    connErr="error connecting to db"
-    console.error("Database connection or query failed:", err);
-    throw err; // Propagate the error for handling in the route
-  }
+const config = {
+    server: "integrated-apar-apat.c1vwa9fou9fe.us-east-2.rds.amazonaws.com",
+    database: "integrated_APAR",
+    user: "admin",
+    password: "g-Y~aPz8-i*Mk~O~M2*j]LkA554C",
+    port: parseInt(process.env.DB_PORT) || 1433,
+    options: {
+        encrypt: true, // Use encryption for AWS RDS
+        trustServerCertificate: false,
+        enableArithAbort: true,
+    }
 };
 
 
+
+    app.get('/api/forks', async (req, res) => {
+        try {
+            const result = await pool.request()
+                .query('select name from [Inventory].[establishConnectivity] where id=1');
+            res.json(result.recordset[0] || null);
+        } catch (error) {
+            console.error('Query error:', error);
+            res.status(500).json({ error: error.message });
+        }
+    });
 
 
 app.get("/api/dbTest", (req, res) => {  
