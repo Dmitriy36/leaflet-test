@@ -61,7 +61,7 @@ app.get("/api/users", (req, res) => {
 
 app.get("/api/answer", (req, res) => {
   const answer = "yes"
-  res.send(answer.json())
+  res.send(json(answer))
 });
 
 app.use(express.static(path.join(__dirname, "public")));
