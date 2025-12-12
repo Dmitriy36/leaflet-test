@@ -1,7 +1,10 @@
-const express = require('express');
-const sql = require('mssql');
-
+const sql = require("mssql");
+const express = require("express");
+const path = require("path");
 const app = express();
+const qryResult='';
+const connResult ='';
+const connErr ='';
 app.use(express.json());
 
 // Database config - replace with your actual values
