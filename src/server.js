@@ -10,10 +10,10 @@ const connErr ='';
 
 const config = {
     server: "integrated-apar-apat.c1vwa9fou9fe.us-east-2.rds.amazonaws.com",
-    database: "integrated_APAR",
+    database: "Integrated_APAR",
     user: "admin",
     password: "g-Y~aPz8-i*Mk~O~M2*j]LkA554C",
-    port: parseInt(process.env.DB_PORT) || 1433,
+    port: 1433,
     options: {
         encrypt: true, // Use encryption for AWS RDS
         trustServerCertificate: false,
@@ -21,7 +21,8 @@ const config = {
     }
 };
 
-
+sql.connect(dbConfig).then(pool => {
+    console.log('Connected to SQL Server');
 
     app.get('/api/forks', async (req, res) => {
         try {
@@ -34,6 +35,7 @@ const config = {
         }
     });
 
+  });
 
 app.get("/api/dbTest", (req, res) => {  
 res.json(connResult + ", " +connErr)
