@@ -5,6 +5,7 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const qryResult='';
+const connResult ='';
 // const dbPort = process.env.PORT;
 // const dbUser = process.env.DB_USER;
 // const dbPass = process.env.DB_PASS;
@@ -15,7 +16,7 @@ const connectAndQuery = async () => {
   try {
     // Establishes a connection pool to the SQL Server
     await sql.connect(dbConfig);
-    console.log("Database connected successfully.");
+    connResult="Database connected successfully.";
 
     // Execute a simple query
     qryResult = await sql.query`select * from [Inventory].[establishConnectivity]`; // Use input parameters to prevent SQL injection
@@ -31,7 +32,7 @@ const connectAndQuery = async () => {
 
 
 app.get("/api/dbTest", (req, res) => {  
-res.json(qryResult)
+res.json(connResult)
 });
 
 app.get("/api/nondbTest", (req, res) => {  
