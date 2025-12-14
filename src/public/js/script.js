@@ -104,6 +104,17 @@ function initMaps() {
   }).addTo(hawaiiMap);
 }
 
+async function loadSites(){
+  const response = await fetch('/api/sites');
+  const sites = await response.json();
+  return sites;
+}
+
+async function reportingFunction(){
+  const allSites = await loadSites();
+  console.log(allSites);
+}
+
 // Initialize app
 async function init() {
   initMaps();
