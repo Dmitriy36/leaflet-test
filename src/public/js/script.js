@@ -53,7 +53,7 @@ function initMaps() {
       mainMap.removeLayer(polyline);
     });
     // alert("zoomed!");
-    // renderThings();
+    addLines();
   });
 
 
@@ -143,9 +143,11 @@ async function addButtons(){
     };
     container.appendChild(button);
   });
-  console.log('rendering lines')
+  addLines();
+}
 
-      allSites.forEach((site)=>{
+async function addLines(){
+        allSites.forEach((site)=>{
       let geoObj = {lat: site.Latitude, lng: site.Longitude};
       DrawLine(geoObj);
       });
