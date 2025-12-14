@@ -129,6 +129,7 @@ label {
 #sidebar button {
   display:block;
   width:100%;
+  text-align:left;
   margin-bottom:5px;
   font-size:large;
   font-weight:bold;
