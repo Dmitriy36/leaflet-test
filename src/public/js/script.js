@@ -73,7 +73,7 @@ function initMaps() {
 
     // let marker = L.marker(geo).addTo(mainMap);
 
-    let circleMarker = L.circleMarker([geo], {
+    let circleMarker = L.circleMarker([geo.lat, geo.lng], {
       radius:5,
       color:'red',
       fillColor: '#f03',
