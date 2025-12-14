@@ -13,7 +13,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 const config = {
     server: "integrated-apar-apat.c1vwa9fou9fe.us-east-2.rds.amazonaws.com",
-    database: "master", // "Integrated_APAR",
+    database: "Integrated_APAR",
     user: "admin",
     password: "g-Y~aPz8-i*Mk~O~M2*j]LkA554C",
     port: 1433,
@@ -26,7 +26,7 @@ const config = {
 app.get('/test', async (req, res)=>{
   try{
     await sql.connect(config);
-    const result = await sql.query('Select @@Version');
+    const result = await sql.query('Select * from Inventory.establishConnectivity where id = 1');
     res.json({success: true, data: result.recordset});
   } catch (err){
     res.status(500).json({error:err.message});
