@@ -45,7 +45,7 @@ function initMaps() {
     // attribution: "© OpenStreetMap contributors",
   }).addTo(mainMap);
 
-  renderThings();
+  // renderThings();
 
   mainMap.on("zoomend moveend", function () {
     myPolylines.forEach(function (polyline) {
@@ -55,10 +55,12 @@ function initMaps() {
     renderThings();
   });
 
-  function renderThings() {
-    DrawLine(VAMClist[0].Geo);
-    DrawLine(VAMClist[1].Geo);
-  }
+  // function renderThings() {
+  //   DrawLine(VAMClist[0].Geo);
+  //   DrawLine(VAMClist[1].Geo);
+  // }
+
+
 
   function DrawLine(geo) {
     let markerLatLng = geo;
@@ -135,6 +137,7 @@ async function createSiteButtons(){
   container.innerHTML = '';
 
   sites.forEach(site=>{
+    DrawLine(site.Latitude, site.Longitude); // Geo: L.latLng(35.26633, -81.092299),
     const button = document.createElement('button');
     button.textContent = site.ExternalId + " - " + site.FacilityName;
     button.id = `site-${site.ExternalId}-button`;
