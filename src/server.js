@@ -11,26 +11,37 @@ app.use(express.json());
 
 app.use(express.static(path.join(__dirname, "public")));
 
-// const config = {
-//     server: "integrated-apar-apat.c1vwa9fou9fe.us-east-2.rds.amazonaws.com",
-//     database: "Integrated_APAR",
-//     user: "admin",
-//     password: "g-Y~aPz8-i*Mk~O~M2*j]LkA554C",
-//     port: 1433,
-//     options: {
-//         encrypt: true, // Use encryption for AWS RDS
-//         trustServerCertificate: false,
-//      }
-// };
+const config = {
+    server: "integrated-apar-apat.c1vwa9fou9fe.us-east-2.rds.amazonaws.com",
+    database: "master", // "Integrated_APAR",
+    user: "admin",
+    password: "g-Y~aPz8-i*Mk~O~M2*j]LkA554C",
+    port: 1433,
+    options: {
+        encrypt: true, // Use encryption for AWS RDS
+        trustServerCertificate: true,
+     }
+};
 
-// app.get("/api/dbTest", (req, res) => {  
-// res.json(connResult + ", " +connErr)
-// });
+app.get('/test', async (req, res)=>{
+  try{
+    await sql.connect(config);
+    const result = await sql.query('Select @@Version');
+    res.json({success: true, data: result.recordset});
+  } catch (err){
+    res.status(500).json({error:err.message});
+  }
+});
 
-// app.get("/api/nondbTest", (req, res) => {  
-// const testString = "I can see.";
-// res.json(testString)
-// });
+
+app.get("/api/dbTest", (req, res) => {  
+res.json(connResult + ", " +connErr)
+});
+
+app.get("/api/nondbTest", (req, res) => {  
+const testString = "I can see.";
+res.json(testString)
+});
 
 app.get("/api/users", (req, res) => {
   const users = [
