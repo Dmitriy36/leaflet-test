@@ -1,5 +1,6 @@
 let mainMap, alaskaMap, hawaiiMap;
 let allSites = [];
+let selectedSites = [];
 let addresses = [];
 let markers = {};
 let southWest = L.latLng(5.49955, -170), // Approximate SW corner (adjust as needed)
@@ -104,8 +105,10 @@ async function addButtons() {
     const button = document.createElement("button");
     button.textContent = site.ExternalId + " - " + site.FacilityName;
     button.id = `site-${site.ExternalId}-button`;
+    button.siteObject = JSON.stringify(site); // experimentas - is it OK to attach objects like this?
     button.onclick = () => {
-      alert(`You clicked ${site.FacilityName}`);
+      // alert(`You clicked ${site.FacilityName}`);
+      alert(`You clicked ${button.siteObject}`);
     };
     container.appendChild(button);
   });
