@@ -129,9 +129,9 @@ async function createSiteButtons(){
 
   sites.forEach(site=>{
     const button = document.createElement('button');
-    button.textContent = site.ExternalId + " - " + site.Name;
+    button.textContent = site.ExternalId + " - " + site.FacilityName;
     button.onclick=()=>{
-      alert(`You clicked ${site.Name}`);
+      alert(`You clicked ${site.FacilityName}`);
     };
     container.appendChild(button);
   });
