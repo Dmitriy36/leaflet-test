@@ -46,22 +46,17 @@ function initMaps() {
     // attribution: "© OpenStreetMap contributors",
   }).addTo(mainMap);
 
-  renderThings();
+
 
   mainMap.on("zoomend moveend", function () {
     myPolylines.forEach(function (polyline) {
       mainMap.removeLayer(polyline);
     });
     // alert("zoomed!");
-    renderThings();
+    // renderThings();
   });
 
-  function renderThings() {
-    allSites.forEach((site)=>{
-      let geoObj = [site.Longitude, site.Latitude];
-      DrawLine(geoObj);
-    })
-  }
+
 
 
 
@@ -149,7 +144,11 @@ async function addButtons(){
     container.appendChild(button);
   });
   console.log('rendering lines')
-  renderThings();
+
+      allSites.forEach((site)=>{
+      let geoObj = {lat: site.Longitude, lng: site.Latitude};
+      DrawLine(geoObj);
+      });
 }
 
 addButtons();
