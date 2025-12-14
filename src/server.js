@@ -59,7 +59,7 @@ app.get("/api/answer", (req, res) => {
 
 
 
-app.listen(8080, '0.0.0.0.', () => {
-  console.log("server is listening on port 8080");
+app.listen(3000, '0.0.0.0.', () => {
+  console.log("server is listening on port 3000");
 });
 
