@@ -29,7 +29,7 @@ app.get('/test', async (req, res)=>{
   try{
     const pool = await poolPromise;
     const result = await pool.request().query('Select * from Inventory.establishConnectivity where id = 1');
-    res.json(result.recordset);
+    res.json({new:'now using connection pool',data:result.recordset});
   } catch (err){
     res.status(500).json({error:err.message});
   }
