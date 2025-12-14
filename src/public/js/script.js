@@ -148,6 +148,8 @@ async function addButtons(){
     };
     container.appendChild(button);
   });
+  console.log('rendering lines')
+  renderThings();
 }
 
 addButtons();
