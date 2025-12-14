@@ -60,33 +60,7 @@ function initMaps() {
 
 
 
-  function DrawLine(geo) {
-    let markerLatLng = geo;
-    let myDiv = document.getElementById("db-symbol");
-    let divRect = myDiv.getBoundingClientRect();
-
-    let mapContainerRect = mainMap.getContainer().getBoundingClientRect();
-    let divCenterX = divRect.left + divRect.width / 2 - mapContainerRect.left;
-    let divCenterY = divRect.top + divRect.height / 2 - mapContainerRect.top;
-
-    let divLatLng = mainMap.containerPointToLatLng([divCenterX, divCenterY]);
-
-    // let marker = L.marker(geo).addTo(mainMap);
-
-    let circleMarker = L.circleMarker([geo.lat, geo.lng], {
-      radius:3,
-      color:'green',
-      fillColor: '#f03',
-      fillOpacity:0.5
-    }).addTo(mainMap);
-
-    let polylinePoints = [markerLatLng, divLatLng];
-    let myPolyline = L.polyline(polylinePoints, {
-      color: "blue",
-      weight: 1,
-    }).addTo(mainMap);
-    myPolylines.push(myPolyline);
-  }
+  
 
   alaskaMap = L.map("alaska-inset", {
     attributionControl: false,
@@ -126,7 +100,33 @@ async function loadSites(){
 // reportingFunction();
 
 // now, instead of this reporting function ↑ , populate buttons on the right with: ID + Name of each site
+function DrawLine(geo) {
+    let markerLatLng = geo;
+    let myDiv = document.getElementById("db-symbol");
+    let divRect = myDiv.getBoundingClientRect();
 
+    let mapContainerRect = mainMap.getContainer().getBoundingClientRect();
+    let divCenterX = divRect.left + divRect.width / 2 - mapContainerRect.left;
+    let divCenterY = divRect.top + divRect.height / 2 - mapContainerRect.top;
+
+    let divLatLng = mainMap.containerPointToLatLng([divCenterX, divCenterY]);
+
+    // let marker = L.marker(geo).addTo(mainMap);
+
+    let circleMarker = L.circleMarker([geo.lat, geo.lng], {
+      radius:3,
+      color:'green',
+      fillColor: '#f03',
+      fillOpacity:0.5
+    }).addTo(mainMap);
+
+    let polylinePoints = [markerLatLng, divLatLng];
+    let myPolyline = L.polyline(polylinePoints, {
+      color: "blue",
+      weight: 1,
+    }).addTo(mainMap);
+    myPolylines.push(myPolyline);
+  }
 
 async function addButtons(){
   const sites = await loadSites();
