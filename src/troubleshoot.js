@@ -3,9 +3,9 @@ const sql = require('mssql');
 // RDS SQL Server Configuration
 const config = {
   user: 'admin',           // Replace with your RDS master username
-  password: 'LkA554C',       // Replace with your RDS master password
+  password: 'g-Y~aPz8-i*Mk~O~M2*j]LkA554C',       // Replace with your RDS master password
   server: 'integrated-apar-apat.c1vwa9fou9fe.us-east-2.rds.amazonaws.com', // Replace with your RDS endpoint
-  database: 'your_database_name',  // Replace with your database name
+  database: 'Integrated_APAR',  // Replace with your database name
   port: 1433,                      // Default SQL Server port
   options: {
     encrypt: true,                 // Use encryption (required for RDS)
