@@ -77,7 +77,7 @@ function initMaps() {
       radius:3,
       color:'green',
       fillColor: '#f03',
-      fillOpacity:0.2
+      fillOpacity:0.5
     }).addTo(mainMap);
 
     let polylinePoints = [markerLatLng, divLatLng];
