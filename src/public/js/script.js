@@ -1,5 +1,5 @@
 let mainMap, alaskaMap, hawaiiMap;
-let sites = [];
+let allSites = [];
 let addresses = [];
 let markers = {};
 let southWest = L.latLng(5.49955, -170), // Approximate SW corner (adjust as needed)
@@ -53,12 +53,14 @@ function initMaps() {
       mainMap.removeLayer(polyline);
     });
     // alert("zoomed!");
-    // renderThings();
+    renderThings();
   });
 
   function renderThings() {
-    DrawLine(VAMClist[0].Geo);
-    DrawLine(VAMClist[1].Geo);
+    allSites.forEach((site)=>{
+      let geoObj = [site.Longitude, site.Latitude];
+      DrawLine(geoObj);
+    })
   }
 
 
@@ -116,9 +118,9 @@ function initMaps() {
 
 async function loadSites(){
   const response = await fetch('/api/sites');
-  sites = await response.json();
+  allSites = await response.json();
   sites.sort((a,b)=>a.ExternalId - b.ExternalId);
-  return sites;
+  return allSites;
 }
 
 // async function reportingFunction(){
