@@ -113,14 +113,15 @@ app.get('/health', (req, res) => {
   res.json({ status: 'Server is running' });
 });
 
+lPort = 8080;
 // Run the connection test
 testConnection().then(success => {
   if (success) {
     console.log('\n🎉 Everything is working! Starting Express server...');
-    app.listen(PORT, () => {
-      console.log(`\nServer running on http://localhost:${PORT}`);
-      console.log(`Test database endpoint: http://localhost:${PORT}/test-db`);
-      console.log(`Health check endpoint: http://localhost:${PORT}/health`);
+    app.listen(lPort, () => {
+      console.log(`\nServer running on http://localhost:${lPort}`);
+      console.log(`Test database endpoint: http://localhost:${lPort}/test-db`);
+      console.log(`Health check endpoint: http://localhost:${lPort}/health`);
     });
   } else {
     console.log('\n⚠ Fix the connection issues above before starting the server');
@@ -161,7 +162,7 @@ app.get("/api/answer", (req, res) => {
 
 
 
-app.listen(8080, '0.0.0.0.', () => {
+app.listen(lPort, '0.0.0.0.', () => {
   console.log("server is listening on port 8080");
 });
 
