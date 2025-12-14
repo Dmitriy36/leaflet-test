@@ -147,15 +147,13 @@ async function addButtons(){
 }
 
 async function addLines(){
-        allSites.forEach((site)=>{
-      let geoObj = {lat: site.Latitude, lng: site.Longitude};
-      
-      setTimeout(function() {
+      allSites.forEach((site, index)=>{
+        setTimeout(()=>{
+let geoObj = {lat: site.Latitude, lng: site.Longitude};
 DrawLine(geoObj);
-}, 5000); 
+        }, index*500);
       });
-}
-
+    }
 addButtons();
 
 
