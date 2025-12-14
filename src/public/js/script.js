@@ -107,15 +107,38 @@ function initMaps() {
 async function loadSites(){
   const response = await fetch('/api/sites');
   const sites = await response.json();
+  sites.sort((a,b)=>a.ExternalId - b.ExternalId);
   return sites;
 }
 
-async function reportingFunction(){
-  const allSites = await loadSites();
-  console.log(allSites);
+// async function reportingFunction(){
+//   const allSites = await loadSites();
+//   console.log(allSites);
+// }
+
+// reportingFunction();
+
+// now, instead of this reporting function ↑ , populate buttons on the right with: ID + Name of each site
+
+
+async function createSiteButtons(){
+  const sites = await loadSites();
+
+  const container = document.getElementById('sidebar');
+  container.innerHTML = '';
+
+  sites.forEach(site=>{
+    const button = document.createElement('button');
+    button.textContent = site.ExternalId + " - " + site.Name;
+    button.onclick=()=>{
+      alert(`You clicked ${site.Name}`);
+    };
+    container.appendChild(button);
+  });
 }
 
-reportingFunction();
+createSiteButtons();
+
 // Initialize app
 async function init() {
   initMaps();

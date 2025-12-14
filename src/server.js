@@ -27,6 +27,7 @@ app.get('/api/sites', async(req,res)=>{
   try {
     const pool = await poolPromise;
     const result = await pool.request().query('Select ExternalId, FacilityName, Longitude, Latitude, VaVisnNumber, Region, TimeZoneId From Meta.Facilities_Geo ');
+    
     res.json(result.recordset);
 } catch(err){
   res.status(500).json({error:err.message});
