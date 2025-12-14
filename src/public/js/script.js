@@ -46,7 +46,7 @@ function initMaps() {
     // attribution: "© OpenStreetMap contributors",
   }).addTo(mainMap);
 
-  // renderThings();
+  renderThings();
 
   mainMap.on("zoomend moveend", function () {
     myPolylines.forEach(function (polyline) {
