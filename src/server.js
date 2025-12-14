@@ -2,6 +2,8 @@
 const sql = require("mssql");
 const express = require("express");
 const path = require("path");
+const {poolPromise} = require('./db')
+
 const app = express();
 const qryResult='';
 const connResult ='';
@@ -11,37 +13,37 @@ app.use(express.json());
 
 app.use(express.static(path.join(__dirname, "public")));
 
-const config = {
-    server: "integrated-apar-apat.c1vwa9fou9fe.us-east-2.rds.amazonaws.com",
-    database: "Integrated_APAR",
-    user: "admin",
-    password: "g-Y~aPz8-i*Mk~O~M2*j]LkA554C",
-    port: 1433,
-    options: {
-        encrypt: true, // Use encryption for AWS RDS
-        trustServerCertificate: true,
-     }
-};
+// const config = {
+//     server: "integrated-apar-apat.c1vwa9fou9fe.us-east-2.rds.amazonaws.com",
+//     database: "Integrated_APAR",
+//     user: "admin",
+//     password: "g-Y~aPz8-i*Mk~O~M2*j]LkA554C",
+//     port: 1433,
+//     options: {
+//         encrypt: true, // Use encryption for AWS RDS
+//         trustServerCertificate: true,
+//      }
+// };
 
 app.get('/test', async (req, res)=>{
   try{
-    await sql.connect(config);
-    const result = await sql.query('Select * from Inventory.establishConnectivity where id = 1');
-    res.json({success: true, data: result.recordset});
+    const pool = await poolPromise;
+    const result = await pool.request().query('Select * from Inventory.establishConnectivity where id = 1');
+    res.json(result.recordset);
   } catch (err){
     res.status(500).json({error:err.message});
   }
 });
 
 
-app.get("/api/dbTest", (req, res) => {  
-res.json(connResult + ", " +connErr)
-});
+// app.get("/api/dbTest", (req, res) => {  
+// res.json(connResult + ", " +connErr)
+// });
 
-app.get("/api/nondbTest", (req, res) => {  
-const testString = "I can see.";
-res.json(testString)
-});
+// app.get("/api/nondbTest", (req, res) => {  
+// const testString = "I can see.";
+// res.json(testString)
+// });
 
 app.get("/api/users", (req, res) => {
   const users = [
