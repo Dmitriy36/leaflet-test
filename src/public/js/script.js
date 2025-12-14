@@ -149,7 +149,10 @@ async function addButtons(){
 async function addLines(){
         allSites.forEach((site)=>{
       let geoObj = {lat: site.Latitude, lng: site.Longitude};
-      DrawLine(geoObj);
+      
+      setTimeout(function() {
+DrawLine(geoObj);
+}, 500); 
       });
 }
 
