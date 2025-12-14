@@ -9,6 +9,8 @@ const connErr ='';
 
 app.use(express.json());
 
+app.use(express.static(path.join(__dirname, "public")));
+
 const config = {
     server: "integrated-apar-apat.c1vwa9fou9fe.us-east-2.rds.amazonaws.com",
     database: "Integrated_APAR",
@@ -20,30 +22,6 @@ const config = {
         trustServerCertificate: false,
      }
 };
-
-let pool;
-
-// Connect to database
-sql.connect(config).then(p => {
-    pool = p;
-    console.log('Connected to SQL Server');
-}).catch(err => {
-    console.error('Database connection failed:', err);
-});
-
-
-    // app.get('/api/forks', async (req, res) => {
-    //     try {
-    //         const result = await pool.request()
-    //             .query('select name from [Inventory].[establishConnectivity] where id=1');
-    //         res.json(result.recordset[0] || null);
-    //     } catch (error) {
-    //         console.error('Query error:', error);
-    //         res.status(500).json({ error: error.message });
-    //     }
-    // });
-
-
 
 app.get("/api/dbTest", (req, res) => {  
 res.json(connResult + ", " +connErr)
@@ -78,7 +56,7 @@ app.get("/api/answer", (req, res) => {
 });
 
 
-app.use(express.static(path.join(__dirname, "public")));
+
 
 
 app.listen(8080, () => {
