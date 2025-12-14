@@ -137,7 +137,8 @@ async function createSiteButtons(){
   container.innerHTML = '';
 
   sites.forEach(site=>{
-    DrawLine(site.Latitude, site.Longitude); // Geo: L.latLng(35.26633, -81.092299),
+    let siteLatLng=L.latLng(site.Latitude, site.Longitude);
+    DrawLine(siteLatLng); // Geo: L.latLng(35.26633, -81.092299),
     const button = document.createElement('button');
     button.textContent = site.ExternalId + " - " + site.FacilityName;
     button.id = `site-${site.ExternalId}-button`;
