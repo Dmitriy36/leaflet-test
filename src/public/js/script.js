@@ -56,10 +56,10 @@ function initMaps() {
     // renderThings();
   });
 
-  // function renderThings() {
-  //   DrawLine(VAMClist[0].Geo);
-  //   DrawLine(VAMClist[1].Geo);
-  // }
+  function renderThings() {
+    DrawLine(VAMClist[0].Geo);
+    DrawLine(VAMClist[1].Geo);
+  }
 
 
 
@@ -148,15 +148,8 @@ async function addButtons(){
   });
 }
 
-async function addLines(){
-  sites.forEach((site)=>{
-    let geoObject = L.latLng(site.Latitude, site.Longitude);
-    DrawLine(geoObject);
-  });
-}
-
 addButtons();
-addLines();
+
 
 // Initialize app
 async function init() {
