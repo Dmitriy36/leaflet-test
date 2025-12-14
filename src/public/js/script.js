@@ -71,7 +71,14 @@ function initMaps() {
 
     let divLatLng = mainMap.containerPointToLatLng([divCenterX, divCenterY]);
 
-    let marker = L.marker(geo).addTo(mainMap);
+    // let marker = L.marker(geo).addTo(mainMap);
+
+    let circleMarker = L.circleMarker([geo], {
+      radius:5,
+      color:'red',
+      fillColor: '#f03',
+      fillOpacity:0.5
+    }).addTo(mainMap);
 
     let polylinePoints = [markerLatLng, divLatLng];
     let myPolyline = L.polyline(polylinePoints, {
