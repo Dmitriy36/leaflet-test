@@ -115,6 +115,7 @@ async function reportingFunction(){
   console.log(allSites);
 }
 
+reportingFunction();
 // Initialize app
 async function init() {
   initMaps();
