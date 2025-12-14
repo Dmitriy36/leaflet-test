@@ -130,15 +130,18 @@ async function loadSites(){
 // now, instead of this reporting function ↑ , populate buttons on the right with: ID + Name of each site
 
 
-async function createSiteButtons(){
+async function buttonsAndLines(){
   const sites = await loadSites();
 
   const container = document.getElementById('sidebar');
   container.innerHTML = '';
 
+  sites.foreach((site)=>{
+    let geoObject = L.latLng(site.Latitude, site.Longitude);
+    DrawLine(geoObject);
+  });
+
   sites.forEach(site=>{
-    let siteLatLng=L.latLng(site.Latitude, site.Longitude);
-    DrawLine(siteLatLng); // Geo: L.latLng(35.26633, -81.092299),
     const button = document.createElement('button');
     button.textContent = site.ExternalId + " - " + site.FacilityName;
     button.id = `site-${site.ExternalId}-button`;
@@ -149,7 +152,7 @@ async function createSiteButtons(){
   });
 }
 
-createSiteButtons();
+buttonsAndLines();
 
 // Initialize app
 async function init() {
