@@ -119,7 +119,7 @@ function initMaps() {
 async function loadSites(){
   const response = await fetch('/api/sites');
   allSites = await response.json();
-  sites.sort((a,b)=>a.ExternalId - b.ExternalId);
+  allSites.sort((a,b)=>a.ExternalId - b.ExternalId);
   return allSites;
 }
 
