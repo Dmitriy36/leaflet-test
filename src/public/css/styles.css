@@ -126,14 +126,22 @@ label {
   font-size: 14px;
 }
 
+button {
+  font-size: large;
+  font-weight: bold;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
 #sidebar button {
-  display:block;
-  width:100%;
-  text-align:left;
-  margin-bottom:5px;
-  font-size:large;
-  font-weight:bold;
-  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+  display: block;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 5px;
+  font-size: large;
+  font-weight: bold;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
 button:hover {

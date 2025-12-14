@@ -81,7 +81,10 @@ function DrawLine(geo) {
     color: "green",
     fillColor: "#f03",
     fillOpacity: 0.5,
-  }).addTo(mainMap);
+  })
+    .addTo(mainMap)
+    .addTo(alaskaMap)
+    .addTo(hawaiiMap);
 
   let polylinePoints = [markerLatLng, divLatLng];
   let myPolyline = L.polyline(polylinePoints, {
