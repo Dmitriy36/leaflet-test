@@ -63,6 +63,20 @@ async function loadSites() {
   return allSites;
 }
 
+function buttonSelect() {
+  // change button color
+  // add to selectedSites
+}
+
+function clearSelected() {
+  // reset button color
+  // clear selectedSites
+}
+
+function loadAll() {}
+
+function loadSelected() {}
+
 function DrawLine(geo) {
   let markerLatLng = geo;
   let myDiv = document.getElementById("db-symbol");
