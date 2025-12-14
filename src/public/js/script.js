@@ -119,8 +119,10 @@ async function addLines() {
 }
 
 async function addLinesNoDelay() {
-  let geoObj = { lat: site.Latitude, lng: site.Longitude };
-  DrawLine(geoObj);
+  allSites.forEach((site, index) => {
+    let geoObj = { lat: site.Latitude, lng: site.Longitude };
+    DrawLine(geoObj);
+  });
 }
 
 addButtons();
