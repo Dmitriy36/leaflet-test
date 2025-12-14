@@ -126,6 +126,12 @@ label {
   font-size: 14px;
 }
 
+#sidebar button {
+  display:block;
+  width:100%;
+  margin-bottom:10px;
+}
+
 button:hover {
   background: #11ea01;
 }
