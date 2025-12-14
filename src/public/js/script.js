@@ -152,7 +152,7 @@ async function addLines(){
       
       setTimeout(function() {
 DrawLine(geoObj);
-}, 500); 
+}, 5000); 
       });
 }
 
