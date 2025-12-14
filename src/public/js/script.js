@@ -146,7 +146,7 @@ async function addButtons(){
   console.log('rendering lines')
 
       allSites.forEach((site)=>{
-      let geoObj = {lat: site.Longitude, lng: site.Latitude};
+      let geoObj = {lat: site.Latitude, lng: site.Longitude};
       DrawLine(geoObj);
       });
 }
