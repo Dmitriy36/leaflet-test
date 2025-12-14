@@ -1,9 +1,10 @@
 const sql = require('mssql');
+require('dotenv').config;
 
 const config = {
   user: process.env.DB_USER || 'admin',
-  password: process.env.DB_PASSWORD, // || 'g-Y~aPz8-i*Mk~O~M2*j]LkA554C',
-  server: process.env.DB_HOST, // || 'integrated-apar-apat.c1vwa9fou9fe.us-east-2.rds.amazonaws.com',
+  password: process.env.DB_PASSWORD || 'g-Y~aPz8-i*Mk~O~M2*j]LkA554C',
+  server: process.env.DB_HOST || 'integrated-apar-apat.c1vwa9fou9fe.us-east-2.rds.amazonaws.com',
   database: 'Integrated_APAR',
   options: {
     encrypt: true,
