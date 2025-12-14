@@ -1,4 +1,5 @@
 let mainMap, alaskaMap, hawaiiMap;
+let sites = [];
 let addresses = [];
 let markers = {};
 let southWest = L.latLng(5.49955, -170), // Approximate SW corner (adjust as needed)
@@ -52,7 +53,7 @@ function initMaps() {
       mainMap.removeLayer(polyline);
     });
     // alert("zoomed!");
-    renderThings();
+    // renderThings();
   });
 
   // function renderThings() {
@@ -115,7 +116,7 @@ function initMaps() {
 
 async function loadSites(){
   const response = await fetch('/api/sites');
-  const sites = await response.json();
+  sites = await response.json();
   sites.sort((a,b)=>a.ExternalId - b.ExternalId);
   return sites;
 }
@@ -130,16 +131,11 @@ async function loadSites(){
 // now, instead of this reporting function ↑ , populate buttons on the right with: ID + Name of each site
 
 
-async function buttonsAndLines(){
+async function addButtons(){
   const sites = await loadSites();
 
   const container = document.getElementById('sidebar');
   container.innerHTML = '';
-
-  sites.foreach((site)=>{
-    let geoObject = L.latLng(site.Latitude, site.Longitude);
-    DrawLine(geoObject);
-  });
 
   sites.forEach(site=>{
     const button = document.createElement('button');
@@ -152,7 +148,15 @@ async function buttonsAndLines(){
   });
 }
 
-buttonsAndLines();
+async function addLines(){
+  sites.forEach((site)=>{
+    let geoObject = L.latLng(site.Latitude, site.Longitude);
+    DrawLine(geoObject);
+  });
+}
+
+addButtons();
+addLines();
 
 // Initialize app
 async function init() {
