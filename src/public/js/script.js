@@ -2,7 +2,6 @@ let mainMap, alaskaMap, hawaiiMap;
 let allSites = [];
 let addresses = [];
 let markers = {};
-let markerGroup = L.LayerGroup();
 let southWest = L.latLng(5.49955, -170), // Approximate SW corner (adjust as needed)
   northEast = L.latLng(83.162102, -50), // Approximate NE corner (adjust as needed)
   bounds = L.latLngBounds(southWest, northEast);
