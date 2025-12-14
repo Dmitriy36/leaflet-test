@@ -2,34 +2,15 @@ let mainMap, alaskaMap, hawaiiMap;
 let allSites = [];
 let addresses = [];
 let markers = {};
+let markerGroup = L.LayerGroup();
 let southWest = L.latLng(5.49955, -170), // Approximate SW corner (adjust as needed)
   northEast = L.latLng(83.162102, -50), // Approximate NE corner (adjust as needed)
   bounds = L.latLngBounds(southWest, northEast);
 let myPolylines = [];
-let VAMClist = [
-  {
-    STA3N: 703,
-    Name: "Northeast Vet Center",
-    Address: "609 Lowell Ave, Lowell NC 28098",
-    Geo: L.latLng(35.26633, -81.092299),
-  },
-  {
-    STA3N: 704,
-    Name: "Northwest Vet Center",
-    Address: "300 W. 10th · Topeka, KS 66612",
-    Geo: L.latLng(39.047962, -95.677975),
-  },
-];
 
-fetch("/api/users")
-  .then((response) => response.json())
-  .then((users) => console.log(users));
-
-
-// fetch("/api/forks")
+// fetch("/api/users")
 //   .then((response) => response.json())
-//   .then((thing) => console.log(thing))
-
+//   .then((users) => console.log(users));
 
 // Initialize maps
 function initMaps() {
@@ -43,24 +24,14 @@ function initMaps() {
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     bounds: bounds,
-    // attribution: "© OpenStreetMap contributors",
   }).addTo(mainMap);
-
-
 
   mainMap.on("zoomend moveend", function () {
     myPolylines.forEach(function (polyline) {
       mainMap.removeLayer(polyline);
     });
-    // alert("zoomed!");
-    addLines();
+    addLinesNoDelay();
   });
-
-
-
-
-
-  
 
   alaskaMap = L.map("alaska-inset", {
     attributionControl: false,
@@ -69,9 +40,9 @@ function initMaps() {
     dragging: true,
   }).setView([64.2008, -149.4937], 2);
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    // attribution: "© OpenStreetMap contributors",
-  }).addTo(alaskaMap);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {}).addTo(
+    alaskaMap
+  );
 
   hawaiiMap = L.map("hawaii-inset", {
     attributionControl: false,
@@ -80,66 +51,58 @@ function initMaps() {
     dragging: true,
   }).setView([20.7967, -156.3319], 6);
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    // attribution: "© OpenStreetMap contributors",
-  }).addTo(hawaiiMap);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {}).addTo(
+    hawaiiMap
+  );
 }
 
-async function loadSites(){
-  const response = await fetch('/api/sites');
+async function loadSites() {
+  const response = await fetch("/api/sites");
   allSites = await response.json();
-  allSites.sort((a,b)=>a.ExternalId - b.ExternalId);
+  allSites.sort((a, b) => a.ExternalId - b.ExternalId);
   return allSites;
 }
 
-// async function reportingFunction(){
-//   const allSites = await loadSites();
-//   console.log(allSites);
-// }
-
-// reportingFunction();
-
-// now, instead of this reporting function ↑ , populate buttons on the right with: ID + Name of each site
 function DrawLine(geo) {
-    let markerLatLng = geo;
-    let myDiv = document.getElementById("db-symbol");
-    let divRect = myDiv.getBoundingClientRect();
+  let markerLatLng = geo;
+  let myDiv = document.getElementById("db-symbol");
+  let divRect = myDiv.getBoundingClientRect();
 
-    let mapContainerRect = mainMap.getContainer().getBoundingClientRect();
-    let divCenterX = divRect.left + divRect.width / 2 - mapContainerRect.left;
-    let divCenterY = divRect.top + divRect.height / 2 - mapContainerRect.top;
+  let mapContainerRect = mainMap.getContainer().getBoundingClientRect();
+  let divCenterX = divRect.left + divRect.width / 2 - mapContainerRect.left;
+  let divCenterY = divRect.top + divRect.height / 2 - mapContainerRect.top;
 
-    let divLatLng = mainMap.containerPointToLatLng([divCenterX, divCenterY]);
+  let divLatLng = mainMap.containerPointToLatLng([divCenterX, divCenterY]);
 
-    // let marker = L.marker(geo).addTo(mainMap);
+  // let marker = L.marker(geo).addTo(mainMap);
 
-    let circleMarker = L.circleMarker([geo.lat, geo.lng], {
-      weight:1,
-      radius:3,
-      color:'green',
-      fillColor: '#f03',
-      fillOpacity:0.5
-    }).addTo(mainMap);
+  let circleMarker = L.circleMarker([geo.lat, geo.lng], {
+    weight: 1,
+    radius: 3,
+    color: "green",
+    fillColor: "#f03",
+    fillOpacity: 0.5,
+  }).addTo(mainMap);
 
-    let polylinePoints = [markerLatLng, divLatLng];
-    let myPolyline = L.polyline(polylinePoints, {
-      color: "blue",
-      weight: 1,
-    }).addTo(mainMap);
-    myPolylines.push(myPolyline);
-  }
+  let polylinePoints = [markerLatLng, divLatLng];
+  let myPolyline = L.polyline(polylinePoints, {
+    color: "blue",
+    weight: 1,
+  }).addTo(mainMap);
+  myPolylines.push(myPolyline);
+}
 
-async function addButtons(){
+async function addButtons() {
   const sites = await loadSites();
 
-  const container = document.getElementById('sidebar');
-  container.innerHTML = '';
+  const container = document.getElementById("sidebar");
+  container.innerHTML = "";
 
-  sites.forEach(site=>{
-    const button = document.createElement('button');
+  sites.forEach((site) => {
+    const button = document.createElement("button");
     button.textContent = site.ExternalId + " - " + site.FacilityName;
     button.id = `site-${site.ExternalId}-button`;
-    button.onclick=()=>{
+    button.onclick = () => {
       alert(`You clicked ${site.FacilityName}`);
     };
     container.appendChild(button);
@@ -147,16 +110,22 @@ async function addButtons(){
   addLines();
 }
 
-async function addLines(){
-      allSites.forEach((site, index)=>{
-        setTimeout(()=>{
-let geoObj = {lat: site.Latitude, lng: site.Longitude};
-DrawLine(geoObj);
-        }, index*100);
-      });
-    }
-addButtons();
+async function addLines() {
+  allSites.forEach((site, index) => {
+    setTimeout(() => {
+      let geoObj = { lat: site.Latitude, lng: site.Longitude };
+      DrawLine(geoObj);
+    }, index * 100);
+  });
+}
 
+async function addLinesNoDelay() {
+  let geoObj = { lat: site.Latitude, lng: site.Longitude };
+  DrawLine(geoObj);
+}
+
+addButtons();
+addLines();
 
 // Initialize app
 async function init() {
