@@ -114,6 +114,7 @@ function DrawLine(geo) {
     // let marker = L.marker(geo).addTo(mainMap);
 
     let circleMarker = L.circleMarker([geo.lat, geo.lng], {
+      weight:1,
       radius:3,
       color:'green',
       fillColor: '#f03',
