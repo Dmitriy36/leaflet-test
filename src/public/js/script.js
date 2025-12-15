@@ -88,8 +88,8 @@ function ClearMarkers() {
 
 function AddMarker(geo) {
   let circleMarker = L.circleMarker([geo.lat, geo.lng], {
-    weight: 1,
-    radius: 3,
+    weight: 2,
+    radius: 7,
     color: "green",
     fillColor: "#f03",
     fillOpacity: 0.5,
