@@ -25,7 +25,7 @@ function initMaps() {
 
   mainMap.on("zoomend moveend", function () {
     ClearMarkersAndLines(); // <------------------------------------ define
-    
+
     addLinesNoDelay();
   });
 
@@ -73,14 +73,14 @@ function loadAll() {}
 
 function loadSelected() {}
 
- ClearMarkersAndLines(){
+function ClearMarkersAndLines() {
   // lines
-    myPolylines.forEach(function (polyline) {
-      mainMap.removeLayer(polyline);
-    });
+  myPolylines.forEach(function (polyline) {
+    mainMap.removeLayer(polyline);
+  });
   // markers
   markerGroup.clearLayers();
- }
+}
 
 function AddMarker(geo) {
   let circleMarker = L.circleMarker([geo.lat, geo.lng], {
@@ -130,8 +130,6 @@ async function addLinesNoDelay() {
   });
   markerGroup.addTo(mainMap);
 }
-
-
 
 async function addButtons() {
   const sites = await loadSites();
