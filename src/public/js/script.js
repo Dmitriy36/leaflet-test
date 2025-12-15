@@ -2,12 +2,12 @@ let mainMap, alaskaMap, hawaiiMap;
 let allSites = [];
 let selectedSites = [];
 let addresses = [];
-let markers = {};
+let markers = [];
 let southWest = L.latLng(5.49955, -170), // Approximate SW corner (adjust as needed)
   northEast = L.latLng(83.162102, -50), // Approximate NE corner (adjust as needed)
   bounds = L.latLngBounds(southWest, northEast);
 let myPolylines = [];
-
+// let markerLayerGroup = L.layerGroup;
 // fetch("/api/users")
 //   .then((response) => response.json())
 //   .then((users) => console.log(users));
@@ -27,6 +27,7 @@ function initMaps() {
   }).addTo(mainMap);
 
   mainMap.on("zoomend moveend", function () {
+    ClearMarkers();
     myPolylines.forEach(function (polyline) {
       mainMap.removeLayer(polyline);
     });
@@ -100,6 +101,7 @@ function DrawLine(geo) {
     .addTo(mainMap)
     .addTo(alaskaMap)
     .addTo(hawaiiMap);
+  markers.push(circleMarker);
 
   let polylinePoints = [markerLatLng, divLatLng];
   let myPolyline = L.polyline(polylinePoints, {
@@ -107,6 +109,10 @@ function DrawLine(geo) {
     weight: 1,
   }).addTo(mainMap);
   myPolylines.push(myPolyline);
+}
+
+function ClearMarkers() {
+  markers.length = 0;
 }
 
 async function addButtons() {
