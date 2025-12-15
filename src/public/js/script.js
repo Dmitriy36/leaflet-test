@@ -145,7 +145,7 @@ async function addLines() {
       DrawLine(geoObj);
     }, index * 50);
   });
-  // markerGroup.addTo(mainMap);
+  markerGroup.addTo(mainMap);
 }
 
 async function addLinesNoDelay() {
@@ -153,7 +153,7 @@ async function addLinesNoDelay() {
     let geoObj = { lat: site.Latitude, lng: site.Longitude };
     DrawLine(geoObj);
   });
-  // markerGroup.addTo(mainMap);
+  markerGroup.addTo(mainMap);
 }
 
 addButtons();
