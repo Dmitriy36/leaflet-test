@@ -27,7 +27,7 @@ function initMaps() {
   }).addTo(mainMap);
 
   mainMap.on("zoomend moveend", function () {
-    ClearMarkers();
+    // ClearMarkers();
     myPolylines.forEach(function (polyline) {
       mainMap.removeLayer(polyline);
     });
@@ -112,9 +112,9 @@ function DrawLine(geo) {
   myPolylines.push(myPolyline);
 }
 
-function ClearMarkers() {
-  markers.length = 0;
-}
+// function ClearMarkers() {
+//   markers.length = 0;
+// }
 
 async function addButtons() {
   const sites = await loadSites();
