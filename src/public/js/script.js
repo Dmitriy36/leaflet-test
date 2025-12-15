@@ -2,7 +2,7 @@ let mainMap, alaskaMap, hawaiiMap;
 let allSites = [];
 let selectedSites = [];
 let addresses = [];
-let markers = [];
+let markerGroup;
 let southWest = L.latLng(5.49955, -170), // Approximate SW corner (adjust as needed)
   northEast = L.latLng(83.162102, -50), // Approximate NE corner (adjust as needed)
   bounds = L.latLngBounds(southWest, northEast);
@@ -98,7 +98,8 @@ function DrawLine(geo) {
     fillColor: "#f03",
     fillOpacity: 0.5,
   })
-    .addTo(mainMap)
+    .addTo(markerGroup)
+    // .addTo(mainMap)
     .addTo(alaskaMap)
     .addTo(hawaiiMap);
   markers.push(circleMarker);
@@ -149,6 +150,7 @@ async function addLinesNoDelay() {
     let geoObj = { lat: site.Latitude, lng: site.Longitude };
     DrawLine(geoObj);
   });
+  markerGroup.addTo(mainMap);
 }
 
 addButtons();
