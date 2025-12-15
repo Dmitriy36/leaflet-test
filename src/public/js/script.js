@@ -10,7 +10,6 @@ let myPolylines = [];
 
 // Initialize maps
 function initMaps() {
-  markerGroup = L.layerGroup().addTo(mainMap);
   mainMap = L.map("main-map", {
     maxBounds: bounds,
     maxBoundsViscosity: 1.0,
@@ -22,6 +21,8 @@ function initMaps() {
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     bounds: bounds,
   }).addTo(mainMap);
+
+  markerGroup = L.layerGroup().addTo(mainMap);
 
   mainMap.on("zoomend moveend", function () {
     ClearMarkersAndLines(); // <------------------------------------ define
