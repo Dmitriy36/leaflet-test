@@ -7,13 +7,10 @@ let southWest = L.latLng(5.49955, -170), // Approximate SW corner (adjust as nee
   northEast = L.latLng(83.162102, -50), // Approximate NE corner (adjust as needed)
   bounds = L.latLngBounds(southWest, northEast);
 let myPolylines = [];
-// let markerLayerGroup = L.layerGroup;
-// fetch("/api/users")
-//   .then((response) => response.json())
-//   .then((users) => console.log(users));
 
 // Initialize maps
 function initMaps() {
+  markerGroup = L.layerGroup().addTo(mainMap);
   mainMap = L.map("main-map", {
     maxBounds: bounds,
     maxBoundsViscosity: 1.0,
@@ -27,11 +24,8 @@ function initMaps() {
   }).addTo(mainMap);
 
   mainMap.on("zoomend moveend", function () {
-    // ClearMarkers();
-    myPolylines.forEach(function (polyline) {
-      mainMap.removeLayer(polyline);
-    });
-    markerGroup.clearLayers();
+    ClearMarkersAndLines(); // <------------------------------------ define
+    
     addLinesNoDelay();
   });
 
@@ -56,7 +50,6 @@ function initMaps() {
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {}).addTo(
     hawaiiMap
   );
-  markerGroup = L.layerGroup().addTo(mainMap);
 }
 
 async function loadSites() {
@@ -80,6 +73,25 @@ function loadAll() {}
 
 function loadSelected() {}
 
+ ClearMarkersAndLines(){
+  // lines
+    myPolylines.forEach(function (polyline) {
+      mainMap.removeLayer(polyline);
+    });
+  // markers
+  markerGroup.clearLayers();
+ }
+
+function AddMarker(geo) {
+  let circleMarker = L.circleMarker([geo.lat, geo.lng], {
+    weight: 1,
+    radius: 3,
+    color: "green",
+    fillColor: "#f03",
+    fillOpacity: 0.5,
+  }).addTo(markerGroup);
+}
+
 function DrawLine(geo) {
   let markerLatLng = geo;
   let myDiv = document.getElementById("db-symbol");
@@ -91,21 +103,6 @@ function DrawLine(geo) {
 
   let divLatLng = mainMap.containerPointToLatLng([divCenterX, divCenterY]);
 
-  // let marker = L.marker(geo).addTo(mainMap);
-
-  let circleMarker = L.circleMarker([geo.lat, geo.lng], {
-    weight: 1,
-    radius: 3,
-    color: "green",
-    fillColor: "#f03",
-    fillOpacity: 0.5,
-  })
-    .addTo(markerGroup)
-    // .addTo(mainMap)
-    .addTo(alaskaMap)
-    .addTo(hawaiiMap);
-  // markers.push(circleMarker);
-
   let polylinePoints = [markerLatLng, divLatLng];
   let myPolyline = L.polyline(polylinePoints, {
     color: "blue",
@@ -114,9 +111,27 @@ function DrawLine(geo) {
   myPolylines.push(myPolyline);
 }
 
-// function ClearMarkers() {
-//   markers.length = 0;
-// }
+async function addLines() {
+  allSites.forEach((site, index) => {
+    setTimeout(() => {
+      let geoObj = { lat: site.Latitude, lng: site.Longitude };
+      AddMarker(geoObj);
+      DrawLine(geoObj);
+    }, index * 50);
+  });
+  markerGroup.addTo(mainMap);
+}
+
+async function addLinesNoDelay() {
+  allSites.forEach((site, index) => {
+    let geoObj = { lat: site.Latitude, lng: site.Longitude };
+    AddMarker(geoObj);
+    DrawLine(geoObj);
+  });
+  markerGroup.addTo(mainMap);
+}
+
+
 
 async function addButtons() {
   const sites = await loadSites();
@@ -136,24 +151,6 @@ async function addButtons() {
     container.appendChild(button);
   });
   addLines();
-}
-
-async function addLines() {
-  allSites.forEach((site, index) => {
-    setTimeout(() => {
-      let geoObj = { lat: site.Latitude, lng: site.Longitude };
-      DrawLine(geoObj);
-    }, index * 50);
-  });
-  markerGroup.addTo(mainMap);
-}
-
-async function addLinesNoDelay() {
-  allSites.forEach((site, index) => {
-    let geoObj = { lat: site.Latitude, lng: site.Longitude };
-    DrawLine(geoObj);
-  });
-  markerGroup.addTo(mainMap);
 }
 
 addButtons();
