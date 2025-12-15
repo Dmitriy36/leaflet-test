@@ -25,8 +25,8 @@ function initMaps() {
   markerGroup = L.layerGroup().addTo(mainMap);
 
   mainMap.on("zoomend moveend", function () {
-    ClearMarkersAndLines(); // <------------------------------------ define
-
+    ClearMarkers();
+    ClearLines();
     addLinesNoDelay();
   });
 
@@ -74,11 +74,14 @@ function loadAll() {}
 
 function loadSelected() {}
 
-function ClearMarkersAndLines() {
+function ClearLines() {
   // lines
   myPolylines.forEach(function (polyline) {
     mainMap.removeLayer(polyline);
   });
+}
+
+function ClearMarkers() {
   // markers
   markerGroup.clearLayers();
 }
