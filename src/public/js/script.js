@@ -123,7 +123,6 @@ async function addLines() {
       DrawLine(geoObj);
     }, index * 50);
   });
-  markerGroup.addTo(mainMap);
 }
 
 async function addLinesNoDelay() {
@@ -132,7 +131,6 @@ async function addLinesNoDelay() {
     AddMarker(geoObj);
     DrawLine(geoObj);
   });
-  markerGroup.addTo(mainMap);
 }
 
 async function addButtons() {
