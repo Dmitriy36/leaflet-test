@@ -31,6 +31,7 @@ function initMaps() {
     myPolylines.forEach(function (polyline) {
       mainMap.removeLayer(polyline);
     });
+    markerGroup.clearLayers();
     addLinesNoDelay();
   });
 
@@ -55,7 +56,7 @@ function initMaps() {
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {}).addTo(
     hawaiiMap
   );
-  markerGroup.addTo(mainMap);
+  markerGroup = L.layerGroup().addTo(mainMap);
 }
 
 async function loadSites() {
@@ -99,7 +100,7 @@ function DrawLine(geo) {
     fillColor: "#f03",
     fillOpacity: 0.5,
   })
-    // .addTo(markerGroup)
+    .addTo(markerGroup)
     // .addTo(mainMap)
     .addTo(alaskaMap)
     .addTo(hawaiiMap);
@@ -144,7 +145,7 @@ async function addLines() {
       DrawLine(geoObj);
     }, index * 50);
   });
-  markerGroup.addTo(mainMap);
+  // markerGroup.addTo(mainMap);
 }
 
 async function addLinesNoDelay() {
@@ -152,7 +153,7 @@ async function addLinesNoDelay() {
     let geoObj = { lat: site.Latitude, lng: site.Longitude };
     DrawLine(geoObj);
   });
-  markerGroup.addTo(mainMap);
+  // markerGroup.addTo(mainMap);
 }
 
 addButtons();
