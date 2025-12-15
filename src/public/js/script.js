@@ -134,7 +134,7 @@ async function addLines() {
     setTimeout(() => {
       let geoObj = { lat: site.Latitude, lng: site.Longitude };
       DrawLine(geoObj);
-    }, index * 100);
+    }, index * 50);
   });
 }
 
