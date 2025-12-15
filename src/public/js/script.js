@@ -104,7 +104,7 @@ function DrawLine(geo) {
     // .addTo(mainMap)
     .addTo(alaskaMap)
     .addTo(hawaiiMap);
-  markers.push(circleMarker);
+  // markers.push(circleMarker);
 
   let polylinePoints = [markerLatLng, divLatLng];
   let myPolyline = L.polyline(polylinePoints, {
