@@ -143,6 +143,7 @@ async function addLines() {
       DrawLine(geoObj);
     }, index * 50);
   });
+  markerGroup.addTo(mainMap);
 }
 
 async function addLinesNoDelay() {
