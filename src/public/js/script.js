@@ -3,8 +3,8 @@ let allSites = [];
 let selectedSites = [];
 let addresses = [];
 let markerGroup;
-let southWest = L.latLng(5.49955, -170), // Approximate SW corner (adjust as needed)
-  northEast = L.latLng(83.162102, -50), // Approximate NE corner (adjust as needed)
+let southWest = L.latLng(5.49955, -170), // Approximate SW corner
+  northEast = L.latLng(83.162102, -50), // Approximate NE corner
   bounds = L.latLngBounds(southWest, northEast);
 let myPolylines = [];
 
@@ -121,7 +121,7 @@ async function addLines() {
       let geoObj = { lat: site.Latitude, lng: site.Longitude };
       AddMarker(geoObj);
       DrawLine(geoObj);
-    }, index * 50);
+    }, index * 25);
   });
 }
 
