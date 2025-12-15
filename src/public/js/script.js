@@ -55,6 +55,7 @@ function initMaps() {
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {}).addTo(
     hawaiiMap
   );
+  markerGroup.addTo(mainMap);
 }
 
 async function loadSites() {
@@ -98,7 +99,7 @@ function DrawLine(geo) {
     fillColor: "#f03",
     fillOpacity: 0.5,
   })
-    .addTo(markerGroup)
+    // .addTo(markerGroup)
     // .addTo(mainMap)
     .addTo(alaskaMap)
     .addTo(hawaiiMap);
