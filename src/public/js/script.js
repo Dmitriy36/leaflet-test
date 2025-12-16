@@ -119,7 +119,7 @@ async function GetAnalyticsPost() {
     vamcIds = allSites.map((site) => site.ExternalId);
   }
 
-  // const vamcIds = [402]; // replace with selectedSites or allSites
+  alert("these VAMC ids were sent: ", vamcIds);
   // Send to backend
   fetch("/test", {
     method: "POST",
