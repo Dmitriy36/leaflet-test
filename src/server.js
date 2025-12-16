@@ -16,12 +16,16 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/test", async (req, res) => {
   try {
-    const table = new sql.Table();
-    table.columns.add("VAMCId", sql.Int);
-    VAMCIds.forEach((id) => table.rows.add(id));
-
     const pool = await poolPromise;
-    const result = await pool.request().input("VAMCIds", table)
+    const request = pool.request();
+
+    // Build parameters dynamically
+    const params = VAMCIds.map((id, index) => {
+      request.input(`id${index}`, sql.Int, id);
+      return `@id${index}`;
+    }).join(",");
+
+    const result = await pool.request()
       .query(`Select Coalesce(Cast(VAMC as nVarchar(3)),'Total') as VAMC,
 Sum(Case When Item='forks' Then Qty Else 0 End) as TotalForks,
 Sum(Case When Item='spoons' Then Qty Else 0 End) as TotalSpoons
