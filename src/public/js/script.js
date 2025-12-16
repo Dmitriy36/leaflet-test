@@ -111,6 +111,21 @@ async function GetAnalytics() {
     });
 }
 
+async function GetAnalyticsPost() {
+  // Dynamic values from your frontend
+  const vamcIds = [402, 405, 410];
+  // Send to backend
+  fetch("/test", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ vamcIds: vamcIds }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Query results:", data); // Show in popup
+    });
+}
+
 function ClearAll() {
   buttonsList.forEach((button) => {
     button.className = "sidebar-button";
