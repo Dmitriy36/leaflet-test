@@ -19,11 +19,12 @@ app.get("/test", async (req, res) => {
     const pool = await poolPromise;
     const request = pool.request();
 
-    // Build parameters dynamically
-    const params = VAMCIds.map((id, index) => {
+    // add parameters to request
+    VAMCIds.forEach((id, index) => {
       request.input(`id${index}`, sql.Int, id);
-      return `@id${index}`;
-    }).join(",");
+    });
+
+    const params = VAMCIds.map((id, index) => `@id${index}`).join(",");
 
     const result = await pool.request()
       .query(`Select Coalesce(Cast(VAMC as nVarchar(3)),'Total') as VAMC,
