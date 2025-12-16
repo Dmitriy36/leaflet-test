@@ -3,7 +3,7 @@ let allSites = [];
 let selectedSites = [];
 let buttonsList = [];
 let addresses = [];
-let markerGroup;
+let markerGroupMain, markerGroupAlaska, markerGroupHawaii;
 let southWest = L.latLng(5.49955, -170), // Approximate SW corner
   northEast = L.latLng(83.162102, -50), // Approximate NE corner
   bounds = L.latLngBounds(southWest, northEast);
@@ -55,11 +55,10 @@ function initMaps() {
       AddLinesSelectedNoDelay();
     }
   });
+  markerGroupMain = L.layerGroup().addTo(mainMap);
+  markerGroupHawaii = L.layerGroup().addTo(hawaiiMap);
+  markerGroupAlaska = L.layerGroup().addTo(alaskaMap);
 }
-
-markerGroupMain = L.layerGroup().addTo(mainMap);
-markerGroupHawaii = L.layerGroup().addTo(hawaiiMap);
-markerGroupAlaska = L.layerGroup().addTo(alaskaMap);
 
 async function LoadSites() {
   const response = await fetch("/api/sites");
