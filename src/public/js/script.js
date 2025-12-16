@@ -79,20 +79,20 @@ async function GetAnalytics() {
   fetch("/test")
     .then((response) => response.json())
     .then((data) => {
-      const popup = window.open("", "Results", "width=600,height=400");
+      const popup = window.open("", "Results", "width=1000,height=800");
       popup.document.write(
         `<html>         
         <head>
         <title>Analytics Check</title>
               <style>         
-              body { font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif; font-size: 2em; }         
+              body { font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif; font-size: 1em; }         
               table { border-collapse: collapse; width: 100%; }         
               th, td { border: 1px solid black; padding: 8px; text-align: left; }         
               th { background-color: #f2f2f2; }       
               </style>
         </head>         
         <body>           
-        <h2>Results</h2>           
+                  
         <table border="1">
                      <tr>               
                      <th>VAMC</th>               
