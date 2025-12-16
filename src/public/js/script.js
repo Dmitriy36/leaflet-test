@@ -55,6 +55,7 @@ function initMaps() {
       AddLinesSelectedNoDelay();
     }
   });
+
   markerGroupMain = L.layerGroup().addTo(mainMap);
   markerGroupHawaii = L.layerGroup().addTo(hawaiiMap);
   markerGroupAlaska = L.layerGroup().addTo(alaskaMap);
@@ -166,7 +167,7 @@ async function AddLinesSelected() {
   }
 }
 
-async function AddLinesSelecteNoDelay() {
+async function AddLinesSelectedNoDelay() {
   let allButton = document.getElementById("loadallBtn");
   allButton.disabled = true;
   if (selectedSites.length === 0) {
