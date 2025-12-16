@@ -103,7 +103,7 @@ function ClearMarkers() {
 }
 
 function AddMarker(geo) {
-  if (geo.lng < -149) {
+  if (geo.lng > -149) {
     L.circleMarker([geo.lat, geo.lng], {
       // let circleMarker =
       weight: 2,
