@@ -26,8 +26,8 @@ app.get("/test", async (req, res) => {
 
     const params = VAMCIds.map((id, index) => `@id${index}`).join(",");
 
-    const result = await pool.request()
-      .query(`Select Coalesce(Cast(VAMC as nVarchar(3)),'Total') as VAMC,
+    const result =
+      await request.query(`Select Coalesce(Cast(VAMC as nVarchar(3)),'Total') as VAMC,
 Sum(Case When Item='forks' Then Qty Else 0 End) as TotalForks,
 Sum(Case When Item='spoons' Then Qty Else 0 End) as TotalSpoons
 From [Inventory].[ForksSpoons]
