@@ -33,7 +33,7 @@ Sum(Case When Item='spoons' Then Qty Else 0 End) as TotalSpoons
 From [Inventory].[ForksSpoons]
 Where VAMC IN (${params})
 Group by rollup(VAMC)`);
-    res.json({ new: "not using conn pool yet", data: result.recordset });
+    res.json({ data: result.recordset });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
