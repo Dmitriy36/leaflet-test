@@ -45,7 +45,7 @@ function initMaps() {
     hawaiiMap
   );
 
-  mainMap.on("zoomend moveend", function () {
+  mainMap.on("zoomend moveend viewreset", function () {
     ClearMarkers();
     ClearLines();
 
