@@ -113,7 +113,7 @@ async function GetAnalytics() {
 
 async function GetAnalyticsPost() {
   // Dynamic values from your frontend
-  const vamcIds = [402, 405, 410];
+  const vamcIds = [402]; //, 405, 410];
   // Send to backend
   fetch("/test", {
     method: "POST",
