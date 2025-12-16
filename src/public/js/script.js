@@ -147,15 +147,13 @@ async function addButtons() {
 
   sites.forEach((site) => {
     const button = document.createElement("button");
-    button.classList.add(".sidebar-button");
+    button.classList.add("sidebar-button");
     button.textContent = site.ExternalId + " - " + site.FacilityName;
     button.id = `site-${site.ExternalId}-button`;
     button.siteObject = JSON.stringify(site); // experimentas - is it OK to attach objects like this?
     button.onclick = () => {
-      // alert(`You clicked ${site.FacilityName}`);
-      // alert(`You clicked ${button.siteObject}`);
       selectedSites.push(site);
-      this.classList.toggle("sidebar-button-selected");
+      button.classList.toggle("sidebar-button-selected");
     };
 
     container.appendChild(button);
