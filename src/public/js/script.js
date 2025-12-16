@@ -170,7 +170,7 @@ function PrintSelected() {
   });
 }
 
-// addButtons();
+AddButtons();
 // addLines();
 
 // Initialize app
