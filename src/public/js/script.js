@@ -79,7 +79,7 @@ async function GetAnalytics() {
   fetch("/test")
     .then((response) => response.json())
     .then((data) => {
-      const popup = window.open("", "Results", "width=1000,height=800");
+      const popup = window.open("", "Results", "width=1000,height=1500");
       popup.document.write(
         `<html>         
         <head>
