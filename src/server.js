@@ -55,7 +55,7 @@ app.post("/test", async (req, res) => {
 
     const params = VAMCIds.map((id, index) => `@id${index}`).join(",");
     const result = await request.query(
-      ` Select Coalesce(Cast(VAMC as nVarchar(3)),' Total') as VAMC, Sum(Case When Item='forks' Then Qty Else 0 End) as TotalForks, Sum(Case When Item='spoons' Then Qty Else 0 End) as TotalSpoons From [Inventory].[ForksSpoons] Where VAMC IN (${params}) Group by rollup(VAMC) `
+      ` Select Coalesce(Cast(VAMC as nVarchar(3)),'---Total---') as VAMC, Sum(Case When Item='forks' Then Qty Else 0 End) as TotalForks, Sum(Case When Item='spoons' Then Qty Else 0 End) as TotalSpoons From [Inventory].[ForksSpoons] Where VAMC IN (${params}) Group by rollup(VAMC) `
     );
     res.json({ data: result.recordset }); // Returns query results
   } catch (err) {
