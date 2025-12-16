@@ -110,6 +110,8 @@ function DrawLine(geo) {
 }
 
 async function AddLinesAll() {
+  let selectedButton = document.getElementById("loadselected");
+  selectedButton.disabled = true;
   allSites.forEach((site, index) => {
     setTimeout(() => {
       let geoObj = { lat: site.Latitude, lng: site.Longitude };
@@ -120,6 +122,8 @@ async function AddLinesAll() {
 }
 
 async function AddLinesSelected() {
+  let allButton = document.getElementById("loadall");
+  allButton.disabled = true;
   if (selectedSites.length === 0) {
     alert("Please select at least one site, otherwise use Load All.");
   } else {
