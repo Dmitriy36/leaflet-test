@@ -113,7 +113,7 @@ async function LoadSites() {
 
 async function GetAnalyticsPost() {
   // if selectedSites is not empty:
-  if (!selectedSites.length === 0) {
+  if (selectedSites.length > 0) {
     vamcIds = selectedSites.map((site) => site.ExternalId);
   } else {
     vamcIds = allSites.map((site) => site.ExternalId);
