@@ -23,21 +23,6 @@ function initMaps() {
     bounds: bounds,
   }).addTo(mainMap);
 
-  markerGroup = L.layerGroup().addTo(mainMap);
-  markerGroup = L.layerGroup().addTo(hawaiiMap);
-  markerGroup = L.layerGroup().addTo(alaskaMap);
-
-  mainMap.on("zoomend moveend", function () {
-    ClearMarkers();
-    ClearLines();
-
-    if (selectedSites.length === 0) {
-      AddLinesAllNoDelay();
-    } else {
-      AddLinesSelectedNoDelay();
-    }
-  });
-
   alaskaMap = L.map("alaska-inset", {
     attributionControl: false,
     zoomControl: true,
@@ -59,6 +44,21 @@ function initMaps() {
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {}).addTo(
     hawaiiMap
   );
+
+  markerGroupMain = L.layerGroup().addTo(mainMap);
+  markerGroupHawaii = L.layerGroup().addTo(hawaiiMap);
+  markerGroupAlaska = L.layerGroup().addTo(alaskaMap);
+
+  mainMap.on("zoomend moveend", function () {
+    ClearMarkers();
+    ClearLines();
+
+    if (selectedSites.length === 0) {
+      AddLinesAllNoDelay();
+    } else {
+      AddLinesSelectedNoDelay();
+    }
+  });
 }
 
 async function LoadSites() {
