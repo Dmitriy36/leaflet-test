@@ -142,7 +142,7 @@ function PrintSelected() {
 async function addButtons() {
   const sites = await loadSites();
 
-  const container = document.getElementByClassName("sidebar");
+  const container = document.getElementById("sidebar");
   container.innerHTML = "";
 
   sites.forEach((site) => {
