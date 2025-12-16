@@ -30,7 +30,7 @@ app.get("/test", async (req, res) => {
 Sum(Case When Item='forks' Then Qty Else 0 End) as TotalForks,
 Sum(Case When Item='spoons' Then Qty Else 0 End) as TotalSpoons
 From [Inventory].[ForksSpoons]
-Where VAMC IN (Select VAMCId From @VAMCIds)
+Where VAMC IN (${params})
 Group by rollup(VAMC)`);
     res.json({ new: "not using conn pool yet", data: result.recordset });
   } catch (err) {
