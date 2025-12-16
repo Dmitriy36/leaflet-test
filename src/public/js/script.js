@@ -122,7 +122,35 @@ async function GetAnalyticsPost() {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log("Query results:", data); // Show in popup
+      const popup = window.open("", "Results", "width=1000,height=1500");
+      popup.document.write(
+        `<html>         
+        <head>
+        <title>Analytics Check</title>
+              <style>         
+              body { font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif; font-size: 1em; }         
+              table { border-collapse: collapse; width: 100%; }         
+              th, td { border: 1px solid black; padding: 8px; text-align: left; }         
+              th { background-color: #f2f2f2; }       
+              </style>
+        </head>         
+        <body>           
+                  
+        <table border="1">
+                     <tr>               
+                     <th>VAMC</th>               
+                     <th>Forks</th>               
+                     <th>Spoons</th>             
+                     </tr>             ${data.data
+                       .map(
+                         (row) =>
+                           `<tr><td>${row.VAMC}</td><td>${row.TotalForks}</td>                 <td>${row.TotalSpoons}</td></tr>`
+                       )
+                       .join("")}           
+       </table>         
+       </body>       
+       </html>     `
+      );
     });
 }
 
