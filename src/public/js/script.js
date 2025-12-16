@@ -75,7 +75,7 @@ function ClearAll() {
 function ReenableAllButtons() {
   let button1 = document.getElementById("clearallBtn");
   let button2 = document.getElementById("loadallBtn");
-  let button3 = document.getElementById("loadaselectedBtn");
+  let button3 = document.getElementById("loadselectedBtn");
 
   button1.disabled = false;
   button2.disabled = false;
