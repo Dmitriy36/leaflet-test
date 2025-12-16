@@ -133,9 +133,21 @@ button {
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
-#sidebar button {
+.sidebar-button {
+  background: lightgrey;
   display: block;
-  width: 100%;
+  width: 100%; /* less width remember checkboxes */
+  text-align: left;
+  margin-bottom: 5px;
+  font-size: large;
+  font-weight: bold;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+.sidebar-button-selected {
+  background: yellow;
+  display: block;
+  width: 100%; /* less width remember checkboxes */
   text-align: left;
   margin-bottom: 5px;
   font-size: large;

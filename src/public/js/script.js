@@ -89,7 +89,7 @@ function ClearMarkers() {
 function AddMarker(geo) {
   let circleMarker = L.circleMarker([geo.lat, geo.lng], {
     weight: 2,
-    radius: 7,
+    radius: 5,
     color: "green",
     fillColor: "#f03",
     fillOpacity: 0.5,
@@ -133,10 +133,16 @@ async function addLinesNoDelay() {
   });
 }
 
+function PrintSelected() {
+  selectedSites.forEach((thing) => {
+    console.log(thing);
+  });
+}
+
 async function addButtons() {
   const sites = await loadSites();
 
-  const container = document.getElementById("sidebar");
+  const container = document.getElementByClassName("sidebar");
   container.innerHTML = "";
 
   sites.forEach((site) => {
@@ -146,8 +152,11 @@ async function addButtons() {
     button.siteObject = JSON.stringify(site); // experimentas - is it OK to attach objects like this?
     button.onclick = () => {
       // alert(`You clicked ${site.FacilityName}`);
-      alert(`You clicked ${button.siteObject}`);
+      // alert(`You clicked ${button.siteObject}`);
+      selectedSites.push(site);
+      this.classList.toggle("sidebar-button-selected");
     };
+
     container.appendChild(button);
   });
   addLines();
