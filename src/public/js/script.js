@@ -75,6 +75,36 @@ async function LoadSites() {
   return allSites;
 }
 
+async function GetAnalytics() {
+  fetch("/test")
+    .then((response) => response.json())
+    .then((data) => {
+      const popup = window.open("", "Results", "width=600,height=400");
+      popup.document.write(
+        `<html>         
+        <head>
+        <title>Query Results</title>
+        </head>         
+        <body>           
+        <h2>Results</h2>           
+        <table border="1">
+                     <tr>               
+                     <th>VAMC</th>               
+                     <th>Total Forks</th>               
+                     <th>Total Spoons</th>             
+                     </tr>             ${data.data
+                       .map(
+                         (row) =>
+                           `<tr><td>${row.VAMC}</td><td>${row.TotalForks}</td>                 <td>${row.TotalSpoons}</td></tr>`
+                       )
+                       .join("")}           
+       </table>         
+       </body>       
+       </html>     `
+      );
+    });
+}
+
 function ClearAll() {
   buttonsList.forEach((button) => {
     button.className = "sidebar-button";
