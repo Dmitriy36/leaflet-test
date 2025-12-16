@@ -83,7 +83,13 @@ async function GetAnalytics() {
       popup.document.write(
         `<html>         
         <head>
-        <title>Query Results</title>
+        <title>Analytics Check</title>
+              <style>         
+              body { font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif; font-size: 2em; }         
+              table { border-collapse: collapse; width: 100%; }         
+              th, td { border: 1px solid black; padding: 8px; text-align: left; }         
+              th { background-color: #f2f2f2; }       
+              </style>
         </head>         
         <body>           
         <h2>Results</h2>           
