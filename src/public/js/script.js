@@ -63,7 +63,7 @@ async function loadSites() {
 }
 
 function ClearAll() {
-  buttonsList.foreach((button) => {
+  buttonsList.forEach((button) => {
     button.classList.toggle("sidebar-button");
   });
   selectedSites.length = 0;
