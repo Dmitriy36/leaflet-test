@@ -24,15 +24,17 @@ function initMaps() {
   }).addTo(mainMap);
 
   markerGroup = L.layerGroup().addTo(mainMap);
+  markerGroup = L.layerGroup().addTo(hawaiiMap);
+  markerGroup = L.layerGroup().addTo(alaskaMap);
 
   mainMap.on("zoomend moveend", function () {
     ClearMarkers();
     ClearLines();
 
     if (selectedSites.length === 0) {
-      AddLinesNoDelayAll();
+      AddLinesAllNoDelay();
     } else {
-      AddLinesSelected();
+      AddLinesSelectedNoDelay();
     }
   });
 
@@ -139,6 +141,14 @@ async function AddLinesAll() {
   });
 }
 
+async function AddLinesAllNoDelay() {
+  allSites.forEach((site, index) => {
+    let geoObj = { lat: site.Latitude, lng: site.Longitude };
+    AddMarker(geoObj);
+    DrawLine(geoObj);
+  });
+}
+
 async function AddLinesSelected() {
   let allButton = document.getElementById("loadallBtn");
   allButton.disabled = true;
@@ -155,12 +165,18 @@ async function AddLinesSelected() {
   }
 }
 
-async function AddLinesNoDelayAll() {
-  allSites.forEach((site, index) => {
-    let geoObj = { lat: site.Latitude, lng: site.Longitude };
-    AddMarker(geoObj);
-    DrawLine(geoObj);
-  });
+async function AddLinesSelecteNoDelay() {
+  let allButton = document.getElementById("loadallBtn");
+  allButton.disabled = true;
+  if (selectedSites.length === 0) {
+    alert("Please select at least one site, otherwise use Load All.");
+  } else {
+    selectedSites.forEach((site, index) => {
+      let geoObj = { lat: site.Latitude, lng: site.Longitude };
+      AddMarker(geoObj);
+      DrawLine(geoObj);
+    });
+  }
 }
 
 async function AddButtons() {
