@@ -97,7 +97,9 @@ function ClearLines() {
 
 function ClearMarkers() {
   // markers
-  markerGroup.clearLayers();
+  markerGroupMain.clearLayers();
+  markerGroupAlaska.clearLayers();
+  markerGroupHawaii.clearLayers();
 }
 
 function AddMarker(geo) {
