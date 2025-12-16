@@ -144,7 +144,7 @@ async function AddLinesAll() {
 }
 
 async function AddLinesAllNoDelay() {
-  allSites.forEach((site, index) => {
+  allSites.forEach((site) => {
     let geoObj = { lat: site.Latitude, lng: site.Longitude };
     AddMarker(geoObj);
     DrawLine(geoObj);
@@ -173,7 +173,7 @@ async function AddLinesSelectedNoDelay() {
   if (selectedSites.length === 0) {
     alert("Please select at least one site, otherwise use Load All.");
   } else {
-    selectedSites.forEach((site, index) => {
+    selectedSites.forEach((site) => {
       let geoObj = { lat: site.Latitude, lng: site.Longitude };
       AddMarker(geoObj);
       DrawLine(geoObj);
