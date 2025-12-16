@@ -8,7 +8,7 @@ const qryResult = "";
 const connResult = "";
 const connErr = "";
 
-const VAMCIds = [402, 405];
+// const VAMCIds = [402, 405];
 
 app.use(express.json());
 
