@@ -96,8 +96,8 @@ async function GetAnalytics() {
         <table border="1">
                      <tr>               
                      <th>VAMC</th>               
-                     <th>Total Forks</th>               
-                     <th>Total Spoons</th>             
+                     <th>Forks</th>               
+                     <th>Spoons</th>             
                      </tr>             ${data.data
                        .map(
                          (row) =>
