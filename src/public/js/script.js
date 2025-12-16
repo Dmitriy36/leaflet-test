@@ -109,10 +109,7 @@ function AddMarker(geo) {
     color: "green",
     fillColor: "#f03",
     fillOpacity: 0.5,
-  })
-    .addTo(markerGroupMain)
-    .addTo(markerGroupAlaska)
-    .addTo(markerGroupHawaii);
+  }).addTo(markerGroupMain);
 }
 
 function DrawLine(geo) {
