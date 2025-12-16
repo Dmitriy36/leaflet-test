@@ -166,7 +166,7 @@ async function AddButtons() {
     button.siteObject = JSON.stringify(site); // experimentas - is it OK to attach objects like this?
     button.onclick = () => {
       selectedSites.push(site);
-      button.classList.toggle("sidebar-button-selected");
+      button.className = "sidebar-button-selected";
     };
 
     container.appendChild(button);
