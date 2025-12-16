@@ -159,7 +159,7 @@ async function AddButtons() {
   container.innerHTML = "";
 
   sites.forEach((site) => {
-    const button = document.createElement("button");
+    let button = document.createElement("button");
     button.classList.add("sidebar-button");
     button.textContent = site.ExternalId + " - " + site.FacilityName;
     button.id = `site-${site.ExternalId}-button`;
