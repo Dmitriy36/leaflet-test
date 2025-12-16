@@ -29,7 +29,11 @@ function initMaps() {
     ClearMarkers();
     ClearLines();
 
-    AddLinesNoDelayAll();
+    if (selectedSites.length === 0) {
+      AddLinesNoDelayAll();
+    } else {
+      AddLinesSelected();
+    }
   });
 
   alaskaMap = L.map("alaska-inset", {
@@ -55,7 +59,7 @@ function initMaps() {
   );
 }
 
-async function loadSites() {
+async function LoadSites() {
   const response = await fetch("/api/sites");
   allSites = await response.json();
   allSites.sort((a, b) => a.ExternalId - b.ExternalId);
@@ -160,7 +164,7 @@ async function AddLinesNoDelayAll() {
 }
 
 async function AddButtons() {
-  const sites = await loadSites();
+  const sites = await LoadSites();
   const container = document.getElementById("sidebar");
   container.innerHTML = "";
 
