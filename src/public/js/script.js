@@ -64,7 +64,7 @@ async function loadSites() {
 
 function ClearAll() {
   buttonsList.forEach((button) => {
-    button.classname = "sidebar-button";
+    button.className = "sidebar-button";
   });
   selectedSites.length = 0;
   ReenableAllButtons();
