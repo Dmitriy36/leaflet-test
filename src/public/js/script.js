@@ -27,7 +27,8 @@ function initMaps() {
   mainMap.on("zoomend moveend", function () {
     ClearMarkers();
     ClearLines();
-    addLinesNoDelay();
+
+    AddLinesNoDelayAll();
   });
 
   alaskaMap = L.map("alaska-inset", {
@@ -60,19 +61,12 @@ async function loadSites() {
   return allSites;
 }
 
-function buttonSelect() {
-  // change button color
-  // add to selectedSites
+function ClearSelected() {
+  buttonsList.foreach((button) => {
+    button.classList.toggle("sidebar-button");
+  });
+  selectedSites.length = 0;
 }
-
-function clearSelected() {
-  // reset button color
-  // clear selectedSites
-}
-
-function loadAll() {}
-
-function loadSelected() {}
 
 function ClearLines() {
   // lines
@@ -115,7 +109,7 @@ function DrawLine(geo) {
   myPolylines.push(myPolyline);
 }
 
-async function addLines() {
+async function AddLinesAll() {
   allSites.forEach((site, index) => {
     setTimeout(() => {
       let geoObj = { lat: site.Latitude, lng: site.Longitude };
@@ -125,7 +119,21 @@ async function addLines() {
   });
 }
 
-async function addLinesNoDelay() {
+async function AddLinesSelected() {
+  if (selectedSites.length === 0) {
+    alert("Please select at least one site, otherwise use Load All.");
+  } else {
+    selectedSites.forEach((site, index) => {
+      setTimeout(() => {
+        let geoObj = { lat: site.Latitude, lng: site.Longitude };
+        AddMarker(geoObj);
+        DrawLine(geoObj);
+      }, index * 25);
+    });
+  }
+}
+
+async function AddLinesNoDelayAll() {
   allSites.forEach((site, index) => {
     let geoObj = { lat: site.Latitude, lng: site.Longitude };
     AddMarker(geoObj);
@@ -133,15 +141,9 @@ async function addLinesNoDelay() {
   });
 }
 
-function PrintSelected() {
-  selectedSites.forEach((thing) => {
-    console.log(thing);
-  });
-}
-
-async function addButtons() {
+async function AddButtons() {
   const sites = await loadSites();
-
+  let buttonsList = [];
   const container = document.getElementById("sidebar");
   container.innerHTML = "";
 
@@ -157,12 +159,19 @@ async function addButtons() {
     };
 
     container.appendChild(button);
+    buttonsList.push(button);
   });
-  addLines();
+  // addLines();
 }
 
-addButtons();
-addLines();
+function PrintSelected() {
+  selectedSites.forEach((thing) => {
+    console.log(thing);
+  });
+}
+
+// addButtons();
+// addLines();
 
 // Initialize app
 async function init() {
