@@ -1,6 +1,7 @@
 let mainMap, alaskaMap, hawaiiMap;
 let allSites = [];
 let selectedSites = [];
+let buttonsList = [];
 let addresses = [];
 let markerGroup;
 let southWest = L.latLng(5.49955, -170), // Approximate SW corner
@@ -147,7 +148,6 @@ async function AddLinesNoDelayAll() {
 
 async function AddButtons() {
   const sites = await loadSites();
-  let buttonsList = [];
   const container = document.getElementById("sidebar");
   container.innerHTML = "";
 
