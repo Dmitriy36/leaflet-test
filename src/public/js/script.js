@@ -45,10 +45,6 @@ function initMaps() {
     hawaiiMap
   );
 
-  markerGroupMain = L.layerGroup().addTo(mainMap);
-  markerGroupHawaii = L.layerGroup().addTo(hawaiiMap);
-  markerGroupAlaska = L.layerGroup().addTo(alaskaMap);
-
   mainMap.on("zoomend moveend", function () {
     ClearMarkers();
     ClearLines();
@@ -60,6 +56,10 @@ function initMaps() {
     }
   });
 }
+
+markerGroupMain = L.layerGroup().addTo(mainMap);
+markerGroupHawaii = L.layerGroup().addTo(hawaiiMap);
+markerGroupAlaska = L.layerGroup().addTo(alaskaMap);
 
 async function LoadSites() {
   const response = await fetch("/api/sites");
@@ -109,7 +109,7 @@ function AddMarker(geo) {
     color: "green",
     fillColor: "#f03",
     fillOpacity: 0.5,
-  }).addTo(markerGroup);
+  }).addTo(markerGroupMain);
 }
 
 function DrawLine(geo) {
