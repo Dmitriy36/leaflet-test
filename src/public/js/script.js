@@ -109,7 +109,7 @@ function AddMarker(geo) {
       weight: 2,
       radius: 5,
       color: "green",
-      fillColor: "#f03",
+      fillColor: "rgba(217, 255, 0, 1)",
       fillOpacity: 0.5,
     }).addTo(markerGroupMain);
   } else {
@@ -117,14 +117,14 @@ function AddMarker(geo) {
       weight: 2,
       radius: 5,
       color: "green",
-      fillColor: "#f03",
+      fillColor: "rgba(217, 255, 0, 1)",
       fillOpacity: 0.5,
     }).addTo(markerGroupHawaii);
     L.circleMarker([geo.lat, geo.lng], {
       weight: 2,
       radius: 5,
       color: "green",
-      fillColor: "#f03",
+      fillColor: "rgba(217, 255, 0, 1)",
       fillOpacity: 0.5,
     }).addTo(markerGroupAlaska);
   }
