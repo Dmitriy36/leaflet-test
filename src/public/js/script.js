@@ -119,7 +119,7 @@ async function GetAnalyticsPost() {
     vamcIds = allSites.map((site) => site.ExternalId);
   }
 
-  alert("these VAMC ids were sent: ", vamcIds);
+  console.log("these VAMC ids were sent: ", JSON.stringify(vamcIds));
   // Send to backend
   fetch("/test", {
     method: "POST",
