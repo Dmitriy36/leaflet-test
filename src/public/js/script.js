@@ -64,9 +64,16 @@ async function loadSites() {
 
 function ClearAll() {
   buttonsList.forEach((button) => {
-    button.classList.toggle("sidebar-button");
+    button.classname = "sidebar-button";
   });
   selectedSites.length = 0;
+  ReenableAllButtons();
+}
+
+function ReenableAllButtons() {
+  let button1 = document.getElementById("clearallBtn");
+  let button2 = document.getElementById("loadallBtn");
+  let button3 = document.getElementById("loadaselectedBtn");
 }
 
 function ClearLines() {
@@ -111,7 +118,7 @@ function DrawLine(geo) {
 }
 
 async function AddLinesAll() {
-  let selectedButton = document.getElementById("loadselected");
+  let selectedButton = document.getElementById("loadselectedBtn");
   selectedButton.disabled = true;
   allSites.forEach((site, index) => {
     setTimeout(() => {
@@ -123,7 +130,7 @@ async function AddLinesAll() {
 }
 
 async function AddLinesSelected() {
-  let allButton = document.getElementById("loadall");
+  let allButton = document.getElementById("loadallBtn");
   allButton.disabled = true;
   if (selectedSites.length === 0) {
     alert("Please select at least one site, otherwise use Load All.");
