@@ -68,12 +68,18 @@ function ClearAll() {
   });
   selectedSites.length = 0;
   ReenableAllButtons();
+  ClearMarkers();
+  ClearLines();
 }
 
 function ReenableAllButtons() {
   let button1 = document.getElementById("clearallBtn");
   let button2 = document.getElementById("loadallBtn");
   let button3 = document.getElementById("loadaselectedBtn");
+
+  button1.disabled = false;
+  button2.disabled = false;
+  button3.disabled = false;
 }
 
 function ClearLines() {
