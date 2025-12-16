@@ -103,13 +103,31 @@ function ClearMarkers() {
 }
 
 function AddMarker(geo) {
-  let circleMarker = L.circleMarker([geo.lat, geo.lng], {
-    weight: 2,
-    radius: 5,
-    color: "green",
-    fillColor: "#f03",
-    fillOpacity: 0.5,
-  }).addTo(markerGroupMain);
+  if (geo.lon > -149) {
+    L.circleMarker([geo.lat, geo.lng], {
+      // let circleMarker =
+      weight: 2,
+      radius: 5,
+      color: "green",
+      fillColor: "#f03",
+      fillOpacity: 0.5,
+    }).addTo(markerGroupMain);
+  } else {
+    L.circleMarker([geo.lat, geo.lng], {
+      weight: 2,
+      radius: 5,
+      color: "green",
+      fillColor: "#f03",
+      fillOpacity: 0.5,
+    }).addTo(markerGroupHawaii);
+    L.circleMarker([geo.lat, geo.lng], {
+      weight: 2,
+      radius: 5,
+      color: "green",
+      fillColor: "#f03",
+      fillOpacity: 0.5,
+    }).addTo(markerGroupAlaska);
+  }
 }
 
 function DrawLine(geo) {
