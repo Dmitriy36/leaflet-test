@@ -9,6 +9,13 @@ let southWest = L.latLng(5.49955, -170), // Approximate SW corner
   bounds = L.latLngBounds(southWest, northEast);
 let myPolylines = [];
 
+let summaryQry = `Select Coalesce(Cast(VAMC as nVarchar(3)),'Total') as VAMC,
+Sum(Case When Item='forks' Then Qty Else 0 End) as TotalForks,
+Sum(Case When Item='spoons' Then Qty Else 0 End) as TotalSpoons
+From [Inventory].[ForksSpoons]
+Where VAMC IN ($1)
+Group by rollup(VAMC)`;
+
 // Initialize maps
 function initMaps() {
   mainMap = L.map("main-map", {
