@@ -8,16 +8,26 @@ const qryResult = "";
 const connResult = "";
 const connErr = "";
 
+const VAMCIds = [402, 405];
+
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/test", async (req, res) => {
   try {
+    const table = new sql.Table();
+    table.columns.add("VAMCId", sql.Int);
+    VAMCIds.forEach((id) => table.rows.add(id));
+
     const pool = await poolPromise;
-    const result = await pool
-      .request()
-      .query("Select * from Inventory.ForksSpoons where VAMC = 402");
+    const result = await pool.request().input("VAMCIds", table)
+      .query(`Select Coalesce(Cast(VAMC as nVarchar(3)),'Total') as VAMC,
+Sum(Case When Item='forks' Then Qty Else 0 End) as TotalForks,
+Sum(Case When Item='spoons' Then Qty Else 0 End) as TotalSpoons
+From [Inventory].[ForksSpoons]
+Where VAMC IN (Select VAMCId From @VAMCIds)
+Group by rollup(VAMC)`);
     res.json({ new: "not using conn pool yet", data: result.recordset });
   } catch (err) {
     res.status(500).json({ error: err.message });
