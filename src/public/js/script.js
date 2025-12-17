@@ -269,17 +269,13 @@ async function AddLinesAllNoDelay() {
 async function AddLinesSelected() {
   let allButton = document.getElementById("loadallBtn");
   allButton.disabled = true;
-  if (selectedSites.length === 0) {
-    alert("Please select at least one site, otherwise use Load All.");
-  } else {
-    selectedSites.forEach((site, index) => {
-      setTimeout(() => {
-        let geoObj = { lat: site.Latitude, lng: site.Longitude };
-        AddMarker(geoObj);
-        DrawLine(geoObj);
-      }, index * 25);
-    });
-  }
+  selectedSites.forEach((site, index) => {
+    setTimeout(() => {
+      let geoObj = { lat: site.Latitude, lng: site.Longitude };
+      AddMarker(geoObj);
+      DrawLine(geoObj);
+    }, index * 25);
+  });
 }
 
 async function AddLinesSelectedNoDelay() {
