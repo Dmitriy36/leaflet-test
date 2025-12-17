@@ -15,6 +15,7 @@ Sum(Case When Item='spoons' Then Qty Else 0 End) as TotalSpoons
 From [Inventory].[ForksSpoons]
 Where VAMC IN ($1)
 Group by rollup(VAMC)`;
+let canLoadAll = false;
 // const doneSound = new Audio("/audio/done.wav");
 // const allDoneSound = new Audio("/audio/allDone.wav");
 // Initialize maps
@@ -57,7 +58,7 @@ function initMaps() {
     ClearMarkers();
     ClearLines();
 
-    if (selectedSites.length === 0) {
+    if (selectedSites.length === 0 && canLoadAll) {
       AddLinesAllNoDelay();
     } else {
       AddLinesSelectedNoDelay();
@@ -163,6 +164,7 @@ async function GetAnalyticsPost() {
 }
 
 function ClearAll() {
+  canLoadAll = false;
   buttonsList.forEach((button) => {
     button.className = "sidebar-button";
   });
@@ -244,6 +246,7 @@ function DrawLine(geo) {
 }
 
 async function AddLinesAll() {
+  canLoadAll = true;
   let selectedButton = document.getElementById("loadselectedBtn");
   selectedButton.disabled = true;
   allSites.forEach((site, index) => {
