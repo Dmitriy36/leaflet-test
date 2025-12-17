@@ -139,7 +139,7 @@ async function GetAnalyticsPost() {
               body { font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif; font-size: 1em; }         
               table { border-collapse: collapse; width: 100%; }         
               th, td { border: 1px solid black; padding: 8px; text-align: left; }         
-              th { background-color: #17d1a3ff; position: sticky; top: 0;}       
+              th { background-color: #17d1a3ff; position: sticky; top: 0; border: 2px solid black;}       
               </style>
         </head>         
         <body>           
