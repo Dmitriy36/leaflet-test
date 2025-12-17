@@ -15,7 +15,8 @@ Sum(Case When Item='spoons' Then Qty Else 0 End) as TotalSpoons
 From [Inventory].[ForksSpoons]
 Where VAMC IN ($1)
 Group by rollup(VAMC)`;
-
+const doneSound = new Audio("/audio/done.wav");
+const allDoneSound = new Audio("/audio/allDone.wav");
 // Initialize maps
 function initMaps() {
   mainMap = L.map("main-map", {
@@ -147,7 +148,8 @@ async function GetAnalyticsPost() {
                      <th>VAMC</th>               
                      <th>Forks</th>               
                      <th>Spoons</th>             
-                     </tr>             ${data.data
+                     </tr>
+                     ${data.data
                        .map(
                          (row) =>
                            `<tr><td>${row.VAMC}</td><td>${row.TotalForks}</td>                 <td>${row.TotalSpoons}</td></tr>`
@@ -155,7 +157,7 @@ async function GetAnalyticsPost() {
                        .join("")}           
        </table>         
        </body>       
-       </html>     `
+       </html>`
       );
     });
 }
@@ -309,8 +311,11 @@ async function AddButtons() {
 
     container.appendChild(button);
     buttonsList.push(button);
+    doneSound.currentTime = 0;
+    doneSound.play();
   });
-  // addLines();
+  allDoneSound.currentTime = 0;
+  allDoneSound.play();
 }
 
 function PrintSelected() {
