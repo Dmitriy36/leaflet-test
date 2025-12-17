@@ -252,7 +252,11 @@ async function AddLinesAll() {
       AddMarker(geoObj);
       DrawLine(geoObj);
     }, index * 25);
+    doneSound.currentTime = 0;
+    doneSound.play();
   });
+  allDoneSound.currentTime = 0;
+  allDoneSound.play();
 }
 
 async function AddLinesAllNoDelay() {
@@ -311,11 +315,7 @@ async function AddButtons() {
 
     container.appendChild(button);
     buttonsList.push(button);
-    doneSound.currentTime = 0;
-    doneSound.play();
   });
-  allDoneSound.currentTime = 0;
-  allDoneSound.play();
 }
 
 function PrintSelected() {
