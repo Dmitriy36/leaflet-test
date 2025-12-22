@@ -1,20 +1,22 @@
-const sql = require('mssql');
-require('dotenv').config;
+const sql = require("mssql");
+require("dotenv").config;
 
 const config = {
-  user: process.env.DB_USER || 'admin',
-  password: process.env.DB_PASSWORD || 'g-Y~aPz8-i*Mk~O~M2*j]LkA554C',
-  server: process.env.DB_HOST || 'integrated-apar-apat.c1vwa9fou9fe.us-east-2.rds.amazonaws.com',
-  database: 'Integrated_APAR',
+  user: process.env.DB_USER || "admin",
+  password: process.env.DB_PASSWORD || "#EQQTTG2q6uoly1[*cpT4#:y?(fO",
+  server:
+    process.env.DB_HOST ||
+    "integrated-apar-apat.c1vwa9fou9fe.us-east-2.rds.amazonaws.com",
+  database: "Integrated_APAR",
   options: {
     encrypt: true,
-    trustServerCertificate: true
+    trustServerCertificate: true,
   },
   pool: {
-    max: 25,                    // Maximum connections in pool
-    min: 5,                     // Minimum connections in pool
-    idleTimeoutMillis: 30000    // Close idle connections after 30 seconds
-  }
+    max: 25, // Maximum connections in pool
+    min: 5, // Minimum connections in pool
+    idleTimeoutMillis: 30000, // Close idle connections after 30 seconds
+  },
 };
 
 // Create pool once when module loads
