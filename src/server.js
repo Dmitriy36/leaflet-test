@@ -49,7 +49,8 @@ app.get("/api/sites", async (req, res) => {
 
     res.json(result.recordset);
   } catch (err) {
-    res.status(500).json({ error: err.message + "api/sites aint workin" });
+    console.log("api/sites aint workin");
+    res.status(500).json({ error: err.message });
   }
 });
 
