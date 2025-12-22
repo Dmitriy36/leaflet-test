@@ -9,16 +9,9 @@ let southWest = L.latLng(5.49955, -170), // Approximate SW corner
   bounds = L.latLngBounds(southWest, northEast);
 let myPolylines = [];
 let vamcIds = [];
-let summaryQry = `Select Coalesce(Cast(VAMC as nVarchar(3)),'Total') as VAMC,
-Sum(Case When Item='forks' Then Qty Else 0 End) as TotalForks,
-Sum(Case When Item='spoons' Then Qty Else 0 End) as TotalSpoons
-From [Inventory].[ForksSpoons]
-Where VAMC IN ($1)
-Group by rollup(VAMC)`;
+
 let canLoadAll = false;
-// const doneSound = new Audio("/audio/done.wav");
-// const allDoneSound = new Audio("/audio/allDone.wav");
-// Initialize maps
+
 function initMaps() {
   mainMap = L.map("main-map", {
     maxBounds: bounds,
@@ -77,42 +70,6 @@ async function LoadSites() {
   return allSites;
 }
 
-// async function GetAnalytics() {
-//   fetch("/test")
-//     .then((response) => response.json())
-//     .then((data) => {
-//       const popup = window.open("", "Results", "width=1000,height=1500");
-//       popup.document.write(
-//         `<html>
-//         <head>
-//         <title>Analytics Check</title>
-//               <style>
-//               body { font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif; font-size: 1em; }
-//               table { border-collapse: collapse; width: 100%; }
-//               th, td { border: 1px solid black; padding: 8px; text-align: left; }
-//               th { background-color: #f2f2f2; }
-//               </style>
-//         </head>
-//         <body>
-
-//         <table border="1">
-//                      <tr>
-//                      <th>VAMC</th>
-//                      <th>Forks</th>
-//                      <th>Spoons</th>
-//                      </tr>             ${data.data
-//                        .map(
-//                          (row) =>
-//                            `<tr><td>${row.VAMC}</td><td>${row.TotalForks}</td>                 <td>${row.TotalSpoons}</td></tr>`
-//                        )
-//                        .join("")}
-//        </table>
-//        </body>
-//        </html>     `
-//       );
-//     });
-// }
-
 async function GetAnalyticsPost() {
   // if selectedSites is not empty:
   if (selectedSites.length > 0) {
@@ -123,7 +80,7 @@ async function GetAnalyticsPost() {
 
   console.log("these VAMC ids were sent: ", JSON.stringify(vamcIds));
   // Send to backend
-  fetch("/test", {
+  fetch("/inventory", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ vamcIds: vamcIds }),
