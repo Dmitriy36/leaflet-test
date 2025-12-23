@@ -208,11 +208,19 @@ async function AddLinesAll() {
   selectedButton.disabled = true;
   allSites.forEach((site, index) => {
     setTimeout(() => {
+      let currentVAMCbutton = document.getElementById(
+        `site-${site.ExternalId}-button`
+      );
+      HighlightButton(currentVAMCbutton.className);
       let geoObj = { lat: site.Latitude, lng: site.Longitude };
       AddMarker(geoObj);
       DrawLine(geoObj);
     }, index * 25);
   });
+}
+
+function HighlightButton(button) {
+  button.className = "sidebar-button-selected";
 }
 
 async function AddLinesAllNoDelay() {
