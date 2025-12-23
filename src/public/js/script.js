@@ -71,6 +71,7 @@ async function LoadSites() {
 }
 
 async function LoadByRegion(regionNumber) {
+  ClearAll();
   fetch("/byregion", {
     method: "POST",
     headers: {
