@@ -33,6 +33,28 @@ app.post("/inventory", async (req, res) => {
   }
 });
 
+app.post("/byregion", async (req, res) => {
+  try {
+    const region = req.body.region; // Receives array from frontend
+
+    if (!region || region.length === 0) {
+      return res.status(400).json({ error: "No region provided" });
+    }
+
+    const pool = await poolPromise;
+    const request = pool.request();
+
+    const result = await request.query(
+      `select distinct externalid from [Meta].[Facilities_Geo] where region=${[
+        region,
+      ]}`
+    );
+    res.json({ data: result.recordset }); // Returns query results
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get("/api/sites", async (req, res) => {
   try {
     const pool = await poolPromise;

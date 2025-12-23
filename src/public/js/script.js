@@ -70,6 +70,15 @@ async function LoadSites() {
   return allSites;
 }
 
+async function LoadByRegion() {
+  fetch("/byregion", {
+    method: "POST",
+    body: 1,
+  })
+    .then((response) => response.json())
+    .then(alert(response));
+}
+
 async function GetAnalyticsPost() {
   // if selectedSites is not empty:
   if (selectedSites.length > 0) {
@@ -245,6 +254,14 @@ async function AddLinesSelected() {
       }, index * 25);
     });
   }
+}
+
+async function SelectByVISN() {
+  // pass VISN number to script.js
+}
+
+async function SelectByRegion() {
+  // pass Region number to script.js
 }
 
 async function AddLinesSelectedNoDelay() {
