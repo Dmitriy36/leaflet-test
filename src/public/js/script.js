@@ -211,7 +211,7 @@ async function AddLinesAll() {
       let currentVAMCbutton = document.getElementById(
         `site-${site.ExternalId}-button`
       );
-      HighlightButton(currentVAMCbutton.className);
+      HighlightButton(currentVAMCbutton);
       let geoObj = { lat: site.Latitude, lng: site.Longitude };
       AddMarker(geoObj);
       DrawLine(geoObj);
