@@ -70,13 +70,13 @@ async function LoadSites() {
   return allSites;
 }
 
-async function LoadByRegion() {
+async function LoadByRegion(regionNumber) {
   fetch("/byregion", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ region: 1 }),
+    body: JSON.stringify({ region: regionNumber }),
   })
     .then((response) => response.json())
     .then((results) => {
