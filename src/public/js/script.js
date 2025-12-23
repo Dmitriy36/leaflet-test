@@ -76,7 +76,7 @@ async function LoadByRegion() {
     body: 1,
   })
     .then((response) => response.json())
-    .then(alert(response));
+    .then((results) => alert(results));
 }
 
 async function GetAnalyticsPost() {
