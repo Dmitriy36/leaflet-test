@@ -258,6 +258,10 @@ async function AddLinesSelected() {
     allButton.disabled = true;
     selectedSites.forEach((site, index) => {
       setTimeout(() => {
+        let currentVAMCbutton = document.getElementById(
+          `site-${site.ExternalId}-button`
+        );
+        HighlightButton(currentVAMCbutton);
         let geoObj = { lat: site.Latitude, lng: site.Longitude };
         AddMarker(geoObj);
         DrawLine(geoObj);
