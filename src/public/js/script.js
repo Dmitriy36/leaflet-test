@@ -9,7 +9,7 @@ let southWest = L.latLng(5.49955, -170), // Approximate SW corner
   bounds = L.latLngBounds(southWest, northEast);
 let myPolylines = [];
 let vamcIds = [];
-
+const container = document.getElementById("sidebar");
 let canLoadAll = false;
 
 function initMaps() {
@@ -140,9 +140,7 @@ async function GetAnalyticsPost() {
 
 function ClearAll() {
   canLoadAll = false;
-  buttonsList.forEach((button) => {
-    button.className = "sidebar-button";
-  });
+  UnHighlightAllButtons();
   selectedSites.length = 0;
   ReenableAllButtons();
   ClearMarkers();
@@ -241,6 +239,12 @@ function HighlightButton(button) {
   button.className = "sidebar-button-selected";
 }
 
+function UnHighlightAllButtons() {
+  buttonsList.forEach((button) => {
+    button.className = "sidebar-button";
+  });
+}
+
 async function AddLinesAllNoDelay() {
   allSites.forEach((site) => {
     let geoObj = { lat: site.Latitude, lng: site.Longitude };
@@ -254,7 +258,7 @@ async function AddLinesSelected() {
   if (selectedSites.length === 0) {
     alert("please select some sites...");
   } else {
-    ClearAll();
+    UnHighlightAllButtons();
     allButton.disabled = true;
     selectedSites.forEach((site, index) => {
       setTimeout(() => {
@@ -291,7 +295,6 @@ async function AddLinesSelectedNoDelay() {
 
 async function AddButtons() {
   const sites = await LoadSites();
-  const container = document.getElementById("sidebar");
   container.innerHTML = "";
 
   sites.forEach((site) => {
