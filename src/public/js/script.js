@@ -83,7 +83,6 @@ async function LoadByRegion(regionNumber) {
       const IDs = results.data;
       // alert(JSON.stringify(IDs));
       selectedSites = IDs;
-      ClearAll();
       AddLinesSelected();
     })
     .catch((error) => console.error("Error: ", error));
@@ -255,6 +254,7 @@ async function AddLinesSelected() {
   if (selectedSites.length === 0) {
     alert("please select some sites...");
   } else {
+    ClearAll();
     allButton.disabled = true;
     selectedSites.forEach((site, index) => {
       setTimeout(() => {
