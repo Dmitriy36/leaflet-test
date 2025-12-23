@@ -83,7 +83,7 @@ async function LoadByRegion(regionNumber) {
       const IDs = results.data;
       // alert(JSON.stringify(IDs));
       selectedSites = IDs;
-      ClearLines();
+      ClearAll();
       AddLinesSelected();
     })
     .catch((error) => console.error("Error: ", error));
