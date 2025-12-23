@@ -53,6 +53,26 @@ app.post("/byregion", async (req, res) => {
   }
 });
 
+app.post("/byvisn", async (req, res) => {
+  try {
+    const visn = req.body.visn;
+
+    if (!visn || visn.length === 0) {
+      return res.status(400).json({ error: "No VISN provided" });
+    }
+
+    const pool = await poolPromise;
+    const request = pool.request();
+
+    const result = await request.query(
+      `select ExternalId, FacilityName, Longitude, Latitude, VaVisnNumber, Region, TimeZoneId from [Meta].[Facilities_Geo] where vavisnnumber=${visn}`
+    );
+    res.json({ data: result.recordset }); // Returns query results
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get("/api/sites", async (req, res) => {
   try {
     const pool = await poolPromise;

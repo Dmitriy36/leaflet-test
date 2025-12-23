@@ -89,6 +89,25 @@ async function LoadByRegion(regionNumber) {
     .catch((error) => console.error("Error: ", error));
 }
 
+async function LoadByVISN(VISNNumber) {
+  ClearAll();
+  fetch("/byvisn", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ visn: VISNNumber }),
+  })
+    .then((response) => response.json())
+    .then((results) => {
+      const IDs = results.data;
+      // alert(JSON.stringify(IDs));
+      selectedSites = IDs;
+      AddLinesSelected();
+    })
+    .catch((error) => console.error("Error: ", error));
+}
+
 async function GetAnalyticsPost() {
   // if selectedSites is not empty:
   if (selectedSites.length > 0) {
