@@ -73,10 +73,14 @@ async function LoadSites() {
 async function LoadByRegion() {
   fetch("/byregion", {
     method: "POST",
-    body: 1,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ region: 1 }),
   })
     .then((response) => response.json())
-    .then((results) => alert(JSON.stringify(results)));
+    .then((results) => alert(JSON.stringify(results)))
+    .catch((error) => console.error("Error: ", error));
 }
 
 async function GetAnalyticsPost() {

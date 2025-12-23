@@ -35,7 +35,7 @@ app.post("/inventory", async (req, res) => {
 
 app.post("/byregion", async (req, res) => {
   try {
-    const region = req.body.region; // Receives array from frontend
+    const region = req.body.region;
 
     if (!region || region.length === 0) {
       return res.status(400).json({ error: "No region provided" });
