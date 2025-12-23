@@ -271,7 +271,8 @@ async function AddButtons() {
     button.siteObject = JSON.stringify(site);
     button.onclick = () => {
       selectedSites.push(site);
-      button.className = "sidebar-button-selected";
+      // button.className = "sidebar-button-selected";
+      HighlightButton(button);
     };
 
     container.appendChild(button);
