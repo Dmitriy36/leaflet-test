@@ -86,6 +86,24 @@ async function LoadByRegion() {
     .catch((error) => console.error("Error: ", error));
 }
 
+async function LoadByRegionAwait() {
+  try {
+    const response = await fetch("/byregion", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ region: 1 }),
+    });
+    const results = await response.json();
+    const externalIDs = results.data.map((item) => item.externalIDs);
+    return externalIDs;
+  } catch (error) {
+    console.error("Error:", error);
+    return [];
+  }
+}
+
 async function GetAnalyticsPost() {
   // if selectedSites is not empty:
   if (selectedSites.length > 0) {
