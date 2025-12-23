@@ -45,9 +45,7 @@ app.post("/byregion", async (req, res) => {
     const request = pool.request();
 
     const result = await request.query(
-      `select distinct externalid from [Meta].[Facilities_Geo] where region=${[
-        region,
-      ]}`
+      `select distinct externalid from [Meta].[Facilities_Geo] where region=${region}`
     );
     res.json({ data: result.recordset }); // Returns query results
   } catch (err) {
