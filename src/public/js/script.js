@@ -84,24 +84,9 @@ async function LoadByRegion(regionNumber) {
       alert(JSON.stringify(IDs));
     })
     .catch((error) => console.error("Error: ", error));
-}
-
-async function LoadByRegionAwait() {
-  try {
-    const response = await fetch("/byregion", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ region: 1 }),
-    });
-    const results = await response.json();
-    const externalIDs = results.data.map((item) => item.externalIDs);
-    return externalIDs;
-  } catch (error) {
-    console.error("Error:", error);
-    return [];
-  }
+  selectedSites = IDs;
+  ClearLines();
+  AddLinesSelected();
 }
 
 async function GetAnalyticsPost() {
