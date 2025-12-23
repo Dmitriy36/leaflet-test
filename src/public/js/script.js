@@ -79,7 +79,10 @@ async function LoadByRegion() {
     body: JSON.stringify({ region: 1 }),
   })
     .then((response) => response.json())
-    .then((results) => alert(JSON.stringify(results)))
+    .then((results) => {
+      const IDs = results.data.map((item) => item.ExternalId);
+      alert(JSON.stringify(IDs));
+    })
     .catch((error) => console.error("Error: ", error));
 }
 
