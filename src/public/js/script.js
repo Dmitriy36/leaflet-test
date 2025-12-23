@@ -81,12 +81,12 @@ async function LoadByRegion(regionNumber) {
     .then((response) => response.json())
     .then((results) => {
       const IDs = results.data.map((item) => item.externalid);
-      alert(JSON.stringify(IDs));
+      // alert(JSON.stringify(IDs));
+      selectedSites = IDs;
+      ClearLines();
+      AddLinesSelected();
     })
     .catch((error) => console.error("Error: ", error));
-  selectedSites = IDs;
-  ClearLines();
-  AddLinesSelected();
 }
 
 async function GetAnalyticsPost() {
