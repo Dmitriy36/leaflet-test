@@ -49,7 +49,7 @@ app.post("/financial-report", async (req, res) => {
       .request()
       .input("VAMCList", sql.VarChar(1000), idListString)
       .execute("CPA_Detail");
-
+    console.log("detail result structure: ", detailResult);
     // Get totals for each station
     const totalsPromises = VAMCIds.map(
       (id) =>
@@ -57,7 +57,8 @@ app.post("/financial-report", async (req, res) => {
     );
 
     const totalsResults = await Promise.all(totalsPromises);
-
+    console.log("totals results structure:", totalsResults);
+    console.log("first total result:", totalsResults[0]);
     // Combine details and totals
     const allRows = [];
     VAMCIds.forEach((id, index) => {
@@ -72,7 +73,7 @@ app.post("/financial-report", async (req, res) => {
         allRows.push(totalsResults[index].recordset[0]);
       }
     });
-
+    console.log("combined allRows:", allRows);
     res.json({ data: allRows });
   } catch (err) {
     console.error("Error in /financial-report:", err);
