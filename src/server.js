@@ -59,10 +59,10 @@ app.post("/financial-report", async (req, res) => {
     );
 
     const totalsResults = await Promise.all(totalsPromises);
-    console.log("totals results structure:", totalsResults);
-    console.log("first total result:", totalsResults[0]);
+
     // Combine details and totals
     const allRows = [];
+    let grandTotal = 0;
     VAMCIds.forEach((id, index) => {
       // Add detail rows for this station
       const stationDetails = detailResult.recordset.filter(
@@ -71,11 +71,30 @@ app.post("/financial-report", async (req, res) => {
       allRows.push(...stationDetails);
 
       // Add total row for this station
-      if (totalsResults[index].recordset.length > 0) {
-        allRows.push(totalsResults[index].recordset[0]);
+      if (
+        totalsResults[index] &&
+        totalsResults[index].recordset &&
+        totalsResults[index].recordset.length > 0
+      ) {
+        const totalRow = totalsResults[index].recordset[0];
+        allRows.push(totalRow);
+        grandTotal += totalRow.Transaction_Amount || 0; // Add to grand total
       }
     });
-    console.log("combined allRows:", allRows);
+
+    // Add grand total row
+    allRows.push({
+      station_number: "--- Grand Total ---",
+      date_of_request: null,
+      requesting_service: null,
+      vendor: null,
+      cost_center: null,
+      purchase_order_obligation_no: null,
+      originator_of_request: null,
+      approving_official: null,
+      Committed_Estimated_Cost: null,
+      Transaction_Amount: grandTotal,
+    });
     res.json({ data: allRows });
   } catch (err) {
     console.error("Error in /financial-report:", err);
