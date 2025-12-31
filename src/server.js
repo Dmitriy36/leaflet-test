@@ -53,7 +53,7 @@ app.post("/financial-report", async (req, res) => {
     // );
     const result = await pool
       .request()
-      .input("IdList", sql.NVarChar, params)
+      .input("VAMCList", sql.VarChar(1000), params)
       .execute("[dbo].[CPA_Detail]");
     res.json({ data: result.recordset }); // Returns query results
   } catch (err) {
