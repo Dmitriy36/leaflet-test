@@ -45,12 +45,13 @@ app.post("/financial-report", async (req, res) => {
 
     // Convert array to comma-separated string
     const idListString = VAMCIds.join(",");
+    console.log("Sending to stored procedure:", idListString); // Add this
 
     const result = await pool
       .request()
       .input("VAMCList", sql.VarChar(1000), idListString)
       .execute("CPA_Detail");
-
+    console.log("Result rows:", result.recordset.length); // Add this
     res.json({ data: result.recordset });
   } catch (err) {
     console.error("Error in /financial-report:", err);
