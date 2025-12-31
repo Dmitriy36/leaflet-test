@@ -42,7 +42,7 @@ app.post("/financial-report", async (req, res) => {
     }
 
     const pool = await poolPromise;
-
+    const request = pool.request;
     VAMCIds.forEach((id, index) => {
       request.input(`id${index}`, sql.Int, id);
     });
@@ -116,6 +116,6 @@ app.get("/api/sites", async (req, res) => {
   }
 });
 
-app.listen(8080, "0.0.0.0.", () => {
+app.listen(8080, "0.0.0.0", () => {
   console.log("server is listening on port 8080");
 });
