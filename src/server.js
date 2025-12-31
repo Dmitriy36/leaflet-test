@@ -42,17 +42,38 @@ app.post("/financial-report", async (req, res) => {
     }
 
     const pool = await poolPromise;
-
-    // Convert array to comma-separated string
     const idListString = VAMCIds.join(",");
-    console.log("Sending to stored procedure:", idListString); // Add this
 
-    const result = await pool
+    // Get detail rows
+    const detailResult = await pool
       .request()
       .input("VAMCList", sql.VarChar(1000), idListString)
       .execute("CPA_Detail");
-    console.log("Result rows:", result.recordset.length); // Add this
-    res.json({ data: result.recordset });
+
+    // Get totals for each station
+    const totalsPromises = VAMCIds.map(
+      (id) =>
+        pool.request().input("StationNumber", sql.Int, id).execute("CPA_Totals") // Your new totals stored procedure
+    );
+
+    const totalsResults = await Promise.all(totalsPromises);
+
+    // Combine details and totals
+    const allRows = [];
+    VAMCIds.forEach((id, index) => {
+      // Add detail rows for this station
+      const stationDetails = detailResult.recordset.filter(
+        (row) => row.station_number === id
+      );
+      allRows.push(...stationDetails);
+
+      // Add total row for this station
+      if (totalsResults[index].recordset.length > 0) {
+        allRows.push(totalsResults[index].recordset[0]);
+      }
+    });
+
+    res.json({ data: allRows });
   } catch (err) {
     console.error("Error in /financial-report:", err);
     res.status(500).json({ error: err.message });
