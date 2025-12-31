@@ -3,7 +3,8 @@ require("dotenv").config();
 
 const config = {
   user: process.env.DB_USER || "admin",
-  password: process.env.DB_PASSWORD || "UQ.AX#2z~]XGtkn5wwI3oIq7D#GK",
+  // password: process.env.DB_PASSWORD || "UQ.AX#2z~]XGtkn5wwI3oIq7D#GK",
+  password: "UQ.AX#2z~]XGtkn5wwI3oIq7D#GK",
   server:
     process.env.DB_HOST ||
     "integrated-apar-apat.c1vwa9fou9fe.us-east-2.rds.amazonaws.com",
