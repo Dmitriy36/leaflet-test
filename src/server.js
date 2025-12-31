@@ -52,8 +52,7 @@ app.post("/financial-report", async (req, res) => {
     console.log("detail result structure: ", detailResult);
     // Get totals for each station
     const totalsPromises = VAMCIds.map(
-      (id) =>
-        pool.request().input("VAMC_Id", sql.smallInt, id).execute("CPA_Total") // Your new totals stored procedure
+      (id) => pool.request().input("VAMC_Id", sql.Int, id).execute("CPA_Total") // Your new totals stored procedure
     );
 
     const totalsResults = await Promise.all(totalsPromises);
