@@ -158,6 +158,131 @@ async function GetAnalyticsPost() {
     });
 }
 
+async function GetFinancialReport() {
+  // if selectedSites is not empty:
+  if (selectedSites.length > 0) {
+    vamcIds = selectedSites.map((site) => site.ExternalId);
+  } else {
+    vamcIds = allSites.map((site) => site.ExternalId);
+  }
+
+  console.log("these VAMC ids were sent: ", JSON.stringify(vamcIds));
+
+  // Send to backend - assuming you'll create a new endpoint like "/financial-report"
+  fetch("/financial-report", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ vamcIds: vamcIds }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      const popup = window.open(
+        "",
+        "Financial Report",
+        "width=1400,height=800"
+      );
+
+      // Helper function to format currency
+      const formatCurrency = (amount) => {
+        if (amount === null || amount === undefined || amount === 0)
+          return "$0.00";
+        return (
+          "$" +
+          parseFloat(amount).toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })
+        );
+      };
+
+      popup.document.write(
+        `<html>         
+        <head>
+        <title>Financial Report</title>
+              <style>         
+              body { font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif; font-size: 0.9em; }         
+              table { border-collapse: collapse; width: 100%; }         
+              th, td { border: 1px solid black; padding: 8px; text-align: left; }         
+              th { background-color: #17d1a3ff; position: sticky; top: 0;}
+              td.currency { text-align: right; }
+              tr:nth-child(even) { background-color: #f2f2f2; }
+              .null-value { color: #999; font-style: italic; }
+              </style>
+        </head>         
+        <body>           
+                  
+        <table border="1">
+                     <tr>               
+                     <th>VAMC ID</th>               
+                     <th>Date</th>               
+                     <th>Department</th>
+                     <th>Vendor</th>
+                     <th>Account</th>
+                     <th>Contract #</th>
+                     <th>Requestor</th>
+                     <th>Approver</th>
+                     <th>Amount 1</th>
+                     <th>Amount 2</th>             
+                     </tr>
+                     ${data.data
+                       .map(
+                         (row) =>
+                           `<tr>
+                              <td>${
+                                row.VAMCId ||
+                                '<span class="null-value">N/A</span>'
+                              }</td>
+                              <td>${
+                                row.Date
+                                  ? new Date(row.Date).toLocaleDateString(
+                                      "en-US"
+                                    )
+                                  : '<span class="null-value">N/A</span>'
+                              }</td>
+                              <td>${
+                                row.Department ||
+                                '<span class="null-value">N/A</span>'
+                              }</td>
+                              <td>${
+                                row.Vendor ||
+                                '<span class="null-value">N/A</span>'
+                              }</td>
+                              <td>${
+                                row.Account ||
+                                '<span class="null-value">N/A</span>'
+                              }</td>
+                              <td>${
+                                row.ContractNumber ||
+                                '<span class="null-value">N/A</span>'
+                              }</td>
+                              <td>${
+                                row.Requestor ||
+                                '<span class="null-value">N/A</span>'
+                              }</td>
+                              <td>${
+                                row.Approver ||
+                                '<span class="null-value">N/A</span>'
+                              }</td>
+                              <td class="currency">${formatCurrency(
+                                row.Amount1
+                              )}</td>
+                              <td class="currency">${formatCurrency(
+                                row.Amount2
+                              )}</td>
+                            </tr>`
+                       )
+                       .join("")}           
+       </table>         
+       </body>       
+       </html>`
+      );
+    })
+    .catch((error) => {
+      console.error("Error fetching financial report:", error);
+      alert("Error loading financial report. Please try again.");
+    });
+}
+
 function ClearAll() {
   canLoadAll = false;
   UnHighlightAllButtons();
