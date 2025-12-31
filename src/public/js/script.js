@@ -209,7 +209,7 @@ async function GetFinancialReport() {
         <head>
         <title>Financial Report</title>
               <style>        
-              body { font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif; font-size: 0.9em; }        
+              body { font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif; font-size: 0.5em; }        
               table { border-collapse: collapse; width: 100%; }        
               th, td { border: 1px solid black; padding: 8px; text-align: left; }        
               th { background-color: #17d1a3ff; position: sticky; top: 0;}
@@ -230,8 +230,8 @@ async function GetFinancialReport() {
                      <th>Contract #</th>
                      <th>Requestor</th>
                      <th>Approver</th>
-                     <th>Amount 1</th>
-                     <th>Amount 2</th>            
+                     <th>Committed Estimated Cost</th>
+                     <th>Transaction Amount</th>            
                      </tr>
                    
 ${data.data
