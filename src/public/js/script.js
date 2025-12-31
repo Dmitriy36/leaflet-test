@@ -168,7 +168,7 @@ async function GetFinancialReport() {
 
   console.log("these VAMC ids were sent: ", JSON.stringify(vamcIds));
 
-  // Send to backend - assuming you'll create a new endpoint like "/financial-report"
+  // Send to backend
   fetch("/financial-report", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -176,6 +176,15 @@ async function GetFinancialReport() {
   })
     .then((response) => response.json())
     .then((data) => {
+      console.log("Received data:", data); // ADD THIS
+      console.log("data.data:", data.data); // ADD THIS
+
+      if (!data || !data.data || !Array.isArray(data.data)) {
+        console.error("Invalid data structure:", data);
+        alert("Error: No data returned - check console");
+        return;
+      }
+
       const popup = window.open(
         "",
         "Financial Report",
@@ -210,7 +219,7 @@ async function GetFinancialReport() {
               </style>
         </head>         
         <body>           
-                  
+                 
         <table border="1">
                      <tr>               
                      <th>VAMC ID</th>               
