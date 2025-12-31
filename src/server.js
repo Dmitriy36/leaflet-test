@@ -42,7 +42,7 @@ app.post("/financial-report", async (req, res) => {
     }
 
     const pool = await poolPromise;
-    const request = pool.request;
+    const request = pool.request();
     VAMCIds.forEach((id, index) => {
       request.input(`id${index}`, sql.Int, id);
     });
@@ -53,7 +53,7 @@ app.post("/financial-report", async (req, res) => {
     // );
     const result = await pool
       .request()
-      .input(params)
+      .input("IdList", sql.NVarChar, params)
       .execute("[dbo].[CPA_Detail]");
     res.json({ data: result.recordset }); // Returns query results
   } catch (err) {
