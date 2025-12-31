@@ -41,6 +41,9 @@ app.post("/financial-report", async (req, res) => {
       return res.status(400).json({ error: "No VAMCIds provided" });
     }
 
+    // Sort VAMCIds in ascending order
+    VAMCIds.sort((a, b) => a - b);
+
     const pool = await poolPromise;
     const idListString = VAMCIds.join(",");
 
