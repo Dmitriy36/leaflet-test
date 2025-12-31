@@ -53,7 +53,7 @@ app.post("/financial-report", async (req, res) => {
     // Get totals for each station
     const totalsPromises = VAMCIds.map(
       (id) =>
-        pool.request().input("StationNumber", sql.Int, id).execute("CPA_Totals") // Your new totals stored procedure
+        pool.request().input("StationNumber", sql.Int, id).execute("CPA_Total") // Your new totals stored procedure
     );
 
     const totalsResults = await Promise.all(totalsPromises);
