@@ -1,33 +1,57 @@
 const sql = require("mssql");
-require("dotenv").config();
+const {
+  SecretsManagerClient,
+  GetSecretValueCommand,
+} = require("@aws-sdk/client-secrets-manager");
 
-const config = {
-  user: process.env.DB_USER || "admin",
-  // password: process.env.DB_PASSWORD || "UQ.AX#2z~]XGtkn5wwI3oIq7D#GK",
-  password: "UQ.AX#2z~]XGtkn5wwI3oIq7D#GK",
-  server:
-    process.env.DB_HOST ||
-    "integrated-apar-apat.c1vwa9fou9fe.us-east-2.rds.amazonaws.com",
-  database: "Integrated_APAR",
-  options: {
-    encrypt: true,
-    trustServerCertificate: true,
-  },
-  pool: {
-    max: 25, // Maximum connections in pool
-    min: 5, // Minimum connections in pool
-    idleTimeoutMillis: 30000, // Close idle connections after 30 seconds
-  },
-};
+const secret_name = "rds!db-e4e848c6-84d5-4726-8407-9422f7c501b2";
 
-console.log("DB_USER:", process.env.DB_USER);
-console.log(
-  "DB_PASSWORD:",
-  process.env.DB_PASSWORD ? "***loaded***" : "NOT LOADED"
-);
-console.log("Using user:", config.user);
+async function getSecret() {
+  const client = new SecretsManagerClient({
+    region: "us-east-2",
+  });
 
-// Create pool once when module loads
-const poolPromise = sql.connect(config);
+  try {
+    const response = await client.send(
+      new GetSecretValueCommand({
+        SecretId: secret_name,
+        VersionStage: "AWSCURRENT",
+      })
+    );
 
+    // Parse the JSON secret
+    const secret = JSON.parse(response.SecretString);
+    return secret;
+  } catch (error) {
+    console.error("Error fetching secret:", error);
+    throw error;
+  }
+}
+
+async function createPool() {
+  const secret = await getSecret();
+
+  const config = {
+    user: secret.username,
+    password: secret.password,
+    server: "integrated-apar-apat.c1vwa9fou9fe.us-east-2.rds.amazonaws.com",
+    database: "Integrated_APAR",
+    options: {
+      encrypt: true,
+      trustServerCertificate: true,
+    },
+    pool: {
+      max: 25,
+      min: 5,
+      idleTimeoutMillis: 30000,
+    },
+  };
+
+  console.log("Using user:", config.user);
+  console.log("Password loaded from AWS Secrets Manager");
+
+  return sql.connect(config);
+}
+
+const poolPromise = createPool();
 module.exports = { poolPromise };
