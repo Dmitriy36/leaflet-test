@@ -109,9 +109,11 @@ app.get("/api/sites", async (req, res) => {
       .query(
         "Select ExternalId, FacilityName, Longitude, Latitude, VaVisnNumber, Region, TimeZoneId From Meta.Facilities_Geo "
       );
-
+    console.log("success rows: " + result.recordset.length);
     res.json(result.recordset);
   } catch (err) {
+    console.error("ERROR in /api/sites: ", err.message);
+    console.error("Full error: ", err);
     res.status(500).json({ error: err.message });
   }
 });
