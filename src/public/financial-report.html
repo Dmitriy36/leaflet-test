@@ -97,9 +97,23 @@
       .bar-amount {
         font-size: 11px;
         font-weight: bold;
-        color: white;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+        color: black;
+        text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white,
+          1px 1px 0 white;
         white-space: nowrap;
+      }
+      .bar-tooltip {
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.9);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: bold;
+        pointer-events: none;
+        z-index: 1000;
+        white-space: nowrap;
+        display: none;
       }
 
       /* Plain button - no custom styling */
@@ -136,6 +150,9 @@
       <h3>Transaction Amounts by Site</h3>
       <div id="barChart" class="bar-chart"></div>
     </div>
+
+    <!-- Tooltip element -->
+    <div id="chartTooltip" class="bar-tooltip"></div>
 
     <script>
       // Helper function to format currency
@@ -232,17 +249,16 @@
 
         // Create chart
         const chartDiv = document.getElementById("barChart");
+        const tooltip = document.getElementById("chartTooltip");
 
         if (Object.keys(siteTotals).length === 0) {
           chartDiv.innerHTML = "<p>No site data available for chart</p>";
         } else {
           const maxValue = Math.max(...Object.values(siteTotals));
 
-          // Sort by site number
+          // Sort by amount descending (highest first)
           const sortedSites = Object.entries(siteTotals).sort((a, b) => {
-            const numA = parseInt(a[0]) || 0;
-            const numB = parseInt(b[0]) || 0;
-            return numA - numB;
+            return b[1] - a[1]; // Sort by amount, descending
           });
 
           const totalBars = sortedSites.length;
@@ -259,7 +275,7 @@
 
             barItem.innerHTML = `
             <div class="bar-label">Site ${site}</div>
-            <div class="bar-wrapper">
+            <div class="bar-wrapper" data-amount="${formatCurrency(total)}">
               <div class="bar-fill" style="width: ${widthPercentage}%; background-color: ${barColor};">
                 <span class="bar-amount">${formatCurrency(total)}</span>
               </div>
@@ -267,6 +283,23 @@
           `;
 
             chartDiv.appendChild(barItem);
+
+            // Add hover event listeners
+            const barWrapper = barItem.querySelector(".bar-wrapper");
+
+            barWrapper.addEventListener("mouseenter", function (e) {
+              tooltip.textContent = this.getAttribute("data-amount");
+              tooltip.style.display = "block";
+            });
+
+            barWrapper.addEventListener("mousemove", function (e) {
+              tooltip.style.left = e.pageX + 10 + "px";
+              tooltip.style.top = e.pageY + 10 + "px";
+            });
+
+            barWrapper.addEventListener("mouseleave", function () {
+              tooltip.style.display = "none";
+            });
           });
         }
 
