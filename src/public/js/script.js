@@ -121,10 +121,7 @@ function AnalyticsMenu() {
   popup.document.write(`
       <html>
       <head>
-      
-        <title>Analytics</title>
-      </head>
-      <style>
+            <style>
       .button-container{
       display: flex;
       justify-content: center;
@@ -139,6 +136,9 @@ function AnalyticsMenu() {
       margin: 0 10px;
       }
       </style>
+        <title>Analytics</title>
+      </head>
+
       <body>
            <div class="button-container">
           <button onclick="window.opener.CallGetFinancialReport()">APAR Analytics</button>
