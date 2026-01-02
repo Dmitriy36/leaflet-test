@@ -39,7 +39,7 @@
       /* Chart styles */
       #chartContainer {
         display: none;
-        margin-top: 20px;
+        margin-top: 30px;
         padding: 20px;
         background-color: #f9f9f9;
         border: 1px solid #ddd;
@@ -47,64 +47,57 @@
       #chartContainer.visible {
         display: block;
       }
+      #chartContainer h3 {
+        margin-top: 0;
+        margin-bottom: 15px;
+      }
       .bar-chart {
         display: flex;
-        flex-direction: column;
-        gap: 10px;
-        max-width: 800px;
+        align-items: flex-end;
+        gap: 15px;
+        height: 200px;
+        padding: 10px;
+        background-color: white;
+        border: 1px solid #ddd;
       }
       .bar-item {
+        flex: 1;
         display: flex;
+        flex-direction: column;
         align-items: center;
-        gap: 10px;
-      }
-      .bar-label {
-        min-width: 100px;
-        font-weight: bold;
+        gap: 5px;
       }
       .bar-wrapper {
-        flex: 1;
-        background-color: #e0e0e0;
-        height: 30px;
-        position: relative;
-        border-radius: 4px;
-      }
-      .bar-fill {
+        width: 100%;
         background-color: #17d1a3ff;
-        height: 100%;
-        border-radius: 4px;
-        transition: width 0.3s ease;
+        border: 1px solid black;
+        transition: background-color 0.3s ease;
+        position: relative;
+      }
+      .bar-wrapper:hover {
+        background-color: #13b88d;
       }
       .bar-value {
-        min-width: 120px;
-        text-align: right;
+        font-size: 11px;
         font-weight: bold;
+        text-align: center;
+        margin-bottom: 5px;
+      }
+      .bar-label {
+        font-size: 12px;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 5px;
       }
 
-      /* Button styles */
+      /* Plain button - no custom styling */
       #toggleChartBtn {
+        margin-top: 20px;
         margin-bottom: 15px;
-        padding: 10px 20px;
-        background-color: #17d1a3ff;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 14px;
-      }
-      #toggleChartBtn:hover {
-        background-color: #13b88d;
       }
     </style>
   </head>
   <body>
-    <button id="toggleChartBtn">Show Chart</button>
-
-    <div id="chartContainer">
-      <h3>Transaction Amounts by Site</h3>
-      <div id="barChart" class="bar-chart"></div>
-    </div>
-
     <table>
       <thead>
         <tr>
@@ -124,6 +117,13 @@
         <!-- Data will be inserted here by JavaScript -->
       </tbody>
     </table>
+
+    <button id="toggleChartBtn">Show Chart</button>
+
+    <div id="chartContainer">
+      <h3>Transaction Amounts by Site</h3>
+      <div id="barChart" class="bar-chart"></div>
+    </div>
 
     <script>
       // Helper function to format currency
@@ -181,10 +181,18 @@
           tbody.appendChild(tr);
         });
 
-        // Calculate totals by site
+        // Calculate totals by site (excluding grand total rows)
         const siteTotals = {};
         data.forEach((row) => {
-          const site = row.station_number || "Unknown";
+          // Skip rows that are totals (you can adjust this logic based on how your backend marks totals)
+          const vendor = (row.vendor || "").toLowerCase();
+          if (vendor.includes("total") || vendor.includes("grand total")) {
+            return; // Skip total rows
+          }
+
+          const site = row.station_number;
+          if (!site || site === "N/A") return; // Skip if no site
+
           const amount = parseFloat(row.Transaction_Amount) || 0;
 
           if (!siteTotals[site]) {
@@ -197,23 +205,23 @@
         const chartDiv = document.getElementById("barChart");
         const maxValue = Math.max(...Object.values(siteTotals));
 
-        // Sort by total (descending)
-        const sortedSites = Object.entries(siteTotals).sort(
-          (a, b) => b[1] - a[1]
-        );
+        // Sort by site number
+        const sortedSites = Object.entries(siteTotals).sort((a, b) => {
+          const numA = parseInt(a[0]) || 0;
+          const numB = parseInt(b[0]) || 0;
+          return numA - numB;
+        });
 
         sortedSites.forEach(([site, total]) => {
           const barItem = document.createElement("div");
           barItem.className = "bar-item";
 
-          const percentage = (total / maxValue) * 100;
+          const heightPercentage = (total / maxValue) * 100;
 
           barItem.innerHTML = `
-          <div class="bar-label">${site}</div>
-          <div class="bar-wrapper">
-            <div class="bar-fill" style="width: ${percentage}%"></div>
-          </div>
           <div class="bar-value">${formatCurrency(total)}</div>
+          <div class="bar-wrapper" style="height: ${heightPercentage}%"></div>
+          <div class="bar-label">Site ${site}</div>
         `;
 
           chartDiv.appendChild(barItem);
