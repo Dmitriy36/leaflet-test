@@ -59,35 +59,61 @@
         padding: 10px;
         background-color: white;
         border: 1px solid #ddd;
+        overflow-x: auto;
       }
       .bar-item {
-        flex: 1;
+        flex: 0 0 auto;
+        min-width: 40px;
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 5px;
+        min-height: 200px;
+        justify-content: flex-end;
+        position: relative;
       }
       .bar-wrapper {
         width: 100%;
-        background-color: #17d1a3ff;
         border: 1px solid black;
-        transition: background-color 0.3s ease;
+        transition: filter 0.3s ease;
         position: relative;
+        min-height: 5px;
+        cursor: pointer;
       }
       .bar-wrapper:hover {
-        background-color: #13b88d;
+        filter: brightness(0.85);
       }
       .bar-value {
         font-size: 11px;
         font-weight: bold;
         text-align: center;
         margin-bottom: 5px;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        background-color: rgba(255, 255, 255, 0.95);
+        padding: 3px 6px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+      }
+      .bar-item:hover .bar-value {
+        opacity: 1;
       }
       .bar-label {
         font-size: 12px;
         font-weight: bold;
         text-align: center;
         margin-top: 5px;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        white-space: nowrap;
+      }
+      .bar-item:hover .bar-label {
+        opacity: 1;
       }
 
       /* Plain button - no custom styling */
@@ -139,6 +165,19 @@
         );
       }
 
+      // Function to generate unique colors using HSL
+      function getUniqueColor(index, total) {
+        // Use golden ratio to distribute hues evenly
+        const goldenRatio = 0.618033988749895;
+        const hue = (index * goldenRatio * 360) % 360;
+
+        // Use varying saturation and lightness for more variety
+        const saturation = 60 + (index % 3) * 15; // 60%, 75%, 90%
+        const lightness = 50 + (index % 2) * 10; // 50%, 60%
+
+        return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+      }
+
       // Load data from sessionStorage
       const dataJson = sessionStorage.getItem("financialReportData");
 
@@ -184,14 +223,18 @@
         // Calculate totals by site (excluding grand total rows)
         const siteTotals = {};
         data.forEach((row) => {
-          // Skip rows that are totals (you can adjust this logic based on how your backend marks totals)
-          const vendor = (row.vendor || "").toLowerCase();
-          if (vendor.includes("total") || vendor.includes("grand total")) {
-            return; // Skip total rows
-          }
-
           const site = row.station_number;
-          if (!site || site === "N/A") return; // Skip if no site
+
+          // Skip if site is null, 'N/A', or contains 'total', 'grand', or '---'
+          if (
+            !site ||
+            site === "N/A" ||
+            String(site).toLowerCase().includes("total") ||
+            String(site).toLowerCase().includes("grand") ||
+            String(site).includes("---")
+          ) {
+            return;
+          }
 
           const amount = parseFloat(row.Transaction_Amount) || 0;
 
@@ -203,29 +246,41 @@
 
         // Create chart
         const chartDiv = document.getElementById("barChart");
-        const maxValue = Math.max(...Object.values(siteTotals));
 
-        // Sort by site number
-        const sortedSites = Object.entries(siteTotals).sort((a, b) => {
-          const numA = parseInt(a[0]) || 0;
-          const numB = parseInt(b[0]) || 0;
-          return numA - numB;
-        });
+        if (Object.keys(siteTotals).length === 0) {
+          chartDiv.innerHTML = "<p>No site data available for chart</p>";
+        } else {
+          const maxValue = Math.max(...Object.values(siteTotals));
 
-        sortedSites.forEach(([site, total]) => {
-          const barItem = document.createElement("div");
-          barItem.className = "bar-item";
+          // Sort by site number
+          const sortedSites = Object.entries(siteTotals).sort((a, b) => {
+            const numA = parseInt(a[0]) || 0;
+            const numB = parseInt(b[0]) || 0;
+            return numA - numB;
+          });
 
-          const heightPercentage = (total / maxValue) * 100;
+          const totalBars = sortedSites.length;
 
-          barItem.innerHTML = `
-          <div class="bar-value">${formatCurrency(total)}</div>
-          <div class="bar-wrapper" style="height: ${heightPercentage}%"></div>
-          <div class="bar-label">Site ${site}</div>
-        `;
+          sortedSites.forEach(([site, total], index) => {
+            const barItem = document.createElement("div");
+            barItem.className = "bar-item";
 
-          chartDiv.appendChild(barItem);
-        });
+            // Calculate height as percentage of max value
+            const heightPercentage =
+              maxValue > 0 ? (total / maxValue) * 100 : 0;
+
+            // Get unique color for this bar
+            const barColor = getUniqueColor(index, totalBars);
+
+            barItem.innerHTML = `
+            <div class="bar-value">${formatCurrency(total)}</div>
+            <div class="bar-wrapper" style="height: ${heightPercentage}%; background-color: ${barColor};"></div>
+            <div class="bar-label">Site ${site}</div>
+          `;
+
+            chartDiv.appendChild(barItem);
+          });
+        }
 
         // Toggle chart visibility
         const toggleBtn = document.getElementById("toggleChartBtn");
