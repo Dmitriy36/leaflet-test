@@ -110,7 +110,7 @@ async function LoadByVISN(VISNNumber) {
 
 function AnalyticsMenu() {
   const width = 500;
-  const height = 600;
+  const height = 200;
   const left = window.screenX + (window.outerWidth - width) / 2;
   const top = window.screenY + (window.outerHeight - height) / 2;
   const popup = window.open(
@@ -125,6 +125,11 @@ function AnalyticsMenu() {
         <title>Analytics</title>
       </head>
       <style>
+      .button-container{
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      }
       button {
       padding: 10px 20px;
       font-size 16px;
@@ -134,11 +139,10 @@ function AnalyticsMenu() {
       }
       </style>
       <body>
-        <h2>Select Analytics</h2>
-
+           <div class="button-container">
           <button onclick="alert('Analytics-1 clicked')">APAR Analytics</button>
           <button onclick="alert('Analytics-2 clicked')">APAT Analytics</button>
-
+          </div>
       </body>
       </html>
     `);
