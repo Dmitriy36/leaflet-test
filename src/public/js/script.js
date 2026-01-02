@@ -108,6 +108,24 @@ async function LoadByVISN(VISNNumber) {
     .catch((error) => console.error("Error: ", error));
 }
 
+function AnalyticsMenu() {
+  const popup = window.open("", "Analytics", "width=500,height=600");
+  popup.document.write(`
+      <html>
+      <head>
+        <title>Popup Title</title>
+      </head>
+      <body>
+        <h2>Select Analytics</h2>
+
+          <button onclick="alert('Analytics-1 clicked')">APAR Analytics</button>
+          <button onclick="alert('Analytics-2 clicked')">APAT Analytics</button>
+
+      </body>
+      </html>
+    `);
+}
+
 async function GetAnalyticsPost() {
   // if selectedSites is not empty:
   if (selectedSites.length > 0) {
