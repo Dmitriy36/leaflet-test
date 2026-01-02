@@ -240,7 +240,7 @@ async function GetCPAReport() {
 
       const popup = window.open(
         "",
-        "Financial Report",
+        "Control Point Activity Report",
         "width=1400,height=800"
       );
 
@@ -266,7 +266,7 @@ async function GetCPAReport() {
       popup.document.write(
         `<html>      
         <head>
-        <title>Financial Report</title>
+        <title>Control Point Activity</title>
               <style>      
               body { font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif; font-size: 0.5em; }      
               table { border-collapse: collapse; width: 100%; }      
@@ -372,7 +372,7 @@ async function GetCPAReportNoInner() {
       // Open the popup to a dedicated HTML page
       const popup = window.open(
         "/financial-report.html",
-        "Financial Report",
+        "Control Point Activity Report",
         "width=1400,height=800"
       );
 
