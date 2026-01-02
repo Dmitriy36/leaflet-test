@@ -57,9 +57,11 @@
         gap: 2px;
         height: 300px;
         padding: 10px;
+        padding-top: 60px;
         background-color: white;
         border: 1px solid #ddd;
         overflow-x: auto;
+        position: relative;
       }
       .bar-item {
         flex: 1;
@@ -78,6 +80,9 @@
         transition: filter 0.3s ease;
         position: relative;
         cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       .bar-wrapper:hover {
         filter: brightness(0.85);
@@ -88,17 +93,13 @@
         text-align: center;
         opacity: 0;
         transition: opacity 0.2s ease;
-        position: absolute;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%);
         white-space: nowrap;
         background-color: rgba(0, 0, 0, 0.85);
         color: white;
         padding: 5px 8px;
         border-radius: 4px;
-        margin-bottom: 5px;
         z-index: 10;
+        pointer-events: none;
       }
       .bar-item:hover .bar-info {
         opacity: 1;
@@ -269,8 +270,11 @@
             const barColor = getUniqueColor(index, totalBars);
 
             barItem.innerHTML = `
-            <div class="bar-info">Site ${site}<br>${formatCurrency(total)}</div>
-            <div class="bar-wrapper" style="height: ${finalHeight}%; background-color: ${barColor};"></div>
+            <div class="bar-wrapper" style="height: ${finalHeight}%; background-color: ${barColor};">
+              <div class="bar-info">Site ${site}<br>${formatCurrency(
+              total
+            )}</div>
+            </div>
           `;
 
             chartDiv.appendChild(barItem);
