@@ -141,8 +141,8 @@ function AnalyticsMenu() {
     </head>
     <body>
       <div class="button-container">
-        <button onclick="window.opener.CallGetFinancialReport()">APAR Analytics</button>
-        <button onclick="window.opener.CallGetFinancialReport1()">APAR Analytics No Inner</button>
+        <button onclick="window.opener.CallGetCPAReport()">APAR Analytics</button>
+        <button onclick="window.opener.CallGetCPAReportNoInner()">APAR Analytics No Inner</button>
         <button onclick="alert('Analytics-2 clicked')">APAT Analytics</button>
       </div>
     </body>
@@ -203,15 +203,15 @@ async function GetAnalyticsPost() {
     });
 }
 
-function CallGetFinancialReport() {
-  GetFinancialReport().catch((err) => console.error(err));
+function CallGetCPAReport() {
+  GetCPAReport().catch((err) => console.error(err));
 }
 
-function CallGetFinancialReport1() {
-  GetFinancialReport1().catch((err) => console.error(err));
+function CallGetCPAReportNoInner() {
+  GetCPAReportNoInner().catch((err) => console.error(err));
 }
 
-async function GetFinancialReport() {
+async function GetCPAReport() {
   // if selectedSites is not empty:
   if (selectedSites.length > 0) {
     vamcIds = selectedSites.map((site) => site.ExternalId);
@@ -339,7 +339,7 @@ ${data.data
     });
 }
 
-async function GetFinancialReport1() {
+async function GetCPAReportNoInner() {
   // if selectedSites is not empty:
   if (selectedSites.length > 0) {
     vamcIds = selectedSites.map((site) => site.ExternalId);
