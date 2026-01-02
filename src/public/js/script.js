@@ -140,10 +140,9 @@ function AnalyticsMenu() {
       </style>
     </head>
     <body>
-      <div class="button-container">
-        <button onclick="window.opener.CallGetCPAReport()">APAR Analytics</button>
-        <button onclick="window.opener.CallGetCPAReportNoInner()">APAR Analytics No Inner</button>
-        <button onclick="alert('Analytics-2 clicked')">APAT Analytics</button>
+      <div class="button-container">        
+        <button style="font-size:17px;" onclick="window.opener.CallGetCPAReportNoInner()">APAR Analytics No Inner</button>
+        <button style="font-size:17px;" onclick="alert('Analytics-2 clicked')">APAT Analytics</button>
       </div>
     </body>
     </html>
