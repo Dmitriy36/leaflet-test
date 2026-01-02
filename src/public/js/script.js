@@ -224,8 +224,8 @@ async function GetFinancialReport() {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log("Received data:", data); // ADD THIS
-      console.log("data.data:", data.data); // ADD THIS
+      console.log("Received data:", data);
+      console.log("data.data:", data.data);
 
       if (!data || !data.data || !Array.isArray(data.data)) {
         console.error("Invalid data structure:", data);
@@ -238,6 +238,12 @@ async function GetFinancialReport() {
         "Financial Report",
         "width=1400,height=800"
       );
+
+      // ADD THIS CHECK
+      if (!popup) {
+        alert("Popup was blocked. Please allow popups for this site.");
+        return;
+      }
 
       // Helper function to format currency
       const formatCurrency = (amount) => {
@@ -253,25 +259,25 @@ async function GetFinancialReport() {
       };
 
       popup.document.write(
-        `<html>        
+        `<html>       
         <head>
         <title>Financial Report</title>
-              <style>        
-              body { font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif; font-size: 0.5em; }        
-              table { border-collapse: collapse; width: 100%; }        
-              th, td { border: 1px solid black; padding: 8px; text-align: left; }        
+              <style>       
+              body { font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif; font-size: 0.5em; }       
+              table { border-collapse: collapse; width: 100%; }       
+              th, td { border: 1px solid black; padding: 8px; text-align: left; }       
               th { background-color: #17d1a3ff; position: sticky; top: 0;}
               td.currency { text-align: right; }
               tr:nth-child(even) { background-color: #f2f2f2; }
               .null-value { color: #999; font-style: italic; }
               </style>
-        </head>        
-        <body>          
+        </head>       
+        <body>         
                  
         <table border="1">
-                     <tr>              
-                     <th>VAMC ID</th>              
-                     <th>Date</th>              
+                     <tr>             
+                     <th>VAMC ID</th>             
+                     <th>Date</th>             
                      <th>Department</th>
                      <th>Vendor</th>
                      <th>Account</th>
@@ -279,7 +285,7 @@ async function GetFinancialReport() {
                      <th>Requestor</th>
                      <th>Approver</th>
                      <th>Committed Estimated Cost</th>
-                     <th>Transaction Amount</th>            
+                     <th>Transaction Amount</th>           
                      </tr>
                    
 ${data.data
@@ -315,10 +321,12 @@ ${data.data
   )
   .join("")}
    
-       </table>        
-       </body>      
+       </table>       
+       </body>     
        </html>`
       );
+
+      popup.document.close(); // Close the document stream
     })
     .catch((error) => {
       console.error("Error fetching financial report:", error);
