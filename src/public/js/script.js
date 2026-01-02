@@ -131,18 +131,18 @@ function AnalyticsMenu() {
           gap: 20px;
           margin-top: 25px;
         }
-        button {
-          padding: 10px 20px;
-          font-size: 16px;
-          cursor: pointer;
-          width: 150px;
-        }
+button {
+  font-size: x-large;
+  font-weight: bold;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
       </style>
     </head>
     <body>
       <div class="button-container">        
-        <button style="font-size:17px;" onclick="window.opener.CallGetCPAReportNoInner()">APAR Analytics No Inner</button>
-        <button style="font-size:17px;" onclick="alert('Analytics-2 clicked')">APAT Analytics</button>
+        <button style="font-size:25px;" onclick="window.opener.CallGetCPAReportNoInner()">APAR Analytics</button>
+        <button style="font-size:25px;" onclick="alert('Analytics-2 clicked')">APAT Analytics</button>
       </div>
     </body>
     </html>
