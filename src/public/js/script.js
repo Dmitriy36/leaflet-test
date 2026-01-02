@@ -142,6 +142,7 @@ function AnalyticsMenu() {
     <body>
       <div class="button-container">
         <button onclick="window.opener.CallGetFinancialReport()">APAR Analytics</button>
+        <button onclick="window.opener.CallGetFinancialReport1()">APAR Analytics No Inner</button>
         <button onclick="alert('Analytics-2 clicked')">APAT Analytics</button>
       </div>
     </body>
@@ -171,32 +172,32 @@ async function GetAnalyticsPost() {
     .then((data) => {
       const popup = window.open("", "Results", "width=1000,height=1500");
       popup.document.write(
-        `<html>         
+        `<html>        
         <head>
         <title>Analytics Check</title>
-              <style>         
-              body { font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif; font-size: 1em; }         
-              table { border-collapse: collapse; width: 100%; }         
-              th, td { border: 1px solid black; padding: 8px; text-align: left; }         
-              th { background-color: #17d1a3ff; position: sticky; top: 0;}       
+              <style>        
+              body { font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif; font-size: 1em; }        
+              table { border-collapse: collapse; width: 100%; }        
+              th, td { border: 1px solid black; padding: 8px; text-align: left; }        
+              th { background-color: #17d1a3ff; position: sticky; top: 0;}      
               </style>
-        </head>         
-        <body>           
-                  
+        </head>        
+        <body>          
+                 
         <table border="1">
-                     <tr>               
-                     <th>VAMC</th>               
-                     <th>Forks</th>               
-                     <th>Spoons</th>             
+                     <tr>              
+                     <th>VAMC</th>              
+                     <th>Forks</th>              
+                     <th>Spoons</th>            
                      </tr>
                      ${data.data
                        .map(
                          (row) =>
                            `<tr><td>${row.VAMC}</td><td>${row.TotalForks}</td>                 <td>${row.TotalSpoons}</td></tr>`
                        )
-                       .join("")}           
-       </table>         
-       </body>       
+                       .join("")}          
+       </table>        
+       </body>      
        </html>`
       );
     });
@@ -259,25 +260,25 @@ async function GetFinancialReport() {
       };
 
       popup.document.write(
-        `<html>       
+        `<html>      
         <head>
         <title>Financial Report</title>
-              <style>       
-              body { font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif; font-size: 0.5em; }       
-              table { border-collapse: collapse; width: 100%; }       
-              th, td { border: 1px solid black; padding: 8px; text-align: left; }       
+              <style>      
+              body { font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif; font-size: 0.5em; }      
+              table { border-collapse: collapse; width: 100%; }      
+              th, td { border: 1px solid black; padding: 8px; text-align: left; }      
               th { background-color: #17d1a3ff; position: sticky; top: 0;}
               td.currency { text-align: right; }
               tr:nth-child(even) { background-color: #f2f2f2; }
               .null-value { color: #999; font-style: italic; }
               </style>
-        </head>       
-        <body>         
+        </head>      
+        <body>        
                  
         <table border="1">
-                     <tr>             
-                     <th>VAMC ID</th>             
-                     <th>Date</th>             
+                     <tr>            
+                     <th>VAMC ID</th>            
+                     <th>Date</th>            
                      <th>Department</th>
                      <th>Vendor</th>
                      <th>Account</th>
@@ -285,7 +286,7 @@ async function GetFinancialReport() {
                      <th>Requestor</th>
                      <th>Approver</th>
                      <th>Committed Estimated Cost</th>
-                     <th>Transaction Amount</th>           
+                     <th>Transaction Amount</th>          
                      </tr>
                    
 ${data.data
@@ -321,12 +322,60 @@ ${data.data
   )
   .join("")}
    
-       </table>       
-       </body>     
+       </table>      
+       </body>    
        </html>`
       );
 
       popup.document.close(); // Close the document stream
+    })
+    .catch((error) => {
+      console.error("Error fetching financial report:", error);
+      alert("Error loading financial report. Please try again.");
+    });
+}
+
+async function GetFinancialReport1() {
+  // if selectedSites is not empty:
+  if (selectedSites.length > 0) {
+    vamcIds = selectedSites.map((site) => site.ExternalId);
+  } else {
+    vamcIds = allSites.map((site) => site.ExternalId);
+  }
+
+  console.log("these VAMC ids were sent: ", JSON.stringify(vamcIds));
+
+  // Send to backend
+  fetch("/financial-report", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ vamcIds: vamcIds }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Received data:", data);
+      console.log("data.data:", data.data);
+
+      if (!data || !data.data || !Array.isArray(data.data)) {
+        console.error("Invalid data structure:", data);
+        alert("Error: No data returned - check console");
+        return;
+      }
+
+      // Store data in sessionStorage so the popup can access it
+      sessionStorage.setItem("financialReportData", JSON.stringify(data.data));
+
+      // Open the popup to a dedicated HTML page
+      const popup = window.open(
+        "/financial-report.html",
+        "Financial Report",
+        "width=1400,height=800"
+      );
+
+      if (!popup) {
+        alert("Popup was blocked. Please allow popups for this site.");
+        return;
+      }
     })
     .catch((error) => {
       console.error("Error fetching financial report:", error);
