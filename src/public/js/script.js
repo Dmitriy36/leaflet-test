@@ -129,6 +129,7 @@ function AnalyticsMenu() {
       display: flex;
       justify-content: center;
       gap: 20px;
+      margin-top:25px;
       }
       button {
       padding: 10px 20px;
