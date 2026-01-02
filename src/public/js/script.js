@@ -134,8 +134,8 @@ function AnalyticsMenu() {
       button {
       padding: 10px 20px;
       font-size: 16px;
-      cursor:pointer;
-      width:150px;
+      cursor: pointer;
+      width: 150px;
       margin: 0 10px;
       }
       </style>
