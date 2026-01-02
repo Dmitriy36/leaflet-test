@@ -6,10 +6,13 @@
       body {
         font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
         font-size: 14px;
+        margin: 0;
+        padding: 10px;
       }
       table {
         border-collapse: collapse;
         width: 100%;
+        border: 1px solid black;
       }
       th,
       td {
@@ -32,10 +35,77 @@
         color: #999;
         font-style: italic;
       }
+
+      /* Chart styles */
+      #chartContainer {
+        display: none;
+        margin-top: 20px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+      }
+      #chartContainer.visible {
+        display: block;
+      }
+      .bar-chart {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-width: 800px;
+      }
+      .bar-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .bar-label {
+        min-width: 100px;
+        font-weight: bold;
+      }
+      .bar-wrapper {
+        flex: 1;
+        background-color: #e0e0e0;
+        height: 30px;
+        position: relative;
+        border-radius: 4px;
+      }
+      .bar-fill {
+        background-color: #17d1a3ff;
+        height: 100%;
+        border-radius: 4px;
+        transition: width 0.3s ease;
+      }
+      .bar-value {
+        min-width: 120px;
+        text-align: right;
+        font-weight: bold;
+      }
+
+      /* Button styles */
+      #toggleChartBtn {
+        margin-bottom: 15px;
+        padding: 10px 20px;
+        background-color: #17d1a3ff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      #toggleChartBtn:hover {
+        background-color: #13b88d;
+      }
     </style>
   </head>
   <body>
-    <table border="1">
+    <button id="toggleChartBtn">Show Chart</button>
+
+    <div id="chartContainer">
+      <h3>Transaction Amounts by Site</h3>
+      <div id="barChart" class="bar-chart"></div>
+    </div>
+
+    <table>
       <thead>
         <tr>
           <th>VAMC ID</th>
@@ -76,6 +146,7 @@
         const data = JSON.parse(dataJson);
         const tbody = document.getElementById("reportTableBody");
 
+        // Populate table
         data.forEach((row) => {
           const tr = document.createElement("tr");
           tr.innerHTML = `
@@ -108,6 +179,57 @@
           <td class="currency">${formatCurrency(row.Transaction_Amount)}</td>
         `;
           tbody.appendChild(tr);
+        });
+
+        // Calculate totals by site
+        const siteTotals = {};
+        data.forEach((row) => {
+          const site = row.station_number || "Unknown";
+          const amount = parseFloat(row.Transaction_Amount) || 0;
+
+          if (!siteTotals[site]) {
+            siteTotals[site] = 0;
+          }
+          siteTotals[site] += amount;
+        });
+
+        // Create chart
+        const chartDiv = document.getElementById("barChart");
+        const maxValue = Math.max(...Object.values(siteTotals));
+
+        // Sort by total (descending)
+        const sortedSites = Object.entries(siteTotals).sort(
+          (a, b) => b[1] - a[1]
+        );
+
+        sortedSites.forEach(([site, total]) => {
+          const barItem = document.createElement("div");
+          barItem.className = "bar-item";
+
+          const percentage = (total / maxValue) * 100;
+
+          barItem.innerHTML = `
+          <div class="bar-label">${site}</div>
+          <div class="bar-wrapper">
+            <div class="bar-fill" style="width: ${percentage}%"></div>
+          </div>
+          <div class="bar-value">${formatCurrency(total)}</div>
+        `;
+
+          chartDiv.appendChild(barItem);
+        });
+
+        // Toggle chart visibility
+        const toggleBtn = document.getElementById("toggleChartBtn");
+        const chartContainer = document.getElementById("chartContainer");
+
+        toggleBtn.addEventListener("click", function () {
+          chartContainer.classList.toggle("visible");
+          if (chartContainer.classList.contains("visible")) {
+            toggleBtn.textContent = "Hide Chart";
+          } else {
+            toggleBtn.textContent = "Show Chart";
+          }
         });
 
         // Clear the data from sessionStorage after use
