@@ -275,7 +275,9 @@
 
             barItem.innerHTML = `
             <div class="bar-label">Site ${site}</div>
-            <div class="bar-wrapper" data-amount="${formatCurrency(total)}">
+            <div class="bar-wrapper" data-site="${site}" data-amount="${formatCurrency(
+              total
+            )}">
               <div class="bar-fill" style="width: ${widthPercentage}%; background-color: ${barColor};">
                 <span class="bar-amount">${formatCurrency(total)}</span>
               </div>
@@ -288,12 +290,15 @@
             const barWrapper = barItem.querySelector(".bar-wrapper");
 
             barWrapper.addEventListener("mouseenter", function (e) {
-              tooltip.textContent = this.getAttribute("data-amount");
+              const site = this.getAttribute("data-site");
+              const amount = this.getAttribute("data-amount");
+              tooltip.textContent = `Site ${site}: ${amount}`;
               tooltip.style.display = "block";
             });
 
             barWrapper.addEventListener("mousemove", function (e) {
-              tooltip.style.left = e.pageX + 10 + "px";
+              // Offset 96px (approximately 1 inch at 96 DPI) to the right
+              tooltip.style.left = e.pageX + 96 + "px";
               tooltip.style.top = e.pageY + 10 + "px";
             });
 
