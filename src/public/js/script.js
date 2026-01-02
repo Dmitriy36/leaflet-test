@@ -111,8 +111,8 @@ async function LoadByVISN(VISNNumber) {
 function AnalyticsMenu() {
   const width = 500;
   const height = 600;
-  const left = (screen.availHeight - width) / 2;
-  const top = (screen.availHeight - height) / 2;
+  const left = window.screenX + (window.outerWidth - width) / 2;
+  const top = window.screenY + (window.outerHeight - height) / 2;
   const popup = window.open(
     "",
     "Analytics",
