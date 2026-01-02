@@ -65,37 +65,47 @@
         display: flex;
         align-items: center;
         gap: 5px;
-        min-height: 25px;
+        min-height: 35px;
         position: relative;
       }
       .bar-label {
         min-width: 80px;
-        font-size: 12px;
+        font-size: 17px;
         font-weight: bold;
         text-align: left;
       }
       .bar-wrapper {
         flex: 1;
-        height: 25px;
+        height: 35px;
         border: 1px solid black;
         transition: filter 0.3s ease;
         position: relative;
         cursor: pointer;
         background-color: #f0f0f0;
+        display: flex;
       }
       .bar-wrapper:hover {
         filter: brightness(0.95);
       }
       .bar-fill {
         height: 100%;
-        border-right: 1px solid black;
         display: flex;
         align-items: center;
         padding-left: 8px;
+        padding-right: 8px;
         position: relative;
       }
+      .bar-fill.positive {
+        border-right: 1px solid black;
+        justify-content: flex-start;
+      }
+      .bar-fill.negative {
+        border-left: 1px solid black;
+        justify-content: flex-end;
+        margin-left: auto;
+      }
       .bar-amount {
-        font-size: 11px;
+        font-size: 16px;
         font-weight: bold;
         color: black;
         text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white,
@@ -108,7 +118,7 @@
         color: white;
         padding: 5px 10px;
         border-radius: 4px;
-        font-size: 11px;
+        font-size: 16px;
         font-weight: bold;
         pointer-events: none;
         z-index: 1000;
@@ -254,7 +264,9 @@
         if (Object.keys(siteTotals).length === 0) {
           chartDiv.innerHTML = "<p>No site data available for chart</p>";
         } else {
-          const maxValue = Math.max(...Object.values(siteTotals));
+          // Find max absolute value for scaling (to handle both positive and negative)
+          const allValues = Object.values(siteTotals);
+          const maxAbsValue = Math.max(...allValues.map(Math.abs));
 
           // Sort by amount descending (highest first)
           const sortedSites = Object.entries(siteTotals).sort((a, b) => {
@@ -267,8 +279,13 @@
             const barItem = document.createElement("div");
             barItem.className = "bar-item";
 
-            // Calculate width as percentage - use full scale from 0 to max
-            const widthPercentage = maxValue > 0 ? (total / maxValue) * 100 : 0;
+            // Calculate width as percentage based on absolute value
+            const widthPercentage =
+              maxAbsValue > 0 ? (Math.abs(total) / maxAbsValue) * 100 : 0;
+
+            // Determine if positive or negative
+            const isPositive = total >= 0;
+            const fillClass = isPositive ? "positive" : "negative";
 
             // Get unique color for this bar
             const barColor = getUniqueColor(index, totalBars);
@@ -278,7 +295,7 @@
             <div class="bar-wrapper" data-site="${site}" data-amount="${formatCurrency(
               total
             )}">
-              <div class="bar-fill" style="width: ${widthPercentage}%; background-color: ${barColor};">
+              <div class="bar-fill ${fillClass}" style="width: ${widthPercentage}%; background-color: ${barColor};">
                 <span class="bar-amount">${formatCurrency(total)}</span>
               </div>
             </div>
