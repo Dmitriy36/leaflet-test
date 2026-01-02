@@ -121,7 +121,7 @@ function AnalyticsMenu() {
   popup.document.write(`
       <html>
       <head>
-      <link rel="stylesheet" href="css/styles.css" />
+      
         <title>Analytics</title>
       </head>
       <style>
