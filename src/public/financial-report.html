@@ -53,56 +53,53 @@
       }
       .bar-chart {
         display: flex;
-        align-items: flex-end;
+        flex-direction: column;
         gap: 2px;
-        height: 300px;
         padding: 10px;
-        padding-top: 60px;
         background-color: white;
         border: 1px solid #ddd;
-        overflow-x: auto;
-        position: relative;
+        max-height: 600px;
+        overflow-y: auto;
       }
       .bar-item {
-        flex: 1;
         display: flex;
-        flex-direction: column;
         align-items: center;
         gap: 5px;
-        height: 100%;
-        justify-content: flex-end;
+        min-height: 25px;
         position: relative;
-        min-width: 20px;
+      }
+      .bar-label {
+        min-width: 80px;
+        font-size: 12px;
+        font-weight: bold;
+        text-align: left;
       }
       .bar-wrapper {
-        width: 100%;
+        flex: 1;
+        height: 25px;
         border: 1px solid black;
         transition: filter 0.3s ease;
         position: relative;
         cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        background-color: #f0f0f0;
       }
       .bar-wrapper:hover {
-        filter: brightness(0.85);
+        filter: brightness(0.95);
       }
-      .bar-info {
+      .bar-fill {
+        height: 100%;
+        border-right: 1px solid black;
+        display: flex;
+        align-items: center;
+        padding-left: 8px;
+        position: relative;
+      }
+      .bar-amount {
         font-size: 11px;
         font-weight: bold;
-        text-align: center;
-        opacity: 0;
-        transition: opacity 0.2s ease;
-        white-space: nowrap;
-        background-color: rgba(0, 0, 0, 0.85);
         color: white;
-        padding: 5px 8px;
-        border-radius: 4px;
-        z-index: 10;
-        pointer-events: none;
-      }
-      .bar-item:hover .bar-info {
-        opacity: 1;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+        white-space: nowrap;
       }
 
       /* Plain button - no custom styling */
@@ -133,7 +130,7 @@
       </tbody>
     </table>
 
-    <button id="toggleChartBtn">Show Chart 📊</button>
+    <button id="toggleChartBtn">Show Chart</button>
 
     <div id="chartContainer">
       <h3>Transaction Amounts by Site</h3>
@@ -240,11 +237,6 @@
           chartDiv.innerHTML = "<p>No site data available for chart</p>";
         } else {
           const maxValue = Math.max(...Object.values(siteTotals));
-          const minValue = Math.min(...Object.values(siteTotals));
-
-          // Use a range that starts slightly below the minimum to avoid flat bars
-          const rangeMin = minValue * 0.5; // Start at 50% of minimum value
-          const range = maxValue - rangeMin;
 
           // Sort by site number
           const sortedSites = Object.entries(siteTotals).sort((a, b) => {
@@ -259,21 +251,18 @@
             const barItem = document.createElement("div");
             barItem.className = "bar-item";
 
-            // Calculate height as percentage using the adjusted range
-            const heightPercentage =
-              range > 0 ? ((total - rangeMin) / range) * 100 : 50;
-
-            // Ensure minimum visible height
-            const finalHeight = Math.max(heightPercentage, 5);
+            // Calculate width as percentage - use full scale from 0 to max
+            const widthPercentage = maxValue > 0 ? (total / maxValue) * 100 : 0;
 
             // Get unique color for this bar
             const barColor = getUniqueColor(index, totalBars);
 
             barItem.innerHTML = `
-            <div class="bar-wrapper" style="height: ${finalHeight}%; background-color: ${barColor};">
-              <div class="bar-info">Site ${site}<br>${formatCurrency(
-              total
-            )}</div>
+            <div class="bar-label">Site ${site}</div>
+            <div class="bar-wrapper">
+              <div class="bar-fill" style="width: ${widthPercentage}%; background-color: ${barColor};">
+                <span class="bar-amount">${formatCurrency(total)}</span>
+              </div>
             </div>
           `;
 
@@ -290,7 +279,7 @@
           if (chartContainer.classList.contains("visible")) {
             toggleBtn.textContent = "Hide Chart";
           } else {
-            toggleBtn.textContent = "Show Chart 📊";
+            toggleBtn.textContent = "Show Chart";
           }
         });
 
