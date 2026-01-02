@@ -118,7 +118,8 @@ function AnalyticsMenu() {
     "Analytics",
     `width=${width},height=${height},left=${left},top=${top}`
   );
-  popup.document.write(`
+
+  const html = `
     <!DOCTYPE html>
     <html>
     <head>
@@ -145,7 +146,10 @@ function AnalyticsMenu() {
       </div>
     </body>
     </html>
-  `);
+  `;
+
+  popup.document.write(html);
+  popup.document.close(); // Close the document stream
 }
 
 async function GetAnalyticsPost() {
