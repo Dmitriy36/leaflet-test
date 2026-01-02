@@ -141,7 +141,7 @@ function AnalyticsMenu() {
       </style>
       <body>
            <div class="button-container">
-          <button onclick="GetFinancialReport()">APAR Analytics</button>
+          <button onclick="window.opener.GetFinancialReport()">APAR Analytics</button>
           <button onclick="alert('Analytics-2 clicked')">APAT Analytics</button>
           </div>
       </body>
