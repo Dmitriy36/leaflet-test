@@ -116,37 +116,36 @@ function AnalyticsMenu() {
   const popup = window.open(
     "",
     "Analytics",
-    `width=${width},height=${height}, left=${left}, top=${top}`
+    `width=${width},height=${height},left=${left},top=${top}`
   );
   popup.document.write(`
-      <html>
-      <head>
-            <style>
-      .button-container{
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin-top:25px;
-      }
-      button {
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      width: 150px;
-      margin: 0 10px;
-      }
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Analytics</title>
+      <style>
+        .button-container {
+          display: flex;
+          justify-content: center;
+          gap: 20px;
+          margin-top: 25px;
+        }
+        button {
+          padding: 10px 20px;
+          font-size: 16px;
+          cursor: pointer;
+          width: 150px;
+        }
       </style>
-        <title>Analytics</title>
-      </head>
-
-      <body>
-           <div class="button-container">
-          <button onclick="window.opener.CallGetFinancialReport()">APAR Analytics</button>
-          <button onclick="alert('Analytics-2 clicked')">APAT Analytics</button>
-          </div>
-      </body>
-      </html>
-    `);
+    </head>
+    <body>
+      <div class="button-container">
+        <button onclick="window.opener.CallGetFinancialReport()">APAR Analytics</button>
+        <button onclick="alert('Analytics-2 clicked')">APAT Analytics</button>
+      </div>
+    </body>
+    </html>
+  `);
 }
 
 async function GetAnalyticsPost() {
