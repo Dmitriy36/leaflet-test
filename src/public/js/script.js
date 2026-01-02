@@ -141,7 +141,7 @@ function AnalyticsMenu() {
       </style>
       <body>
            <div class="button-container">
-          <button onclick="window.opener.GetFinancialReport()">APAR Analytics</button>
+          <button onclick="window.opener.CallGetFinancialReport()">APAR Analytics</button>
           <button onclick="alert('Analytics-2 clicked')">APAT Analytics</button>
           </div>
       </body>
@@ -197,6 +197,10 @@ async function GetAnalyticsPost() {
        </html>`
       );
     });
+}
+
+function CallGetFinancialReport() {
+  GetFinancialReport().catch((err) => console.error(err));
 }
 
 async function GetFinancialReport() {
