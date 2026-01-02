@@ -207,6 +207,10 @@ function CallGetFinancialReport() {
   GetFinancialReport().catch((err) => console.error(err));
 }
 
+function CallGetFinancialReport1() {
+  GetFinancialReport1().catch((err) => console.error(err));
+}
+
 async function GetFinancialReport() {
   // if selectedSites is not empty:
   if (selectedSites.length > 0) {
