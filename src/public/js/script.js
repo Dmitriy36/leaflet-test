@@ -564,6 +564,7 @@ async function AddButtons() {
       selectedSites = newSelectedSites;
       button.className = "sidebar-button";
       ClearLines();
+      ClearMarkers();
       AddLinesSelectedNoDelay();
       // alert("right click detected on button " + button.id);
     };
