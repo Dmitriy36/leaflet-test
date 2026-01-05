@@ -563,6 +563,8 @@ async function AddButtons() {
       );
       selectedSites = newSelectedSites;
       button.className = "sidebar-button";
+      ClearLines();
+      AddLinesSelectedNoDelay();
       // alert("right click detected on button " + button.id);
     };
 
