@@ -557,6 +557,7 @@ async function AddButtons() {
       HighlightButton(button);
     };
     button.oncontextmenu = () => {
+      event.preventDefault();
       alert("right click detected on button " + button.id);
     };
 
