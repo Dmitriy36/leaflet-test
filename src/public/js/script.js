@@ -562,8 +562,8 @@ async function AddButtons() {
         (item) => item.ExternalId !== site.ExternalId
       );
       selectedSites = newSelectedSites;
-
-      alert("right click detected on button " + button.id);
+      button.className = "sidebar-button";
+      // alert("right click detected on button " + button.id);
     };
 
     container.appendChild(button);
