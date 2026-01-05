@@ -558,6 +558,11 @@ async function AddButtons() {
     };
     button.oncontextmenu = () => {
       event.preventDefault();
+      const newSelectedSites = selectedSites.filter(
+        (item) => item.ExternalId !== site.ExternalId
+      );
+      selectedSites = newSelectedSites;
+
       alert("right click detected on button " + button.id);
     };
 
