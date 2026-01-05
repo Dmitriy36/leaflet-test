@@ -556,6 +556,9 @@ async function AddButtons() {
       // button.className = "sidebar-button-selected";
       HighlightButton(button);
     };
+    button.oncontextmenu = () => {
+      alert("right click detected on button " + button.id);
+    };
 
     container.appendChild(button);
     buttonsList.push(button);
