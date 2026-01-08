@@ -165,6 +165,35 @@ function AnalyticsMenu() {
   );
 }
 
+function HandleReport(reportChoice) {
+  switch (reportChoice) {
+    case "apar1":
+      window.opener.CallGetCPAReportNoInner();
+      break;
+    case "apar2":
+      alert("define APAR report first.");
+      break;
+    case "apar3":
+      alert("define APAR report first.");
+      break;
+    case "apar4":
+      alert("define APAR report first.");
+      break;
+    case "apat1":
+      alert("define APAT report first.");
+      break;
+    case "apat2":
+      alert("define APAT report first.");
+      break;
+    case "apat3":
+      alert("define APAT report first.");
+      break;
+    case "apat4":
+      alert("define APAT report first.");
+      break;
+  }
+}
+
 async function GetAnalyticsPost() {
   // if selectedSites is not empty:
   if (selectedSites.length > 0) {

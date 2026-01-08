@@ -61,25 +61,25 @@
       <legend style="color: rgb(20, 116, 93)">APAR Analytics</legend>
       <label for="options1">Select:</label>
       <select name="options" id="options1">
-        <option value="option1">Option 1</option>
-        <option value="option2">Option 2</option>
-        <option value="option3">Option 3</option>
-        <option value="option4">Option 4</option>
+        <option value="apar1">Control Point Activity</option>
+        <option value="apar2">Report 2</option>
+        <option value="apar3">Report 3</option>
+        <option value="apar4">Report 4</option>
       </select>
-      <button onclick="window.opener.CallGetCPAReportNoInner()">
-        Run Report
-      </button>
+
+      <!-- <button onclick="window.opener.CallGetCPAReportNoInner()"> -->
+      <button onclick="HandleReport('options1')">Run Report</button>
     </fieldset>
     <fieldset class="button-div">
       <legend style="color: #1123c0">APAT Analytics</legend>
       <label for="options2">Select:</label>
       <select name="options" id="options2">
-        <option value="option1">Option 1</option>
-        <option value="option2">Option 2</option>
-        <option value="option3">Option 3</option>
-        <option value="option4">Option 4</option>
+        <option value="apat1">Option 1</option>
+        <option value="apat2">Option 2</option>
+        <option value="apat3">Option 3</option>
+        <option value="apat4">Option 4</option>
       </select>
-      <button onclick="alert('Analytics-2 clicked')">Run Report</button>
+      <button onclick="HandleReport('options2')">Run Report</button>
     </fieldset>
   </body>
 </html>
