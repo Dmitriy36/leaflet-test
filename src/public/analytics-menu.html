@@ -66,7 +66,9 @@
         <option value="apar3">Report 3</option>
         <option value="apar4">Report 4</option>
       </select>
-      <button onclick="HandleReport('options1')">Run Report</button>
+      <button onclick="window.opener.HandleReport('options1')">
+        Run Report
+      </button>
     </fieldset>
     <fieldset class="button-div">
       <legend style="color: #1123c0">APAT Analytics</legend>
@@ -77,7 +79,9 @@
         <option value="apat3">Option 3</option>
         <option value="apat4">Option 4</option>
       </select>
-      <button onclick="HandleReport('options2')">Run Report</button>
+      <button onclick="window.opener.HandleReport('options2')">
+        Run Report
+      </button>
     </fieldset>
   </body>
 </html>
