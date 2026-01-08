@@ -108,48 +108,61 @@ async function LoadByVISN(VISNNumber) {
     .catch((error) => console.error("Error: ", error));
 }
 
+// function AnalyticsMenu() {
+//   const width = 500;
+//   const height = 200;
+//   const left = window.screenX + (window.outerWidth - width) / 2;
+//   const top = window.screenY + (window.outerHeight - height) / 2;
+//   const popup = window.open(
+//     "",
+//     "Analytics",
+//     `width=${width},height=${height},left=${left},top=${top}`
+//   );
+
+//   const html = `
+//     <!DOCTYPE html>
+//     <html>
+//     <head>
+//       <title>Analytics</title>
+//       <style>
+//         .button-container {
+//           display: flex;
+//           justify-content: center;
+//           gap: 20px;
+//           margin-top: 25px;
+//         }
+// button {
+//   font-size: x-large;
+//   font-weight: bold;
+//   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+//     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+// }
+//       </style>
+//     </head>
+//     <body>
+//       <div class="button-container">
+//         <button style="font-size:25px;" onclick="window.opener.CallGetCPAReportNoInner()">APAR Analytics</button>
+//         <button style="font-size:25px;" onclick="alert('Analytics-2 clicked')">APAT Analytics</button>
+//       </div>
+//     </body>
+//     </html>
+//   `;
+
+//   popup.document.write(html);
+//   popup.document.close(); // Close the document stream
+// }
+
 function AnalyticsMenu() {
   const width = 500;
   const height = 200;
   const left = window.screenX + (window.outerWidth - width) / 2;
   const top = window.screenY + (window.outerHeight - height) / 2;
-  const popup = window.open(
-    "",
+
+  window.open(
+    "/analytics-menu.html",
     "Analytics",
     `width=${width},height=${height},left=${left},top=${top}`
   );
-
-  const html = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>Analytics</title>
-      <style>
-        .button-container {
-          display: flex;
-          justify-content: center;
-          gap: 20px;
-          margin-top: 25px;
-        }
-button {
-  font-size: x-large;
-  font-weight: bold;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-}
-      </style>
-    </head>
-    <body>
-      <div class="button-container">        
-        <button style="font-size:25px;" onclick="window.opener.CallGetCPAReportNoInner()">APAR Analytics</button>
-        <button style="font-size:25px;" onclick="alert('Analytics-2 clicked')">APAT Analytics</button>
-      </div>
-    </body>
-    </html>
-  `;
-
-  popup.document.write(html);
-  popup.document.close(); // Close the document stream
 }
 
 async function GetAnalyticsPost() {
