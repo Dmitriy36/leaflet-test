@@ -153,8 +153,8 @@ async function LoadByVISN(VISNNumber) {
 // }
 
 function AnalyticsMenu() {
-  const width = 500;
-  const height = 200;
+  const width = 1000;
+  const height = 300;
   const left = window.screenX + (window.outerWidth - width) / 2;
   const top = window.screenY + (window.outerHeight - height) / 2;
 
