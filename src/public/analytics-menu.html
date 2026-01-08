@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html>
   <head>
@@ -32,6 +30,8 @@
         font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
           "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
         padding: 0 10px;
+        text-align: center;
+        margin: 0 auto;
       }
       label {
         font-size: 15px;
@@ -57,7 +57,7 @@
   </head>
   <body>
     <fieldset class="button-div">
-      <legend>APAR Analytics</legend>
+      <legend style="color: #17d1a3ff">APAR Analytics</legend>
       <label for="options1">Select:</label>
       <select name="options" id="options1">
         <option value="option1">Option 1</option>
@@ -70,6 +70,15 @@
       </button>
     </fieldset>
     <fieldset class="button-div">
-      <legend>APAT Analytics</legend>
+      <legend style="color: #ff6b6b">APAT Analytics</legend>
       <label for="options2">Select:</label>
-      <select name="o
+      <select name="options" id="options2">
+        <option value="option1">Option 1</option>
+        <option value="option2">Option 2</option>
+        <option value="option3">Option 3</option>
+        <option value="option4">Option 4</option>
+      </select>
+      <button onclick="alert('Analytics-2 clicked')">Run Report</button>
+    </fieldset>
+  </body>
+</html>
