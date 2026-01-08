@@ -55,6 +55,37 @@
         cursor: pointer;
       }
     </style>
+    <script>
+      function HandleReport(dropdownId) {
+        const selectedValue = document.getElementById(dropdownId).value;
+        switch (selectedValue) {
+          case "apar1":
+            window.opener.CallGetCPAReportNoInner();
+            break;
+          case "apar2":
+            alert("define APAR report first.");
+            break;
+          case "apar3":
+            alert("define APAR report first.");
+            break;
+          case "apar4":
+            alert("define APAR report first.");
+            break;
+          case "apat1":
+            alert("define APAT report first.");
+            break;
+          case "apat2":
+            alert("define APAT report first.");
+            break;
+          case "apat3":
+            alert("define APAT report first.");
+            break;
+          case "apat4":
+            alert("define APAT report first.");
+            break;
+        }
+      }
+    </script>
   </head>
   <body>
     <fieldset class="button-div">
@@ -66,9 +97,7 @@
         <option value="apar3">Report 3</option>
         <option value="apar4">Report 4</option>
       </select>
-      <button onclick="window.opener.HandleReport('options1')">
-        Run Report
-      </button>
+      <button onclick="HandleReport('options1')">Run Report</button>
     </fieldset>
     <fieldset class="button-div">
       <legend style="color: #1123c0">APAT Analytics</legend>
@@ -79,9 +108,7 @@
         <option value="apat3">Option 3</option>
         <option value="apat4">Option 4</option>
       </select>
-      <button onclick="window.opener.HandleReport('options2')">
-        Run Report
-      </button>
+      <button onclick="HandleReport('options2')">Run Report</button>
     </fieldset>
   </body>
 </html>
