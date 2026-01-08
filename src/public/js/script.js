@@ -165,8 +165,9 @@ function AnalyticsMenu() {
   );
 }
 
-function HandleReport(reportChoice) {
-  switch (reportChoice) {
+function HandleReport(dropdownId) {
+  const selectedValue = document.getElementById(dropdownId).value;
+  switch (selectedValue) {
     case "apar1":
       window.opener.CallGetCPAReportNoInner();
       break;
