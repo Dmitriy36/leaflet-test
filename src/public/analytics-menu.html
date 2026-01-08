@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -24,11 +26,12 @@
         padding: 20px;
         gap: 15px;
       }
-      .div-label {
+      legend {
         font-size: 20px;
         font-weight: bold;
         font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
           "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        padding: 0 10px;
       }
       label {
         font-size: 15px;
@@ -53,8 +56,8 @@
     </style>
   </head>
   <body>
-    <div class="button-div">
-      <div class="div-label">APAR Analytics</div>
+    <fieldset class="button-div">
+      <legend>APAR Analytics</legend>
       <label for="options1">Select:</label>
       <select name="options" id="options1">
         <option value="option1">Option 1</option>
@@ -65,17 +68,8 @@
       <button onclick="window.opener.CallGetCPAReportNoInner()">
         Run Report
       </button>
-    </div>
-    <div class="button-div">
-      <div class="div-label">APAT Analytics</div>
+    </fieldset>
+    <fieldset class="button-div">
+      <legend>APAT Analytics</legend>
       <label for="options2">Select:</label>
-      <select name="options" id="options2">
-        <option value="option1">Option 1</option>
-        <option value="option2">Option 2</option>
-        <option value="option3">Option 3</option>
-        <option value="option4">Option 4</option>
-      </select>
-      <button onclick="alert('Analytics-2 clicked')">Run Report</button>
-    </div>
-  </body>
-</html>
+      <select name="o
