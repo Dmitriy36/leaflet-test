@@ -223,6 +223,10 @@ function CallGetCPAReportNoInner() {
   GetCPAReportNoInner().catch((err) => console.error(err));
 }
 
+function Call_APAT_GetDuplicateIssues() {
+  APAT_GetDuplicateIssues().catch((err) => console.error(err));
+}
+
 async function GetCPAReport() {
   // if selectedSites is not empty:
   if (selectedSites.length > 0) {
@@ -397,6 +401,17 @@ async function GetCPAReportNoInner() {
       console.error("Error fetching financial report:", error);
       alert("Error loading financial report. Please try again.");
     });
+}
+
+async function APAT_GetDuplicateIssues() {
+  try {
+    const response = await fetch("/duplicate-purchases");
+    const data = await response.json();
+    console.log("Duplicate purchases:", data.data);
+  } catch (error) {
+    console.error("Error fetching duplicate purchases:", error);
+    alert("Error loading duplicate purchases report.");
+  }
 }
 
 function ClearAll() {

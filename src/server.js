@@ -176,6 +176,19 @@ app.post("/issues-by-station", async (req, res) => {
   }
 });
 
+app.get("/duplicate-issues", async (req, res) => {
+  try {
+    const pool = await poolPromiseOtherDB;
+
+    const result = await pool.request().execute("sp_GetDuplicateIssues");
+
+    res.json({ data: result.recordset });
+  } catch (err) {
+    console.error("Error in /duplicate-issues:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.post("/byregion", async (req, res) => {
   try {
     const region = req.body.region;
