@@ -435,10 +435,19 @@ async function APAT_GetIssueDetails(patSSN) {
     });
 
     const data = await response.json();
-    console.log("Issue details:", data.data);
 
-    // Display the details however you want - popup, alert, etc.
-    alert(JSON.stringify(data.data, null, 2));
+    sessionStorage.setItem("issueDetailsData", JSON.stringify(data.data));
+
+    const popup = window.open(
+      "/issue-details.html",
+      "Issue Details",
+      "width=1000,height=600"
+    );
+
+    if (!popup) {
+      alert("Popup was blocked. Please allow popups for this site.");
+      return;
+    }
   } catch (error) {
     console.error("Error fetching issue details:", error);
     alert("Error loading issue details.");

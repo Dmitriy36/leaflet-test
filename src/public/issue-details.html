@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Issue Details</title>
+    <style>
+      body {
+        font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+        font-size: 1em;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th,
+      td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #17d1a3ff;
+        position: sticky;
+        top: 0;
+      }
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+    </style>
+    <script>
+      window.onload = function () {
+        const data = JSON.parse(sessionStorage.getItem("issueDetailsData"));
+        const tableBody = document.getElementById("tableBody");
+
+        // You'll need to adjust the columns based on what sp_GetIssueDetails returns
+        data.forEach((row) => {
+          tableBody.innerHTML += `
+          <tr>
+            <td>${row.AppTransId || "N/A"}</td>
+            <td>${row.StationId || "N/A"}</td>
+            <td>${row.StationName || "N/A"}</td>
+            <td>${row.EntryDate || "N/A"}</td>
+            <td>${row.RequestDate || "N/A"}</td>
+            <td>${row.PatientName || "N/A"}</td>
+            <td>${row.PatDOB || "N/A"}</td>
+            <td>${row.PatShortSSN || "N/A"}</td>
+            <td>${row.TypeTrans || "N/A"}</td>
+            <td>${row.Item || "N/A"}</td>
+            <td>${row.ItemIEN || "N/A"}</td>
+            <td>${row.HCPCS_ShortName || "N/A"}</td>
+            <td>${row.Qty || "N/A"}</td>
+            <td>${row.VendorName || "N/A"}</td>
+            <td>${row.VendorIEN || "N/A"}</td>
+            <td>${row.ProdDescription || "N/A"}</td>
+            <td>${row.TotalCost || "N/A"}</td>
+            <td>${row.ShortDescription || "N/A"}</td>
+            <td>${row.DeliverTo || "N/A"}</td>
+            <td>${row.Initiator || "N/A"}</td>
+            <td>${row.Contract || "N/A"}</td>
+            <td>${row.UnitOfIssue || "N/A"}</td>
+            <td>${row.Remarks || "N/A"}</td>
+          </tr>
+        `;
+        });
+      };
+    </script>
+  </head>
+  <body>
+    <h2>Issue Details</h2>
+    <table>
+      <tr>
+        <th>Transaction</th>
+        <th>Station Id</th>
+        <th>Station Name</th>
+        <th>Entry Date</th>
+        <th>Request Date</th>
+        <th>Patient Name</th>
+        <th>Patient DOB</th>
+        <th>Short SSN</th>
+        <th>Type</th>
+        <th>Item</th>
+        <th>Item IEN</th>
+        <th>HCPCS Short Name</th>
+        <th>Qty</th>
+        <th>Vendor Name</th>
+        <th>Vendor IEN</th>
+        <th>Prod Description</th>
+        <th>Total Cost</th>
+        <th>Short Desc</th>
+        <th>Deliver To</th>
+        <th>Initiator</th>
+        <th>Contract</th>
+        <th>Unit of Issue</th>
+        <th>Remarks</th>
+      </tr>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </body>
+</html>
