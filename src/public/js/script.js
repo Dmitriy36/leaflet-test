@@ -405,12 +405,12 @@ async function GetCPAReportNoInner() {
 
 async function APAT_GetDuplicateIssues() {
   try {
-    const response = await fetch("/duplicate-purchases");
+    const response = await fetch("/duplicate-issues");
     const data = await response.json();
-    console.log("Duplicate purchases:", data.data);
+    console.log("Duplicate issues:", data.data);
   } catch (error) {
-    console.error("Error fetching duplicate purchases:", error);
-    alert("Error loading duplicate purchases report.");
+    console.error("Error fetching duplicate issues:", error);
+    alert("Error loading duplicate issues report.");
   }
 }
 
