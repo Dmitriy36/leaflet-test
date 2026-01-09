@@ -407,7 +407,19 @@ async function APAT_GetDuplicateIssues() {
   try {
     const response = await fetch("/duplicate-issues");
     const data = await response.json();
-    console.log("Duplicate issues:", data.data);
+
+    sessionStorage.setItem("duplicateIssuesData", JSON.stringify(data.data));
+
+    const popup = window.open(
+      "/duplicate-issues.html",
+      "Duplicate Issues",
+      "width=1200,height=600"
+    );
+
+    if (!popup) {
+      alert("Popup was blocked. Please allow popups for this site.");
+      return;
+    }
   } catch (error) {
     console.error("Error fetching duplicate issues:", error);
     alert("Error loading duplicate issues report.");
