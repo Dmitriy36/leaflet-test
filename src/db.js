@@ -58,8 +58,8 @@ async function createPoolOtherDB() {
   const config = {
     user: secret.username,
     password: secret.password,
-    server: "your-other-server.us-east-2.rds.amazonaws.com", // Change this
-    database: "YourOtherDatabase", // Change this
+    server: "integrated-apar-apat.c1vwa9fou9fe.us-east-2.rds.amazonaws.com", // Change this
+    database: "Integrated_APAT", // Change this
     options: {
       encrypt: true,
       trustServerCertificate: true,
