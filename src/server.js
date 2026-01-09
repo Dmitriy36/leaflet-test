@@ -200,7 +200,7 @@ app.post("/issue-details", async (req, res) => {
     const result = await pool
       .request()
       .input("PatShortSSN", sql.VarChar(50), patSSN)
-      .execute("sp_GetIssueDetails");
+      .execute("sp_GetDuplicateIssueDetails");
 
     res.json({ data: result.recordset });
   } catch (err) {
