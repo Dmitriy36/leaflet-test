@@ -1,7 +1,7 @@
 const sql = require("mssql");
 const express = require("express");
 const path = require("path");
-const { poolPromise } = require("./db");
+const { poolPromise, poolPromiseOtherDB } = require("./db");
 
 const app = express();
 
@@ -98,6 +98,80 @@ app.post("/financial-report", async (req, res) => {
     res.json({ data: allRows });
   } catch (err) {
     console.error("Error in /financial-report:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/issues-by-station", async (req, res) => {
+  try {
+    const VAMCIds = req.body.vamcIds;
+    if (!VAMCIds || VAMCIds.length === 0) {
+      return res.status(400).json({ error: "No VAMCIds provided" });
+    }
+    // Sort VAMCIds in ascending order
+    VAMCIds.sort((a, b) => a - b);
+
+    const pool = await poolPromiseOtherDB; // Use your other database pool
+    const idListString = VAMCIds.join(",");
+
+    // Get detail rows
+    const detailResult = await pool
+      .request()
+      .input("VAMCList", sql.VarChar(1000), idListString)
+      .execute("sp_IssuesByVAMCDetails");
+
+    console.log("detail result structure: ", detailResult);
+
+    // Get totals for each station
+    const totalsPromises = VAMCIds.map((id) =>
+      pool
+        .request()
+        .input("VAMC_Id", sql.Int, id)
+        .execute("sp_IssuesByVAMCTotals")
+    );
+    const totalsResults = await Promise.all(totalsPromises);
+
+    // Combine details and totals
+    const allRows = [];
+    let grandTotal = 0;
+
+    VAMCIds.forEach((id, index) => {
+      // Add detail rows for this station
+      const stationDetails = detailResult.recordset.filter(
+        (row) => row.station_number === id
+      );
+      allRows.push(...stationDetails);
+
+      // Add total row for this station
+      if (
+        totalsResults[index] &&
+        totalsResults[index].recordset &&
+        totalsResults[index].recordset.length > 0
+      ) {
+        const totalRow = totalsResults[index].recordset[0];
+        allRows.push(totalRow);
+        grandTotal += totalRow.Transaction_Amount || 0;
+      }
+    });
+
+    // Add grand total row
+    allRows.push({
+      AppTransID: "--- Grand Total ---",
+      StationId: null,
+      StationName: null,
+      EntryDate: null,
+      PatShortSSN: null,
+      PatientName: null,
+      RequestDate: null,
+      Item: null,
+      ItemIEN: null,
+      Qty: null,
+      Total: grandTotal,
+    });
+
+    res.json({ data: allRows });
+  } catch (err) {
+    console.error("Error in /new-report:", err);
     res.status(500).json({ error: err.message });
   }
 });

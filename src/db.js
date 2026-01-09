@@ -53,5 +53,27 @@ async function createPool() {
   return sql.connect(config);
 }
 
+async function createPoolOtherDB() {
+  const secret = await getSecret(); // Use same secret or create a new getSecret function if different
+  const config = {
+    user: secret.username,
+    password: secret.password,
+    server: "your-other-server.us-east-2.rds.amazonaws.com", // Change this
+    database: "YourOtherDatabase", // Change this
+    options: {
+      encrypt: true,
+      trustServerCertificate: true,
+    },
+    pool: {
+      max: 25,
+      min: 5,
+      idleTimeoutMillis: 30000,
+    },
+  };
+  console.log("Using user for other DB:", config.user);
+  return sql.connect(config);
+}
+
 const poolPromise = createPool();
-module.exports = { poolPromise };
+const poolPromiseOtherDB = createPoolOtherDB();
+module.exports = { poolPromise, poolPromiseOtherDB };
