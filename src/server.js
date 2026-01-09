@@ -178,10 +178,13 @@ app.post("/issues-by-station", async (req, res) => {
 
 app.get("/duplicate-issues", async (req, res) => {
   try {
+    console.log("Starting duplicate-issues endpoint");
     const pool = await poolPromiseOtherDB;
+    console.log("Pool connected");
 
     const result = await pool.request().execute("sp_GetDuplicateIssues");
 
+    console.log("Query executed, rows:", result.recordset.length);
     res.json({ data: result.recordset });
   } catch (err) {
     console.error("Error in /duplicate-issues:", err);
