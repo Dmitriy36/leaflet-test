@@ -25,6 +25,13 @@
       tr:nth-child(even) {
         background-color: #f2f2f2;
       }
+      .patient-name {
+        width: 20%;
+      }
+      button {
+        padding: 5px 15px;
+        cursor: pointer;
+      }
     </style>
     <script>
       window.onload = function () {
@@ -35,8 +42,11 @@
           tableBody.innerHTML += `
           <tr>
             <td>${row.PatShortSSN || "N/A"}</td>
-            <td>${row.PatientName || "N/A"}</td>
+            <td class="patient-name">${row.PatientName || "N/A"}</td>
             <td>${row.ItemIEN || "N/A"}</td>
+<td><button onclick="window.opener.APAT_GetIssueDetails('${
+            row.PatShortSSN
+          }')">Details</button></td>
           </tr>
         `;
         });
@@ -48,8 +58,9 @@
     <table>
       <tr>
         <th>Patient SSN</th>
-        <th>Patient Name</th>
+        <th class="patient-name">Patient Name</th>
         <th>Item IEN</th>
+        <th>Actions</th>
       </tr>
       <tbody id="tableBody"></tbody>
     </table>

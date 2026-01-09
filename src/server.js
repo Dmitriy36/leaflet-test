@@ -192,6 +192,23 @@ app.get("/duplicate-issues", async (req, res) => {
   }
 });
 
+app.post("/issue-details", async (req, res) => {
+  try {
+    const { patSSN } = req.body;
+    const pool = await poolPromiseOtherDB;
+
+    const result = await pool
+      .request()
+      .input("PatShortSSN", sql.VarChar(50), patSSN)
+      .execute("sp_GetIssueDetails");
+
+    res.json({ data: result.recordset });
+  } catch (err) {
+    console.error("Error in /issue-details:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.post("/byregion", async (req, res) => {
   try {
     const region = req.body.region;

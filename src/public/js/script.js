@@ -426,6 +426,25 @@ async function APAT_GetDuplicateIssues() {
   }
 }
 
+async function APAT_GetIssueDetails(patSSN) {
+  try {
+    const response = await fetch("/issue-details", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ patSSN }),
+    });
+
+    const data = await response.json();
+    console.log("Issue details:", data.data);
+
+    // Display the details however you want - popup, alert, etc.
+    alert(JSON.stringify(data.data, null, 2));
+  } catch (error) {
+    console.error("Error fetching issue details:", error);
+    alert("Error loading issue details.");
+  }
+}
+
 function ClearAll() {
   canLoadAll = false;
   UnHighlightAllButtons();
