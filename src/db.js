@@ -71,7 +71,7 @@ async function createPoolOtherDB() {
     },
   };
   console.log("Using user for other DB:", config.user);
-  return sql.connect(config);
+  return new sql.ConnectionPool(config).connect();
 }
 
 const poolPromise = createPool();
