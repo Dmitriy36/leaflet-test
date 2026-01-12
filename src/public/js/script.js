@@ -489,32 +489,28 @@ function ClearMarkers() {
 
 function AddMarker(geo) {
   L.circleMarker([geo.lat, geo.lng], {
-    // let circleMarker =
     weight: 2,
     radius: 3,
     color: "green",
     fillColor: "rgba(217, 255, 0, 1)",
     fillOpacity: 0.5,
-  })
-    .addTo(markerGroupMain)
-    .addTo(markerGroupAlaska)
-    .addTo(markerGroupHawaii);
-  if (geo.lng < -149) {
-    L.circleMarker([geo.lat, geo.lng], {
-      weight: 2,
-      radius: 3,
-      color: "green",
-      fillColor: "rgba(217, 255, 0, 1)",
-      fillOpacity: 0.5,
-    }).addTo(markerGroupHawaii);
-    L.circleMarker([geo.lat, geo.lng], {
-      weight: 2,
-      radius: 3,
-      color: "green",
-      fillColor: "rgba(217, 255, 0, 1)",
-      fillOpacity: 0.5,
-    }).addTo(markerGroupAlaska);
-  }
+  }).addTo(markerGroupMain);
+
+  L.circleMarker([geo.lat, geo.lng], {
+    weight: 2,
+    radius: 3,
+    color: "green",
+    fillColor: "rgba(217, 255, 0, 1)",
+    fillOpacity: 0.5,
+  }).addTo(markerGroupHawaii);
+
+  L.circleMarker([geo.lat, geo.lng], {
+    weight: 2,
+    radius: 3,
+    color: "green",
+    fillColor: "rgba(217, 255, 0, 1)",
+    fillOpacity: 0.5,
+  }).addTo(markerGroupAlaska);
 }
 
 function DrawLine(geo) {
