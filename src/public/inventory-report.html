@@ -191,15 +191,11 @@
             data.data.forEach((row) => {
               const tr = document.createElement("tr");
               tr.innerHTML = `
-                <td>${
-                  row.Station_Id || '<span class="null-value">N/A</span>'
-                }</td>
+                <td>${row.Station || '<span class="null-value">N/A</span>'}</td>
                 <td>${
                   row.Location || '<span class="null-value">N/A</span>'
                 }</td>
-                <td>${
-                  row.Item_Number || '<span class="null-value">N/A</span>'
-                }</td>
+                <td>${row.Item || '<span class="null-value">N/A</span>'}</td>
                 <td class="number">${
                   row.Quantity !== null && row.Quantity !== undefined
                     ? row.Quantity
