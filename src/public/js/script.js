@@ -83,7 +83,7 @@ async function LoadByRegion(regionNumber) {
     .then((results) => {
       const IDs = results.data;
       // alert(JSON.stringify(IDs));
-      selectedSites = IDs;
+      selectedSites = [...IDs];
       AddLinesSelected();
     })
     .catch((error) => console.error("Error: ", error));
@@ -102,7 +102,7 @@ async function LoadByVISN(VISNNumber) {
     .then((results) => {
       const IDs = results.data;
       // alert(JSON.stringify(IDs));
-      selectedSites = IDs;
+      selectedSites = [...IDs];
       AddLinesSelected();
     })
     .catch((error) => console.error("Error: ", error));
@@ -560,7 +560,8 @@ async function AddLinesAll() {
   canLoadAll = true;
   let selectedButton = document.getElementById("loadselectedBtn");
   selectedButton.disabled = true;
-  allSites.forEach((site, index) => {
+  selectedSites = [...allSites];
+  selectedSites.forEach((site, index) => {
     setTimeout(() => {
       let currentVAMCbutton = document.getElementById(
         `site-${site.ExternalId}-button`
