@@ -63,7 +63,7 @@
             window.opener.CallGetCPAReportNoInner();
             break;
           case "apar2":
-            openInventoryReport();
+            window.opener.OpenInventoryReport();
             break;
           case "apar3":
             alert("define APAR report first.");
@@ -84,21 +84,6 @@
             alert("define APAT report first.");
             break;
         }
-      }
-
-      function openInventoryReport() {
-        const vamcIds = window.opener.getSelectedVAMCIds(); // Add window.opener
-
-        if (!vamcIds || vamcIds.length === 0) {
-          alert("Please select at least one station first.");
-          return;
-        }
-
-        window.open(
-          `/inventory-report.html?vamc_ids=${vamcIds.join(",")}`,
-          "Inventory Report",
-          "width=1400,height=800"
-        );
       }
     </script>
   </head>

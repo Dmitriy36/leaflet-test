@@ -124,11 +124,11 @@
 
     <script>
       // Get selected VAMC IDs from opener window (parent page)
-      function getSelectedVAMCs() {
+      function GetSelectedVAMCs() {
         // You'll need to pass this from your main page
         // For now, returning example - replace with your actual logic
-        if (window.opener && window.opener.getSelectedVAMCIds) {
-          return window.opener.getSelectedVAMCIds();
+        if (window.opener && window.opener.GetSelectedVAMCIds) {
+          return window.opener.GetSelectedVAMCIds();
         }
         // Fallback: you can also pass via URL parameter
         const urlParams = new URLSearchParams(window.location.search);
@@ -148,7 +148,7 @@
         }
 
         // Get VAMC IDs
-        const vamcIds = getSelectedVAMCs();
+        const vamcIds = GetSelectedVAMCs();
         if (!vamcIds || vamcIds.length === 0) {
           tbody.innerHTML =
             '<tr><td colspan="4" class="message error">No stations selected. Please select stations from the main page.</td></tr>';
