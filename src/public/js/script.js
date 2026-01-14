@@ -406,7 +406,7 @@ async function GetCPAReportNoInner() {
 }
 
 function getSelectedVAMCIds() {
-  return selectedSites;
+  return selectedSites.map((item) => item.ExternalId);
 }
 
 async function GetInventoryCheck() {
