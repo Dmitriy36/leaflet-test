@@ -406,8 +406,10 @@ async function GetCPAReportNoInner() {
 }
 
 async function OpenInventoryReport() {
+  console.log("OpenInventoryReport called...");
+  console.log("selected Sites: ", selectedSites);
   const vamcIds = GetSelectedVAMCIds(); // Add window.opener
-
+  console.log("vamcIds from GetSelectedVAMCIds: ", vamcIds);
   if (!vamcIds || vamcIds.length === 0) {
     alert("Please select at least one station first.");
     return;
