@@ -53,7 +53,7 @@ app.get("/api/item-inventory", async (req, res) => {
       .request()
       .input("ItemNumber", sql.VarChar(50), itemNumber)
       .input("VAMCList", sql.VarChar(1000), vamcIds)
-      .execute("YourStoredProcedureName"); // Replace with your actual SP name
+      .execute("SP_InventoryCheck"); // Replace with your actual SP name
 
     res.json({ data: result.recordset });
   } catch (err) {
