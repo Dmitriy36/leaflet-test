@@ -39,6 +39,10 @@ app.get("/api/item-inventory", async (req, res) => {
     const itemNumber = req.query.item_number;
     const vamcIds = req.query.vamc_ids; // Expects comma-separated string: "123,456,789"
 
+    console.log("itemNumber: ", itemNumber);
+    console.log("VAMC IDs: ", vamcIds);
+    console.log("VAMCIds type: ", typeof vamcIds);
+
     if (!itemNumber) {
       return res.status(400).json({ error: "No item_number provided" });
     }
@@ -52,7 +56,7 @@ app.get("/api/item-inventory", async (req, res) => {
     const result = await pool
       .request()
       .input("ItemNumber", sql.VarChar(50), itemNumber)
-      .input("VAMCList", sql.VarChar(1000), vamcIds)
+      .input("VAMCIds", sql.VarChar(1000), vamcIds)
       .execute("SP_InventoryCheck"); // Replace with your actual SP name
 
     res.json({ data: result.recordset });
