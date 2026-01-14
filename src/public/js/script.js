@@ -239,6 +239,7 @@ async function GetCPAReport() {
 
   // Send to backend
   fetch("/financial-report", {
+    // get rid of this
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ vamcIds: vamcIds }),
@@ -367,6 +368,7 @@ async function GetCPAReportNoInner() {
 
   // Send to backend
   fetch("/financial-report", {
+    // keep this
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ vamcIds: vamcIds }),
@@ -400,6 +402,50 @@ async function GetCPAReportNoInner() {
     .catch((error) => {
       console.error("Error fetching financial report:", error);
       alert("Error loading financial report. Please try again.");
+    });
+}
+
+function getSelectedVAMCIds() {
+  return selectedSites;
+}
+
+async function GetInventoryCheck() {
+  // if selectedSites is not empty:
+  if (selectedSites.length > 0) {
+    vamcIds = selectedSites.map((site) => site.ExternalId);
+  } else {
+    vamcIds = allSites.map((site) => site.ExternalId);
+  }
+
+  const itemNumber = document.getElementById("searchInput").value.trim();
+  console.log("these VAMC ids were sent: ", JSON.stringify(vamcIds));
+
+  fetch(`/api/item-inventory?item_number=${itemNumber}&vamc_ids=${vamcIds}`)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Received data:", data);
+      console.log("data.data:", data.data);
+      if (!data || !data.data || !Array.isArray(data.data)) {
+        console.error("Invalid data structure:", data);
+        alert("Error: No data returned - check console");
+        return;
+      }
+      // Store data in sessionStorage so the popup can access it
+      sessionStorage.setItem("inventoryReportData", JSON.stringify(data.data));
+      // Open the popup to a dedicated HTML page
+      const popup = window.open(
+        "/inventory-report.html",
+        "Inventory Report",
+        "width=1400,height=800"
+      );
+      if (!popup) {
+        alert("Popup was blocked. Please allow popups for this site.");
+        return;
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching inventory report:", error);
+      alert("Error loading inventory report. Please try again.");
     });
 }
 

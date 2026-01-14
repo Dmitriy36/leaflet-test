@@ -10,6 +10,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.post("/inventory", async (req, res) => {
+  // forks
   try {
     const VAMCIds = req.body.vamcIds; // Receives array from frontend
 
@@ -29,6 +30,34 @@ app.post("/inventory", async (req, res) => {
     );
     res.json({ data: result.recordset }); // Returns query results
   } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/api/item-inventory", async (req, res) => {
+  try {
+    const itemNumber = req.query.item_number;
+    const vamcIds = req.query.vamc_ids; // Expects comma-separated string: "123,456,789"
+
+    if (!itemNumber) {
+      return res.status(400).json({ error: "No item_number provided" });
+    }
+
+    if (!vamcIds || vamcIds.length === 0) {
+      return res.status(400).json({ error: "No vamc_ids provided" });
+    }
+
+    const pool = await poolPromise; // or poolPromiseOtherDB depending on your database
+
+    const result = await pool
+      .request()
+      .input("ItemNumber", sql.VarChar(50), itemNumber)
+      .input("VAMCList", sql.VarChar(1000), vamcIds)
+      .execute("YourStoredProcedureName"); // Replace with your actual SP name
+
+    res.json({ data: result.recordset });
+  } catch (err) {
+    console.error("Error in /api/item-inventory:", err);
     res.status(500).json({ error: err.message });
   }
 });

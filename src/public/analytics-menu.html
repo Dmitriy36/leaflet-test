@@ -63,7 +63,7 @@
             window.opener.CallGetCPAReportNoInner();
             break;
           case "apar2":
-            alert("define APAR report first.");
+            openInventoryReport();
             break;
           case "apar3":
             alert("define APAR report first.");
@@ -85,6 +85,21 @@
             break;
         }
       }
+
+      function openInventoryReport() {
+        const vamcIds = window.opener.getSelectedVAMCIds(); // Add window.opener
+
+        if (!vamcIds || vamcIds.length === 0) {
+          alert("Please select at least one station first.");
+          return;
+        }
+
+        window.open(
+          `/inventory-report.html?vamc_ids=${vamcIds.join(",")}`,
+          "Inventory Report",
+          "width=1400,height=800"
+        );
+      }
     </script>
   </head>
   <body>
@@ -93,7 +108,7 @@
       <label for="options1">Select:</label>
       <select name="options" id="options1">
         <option value="apar1">Control Point Activity</option>
-        <option value="apar2">Report 2</option>
+        <option value="apar2">Inventory Check</option>
         <option value="apar3">Report 3</option>
         <option value="apar4">Report 4</option>
       </select>
