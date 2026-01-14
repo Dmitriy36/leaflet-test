@@ -406,6 +406,7 @@ async function GetCPAReportNoInner() {
 }
 
 function getSelectedVAMCIds() {
+  console.log("selectedSites: ", selectedSites);
   return selectedSites.map((item) => item.ExternalId);
 }
 
