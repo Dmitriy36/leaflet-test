@@ -225,9 +225,9 @@
             (item, index) => `
           <div class="autocomplete-item" data-index="${index}">
             ${escapeHtml(item.Item_Description)}
-            <span class="item-number-badge">#${escapeHtml(
+            <span class="item-number-badge">[${escapeHtml(
               item.Item_Number
-            )}</span>
+            )}]</span>
           </div>
         `
           )
