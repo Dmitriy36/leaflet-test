@@ -14,6 +14,7 @@
         padding: 15px;
         background-color: #f5f5f5;
         border: 1px solid #ddd;
+        position: relative;
       }
       .search-row {
         margin-bottom: 10px;
@@ -21,10 +22,13 @@
       .search-row label {
         font-weight: bold;
       }
+      .input-wrapper {
+        position: relative;
+        display: inline-block;
+      }
       #searchInput {
-        width: 300px;
+        width: 400px;
         padding: 5px;
-        margin-left: 10px;
       }
       #searchBtn {
         padding: 5px 15px;
@@ -38,6 +42,48 @@
         margin-left: 10px;
         font-weight: normal;
       }
+
+      /* Autocomplete dropdown styles */
+      .autocomplete-results {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 400px;
+        background: white;
+        border: 1px solid #ddd;
+        border-top: none;
+        max-height: 300px;
+        overflow-y: auto;
+        display: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+      }
+
+      .autocomplete-results.show {
+        display: block;
+      }
+
+      .autocomplete-item {
+        padding: 8px;
+        cursor: pointer;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .autocomplete-item:hover,
+      .autocomplete-item.selected {
+        background-color: #f0f0f0;
+      }
+
+      .autocomplete-item:last-child {
+        border-bottom: none;
+      }
+
+      .item-number-badge {
+        color: #666;
+        font-size: 11px;
+        margin-left: 8px;
+      }
+
       table {
         border-collapse: collapse;
         width: 100%;
@@ -77,11 +123,14 @@
   <body>
     <div class="search-container">
       <div class="search-row">
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="Enter item number..."
-        />
+        <div class="input-wrapper">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Enter item number..."
+          />
+          <div id="autocomplete-results" class="autocomplete-results"></div>
+        </div>
         <button id="searchBtn">Search</button>
       </div>
       <div class="search-row">
@@ -92,13 +141,8 @@
             Item Number
           </label>
           <label>
-            <input
-              type="radio"
-              name="searchType"
-              value="description"
-              disabled
-            />
-            Description (coming soon)
+            <input type="radio" name="searchType" value="description" />
+            Description
           </label>
         </span>
       </div>
@@ -109,41 +153,186 @@
         <tr>
           <th>Station ID</th>
           <th>Location</th>
+          <th>Description</th>
           <th>Item Number</th>
           <th>Quantity</th>
         </tr>
       </thead>
       <tbody id="reportTableBody">
         <tr>
-          <td colspan="4" class="message">
-            Enter an item number and click Search
+          <td colspan="5" class="message">
+            Enter a search term and click Search
           </td>
         </tr>
       </tbody>
     </table>
 
     <script>
+      // Autocomplete state
+      let autocompleteTimeout = null;
+      let selectedAutocompleteIndex = -1;
+      let autocompleteResults = [];
+
       // Get selected VAMC IDs from opener window (parent page)
       function GetSelectedVAMCs() {
-        // You'll need to pass this from your main page
-        // For now, returning example - replace with your actual logic
         if (window.opener && window.opener.GetSelectedVAMCIds) {
           return window.opener.GetSelectedVAMCIds();
         }
-        // Fallback: you can also pass via URL parameter
         const urlParams = new URLSearchParams(window.location.search);
         const vamcIds = urlParams.get("vamc_ids");
         return vamcIds ? vamcIds.split(",") : [];
       }
 
+      // Check which search type is selected
+      function getSearchType() {
+        return document.querySelector('input[name="searchType"]:checked').value;
+      }
+
+      // Autocomplete search function
+      async function doAutocompleteSearch(query) {
+        if (query.length < 2) {
+          hideAutocomplete();
+          return;
+        }
+
+        try {
+          const response = await fetch(
+            `/api/search-items?q=${encodeURIComponent(query)}`
+          );
+          if (!response.ok) throw new Error("Search failed");
+
+          const items = await response.json();
+          autocompleteResults = items;
+          displayAutocompleteResults(items);
+        } catch (error) {
+          console.error("Autocomplete error:", error);
+          hideAutocomplete();
+        }
+      }
+
+      // Display autocomplete results
+      function displayAutocompleteResults(items) {
+        const resultsDiv = document.getElementById("autocomplete-results");
+        selectedAutocompleteIndex = -1;
+
+        if (items.length === 0) {
+          hideAutocomplete();
+          return;
+        }
+
+        const html = items
+          .map(
+            (item, index) => `
+          <div class="autocomplete-item" data-index="${index}">
+            ${escapeHtml(item.Item_Description)}
+            <span class="item-number-badge">#${escapeHtml(
+              item.Item_Number
+            )}</span>
+          </div>
+        `
+          )
+          .join("");
+
+        resultsDiv.innerHTML = html;
+        resultsDiv.classList.add("show");
+
+        // Add click handlers
+        resultsDiv.querySelectorAll(".autocomplete-item").forEach((item) => {
+          item.addEventListener("click", (e) => {
+            const index = parseInt(e.currentTarget.dataset.index);
+            selectAutocompleteItem(index);
+          });
+        });
+      }
+
+      // Select an autocomplete item
+      function selectAutocompleteItem(index) {
+        const item = autocompleteResults[index];
+        if (!item) return;
+
+        document.getElementById("searchInput").value = item.Item_Description;
+        hideAutocomplete();
+
+        // Automatically trigger search
+        searchInventory();
+      }
+
+      // Hide autocomplete
+      function hideAutocomplete() {
+        document
+          .getElementById("autocomplete-results")
+          .classList.remove("show");
+        selectedAutocompleteIndex = -1;
+      }
+
+      // Escape HTML to prevent XSS
+      function escapeHtml(text) {
+        const div = document.createElement("div");
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      // Handle keyboard navigation in autocomplete
+      function handleAutocompleteKeyboard(e) {
+        const resultsDiv = document.getElementById("autocomplete-results");
+        if (!resultsDiv.classList.contains("show")) return;
+
+        const items = resultsDiv.querySelectorAll(".autocomplete-item");
+
+        switch (e.key) {
+          case "ArrowDown":
+            e.preventDefault();
+            selectedAutocompleteIndex = Math.min(
+              selectedAutocompleteIndex + 1,
+              items.length - 1
+            );
+            updateAutocompleteSelection(items);
+            break;
+
+          case "ArrowUp":
+            e.preventDefault();
+            selectedAutocompleteIndex = Math.max(
+              selectedAutocompleteIndex - 1,
+              0
+            );
+            updateAutocompleteSelection(items);
+            break;
+
+          case "Enter":
+            e.preventDefault();
+            if (selectedAutocompleteIndex >= 0) {
+              selectAutocompleteItem(selectedAutocompleteIndex);
+            }
+            break;
+
+          case "Escape":
+            hideAutocomplete();
+            break;
+        }
+      }
+
+      // Update visual selection in autocomplete
+      function updateAutocompleteSelection(items) {
+        items.forEach((item, index) => {
+          if (index === selectedAutocompleteIndex) {
+            item.classList.add("selected");
+            item.scrollIntoView({ block: "nearest" });
+          } else {
+            item.classList.remove("selected");
+          }
+        });
+      }
+
       function searchInventory() {
-        const itemNumber = document.getElementById("searchInput").value.trim();
+        const searchInput = document.getElementById("searchInput");
+        const inputValue = searchInput.value.trim();
         const tbody = document.getElementById("reportTableBody");
+        const searchType = getSearchType();
 
         // Validation
-        if (!itemNumber) {
+        if (!inputValue) {
           tbody.innerHTML =
-            '<tr><td colspan="4" class="message error">Please enter an item number</td></tr>';
+            '<tr><td colspan="5" class="message error">Please enter a search term</td></tr>';
           return;
         }
 
@@ -151,19 +340,29 @@
         const vamcIds = GetSelectedVAMCs();
         if (!vamcIds || vamcIds.length === 0) {
           tbody.innerHTML =
-            '<tr><td colspan="4" class="message error">No stations selected. Please select stations from the main page.</td></tr>';
+            '<tr><td colspan="5" class="message error">No stations selected. Please select stations from the main page.</td></tr>';
           return;
         }
 
         // Show loading message
         tbody.innerHTML =
-          '<tr><td colspan="4" class="message">Searching...</td></tr>';
+          '<tr><td colspan="5" class="message">Searching...</td></tr>';
 
-        // Build API URL
+        // Build API URL based on search type
         const vamcIdsString = vamcIds.join(",");
-        const url = `/api/item-inventory?item_number=${encodeURIComponent(
-          itemNumber
-        )}&vamc_ids=${vamcIdsString}`;
+        let url;
+
+        if (searchType === "number") {
+          // Search by item number
+          url = `/api/item-inventory?item_number=${encodeURIComponent(
+            inputValue
+          )}&vamc_ids=${vamcIdsString}`;
+        } else {
+          // Search by description
+          url = `/api/item-inventory?item_description=${encodeURIComponent(
+            inputValue
+          )}&vamc_ids=${vamcIdsString}`;
+        }
 
         // Make API call
         fetch(url)
@@ -182,7 +381,7 @@
 
             if (data.data.length === 0) {
               tbody.innerHTML =
-                '<tr><td colspan="4" class="message">No results found</td></tr>';
+                '<tr><td colspan="5" class="message">No results found</td></tr>';
               return;
             }
 
@@ -191,11 +390,18 @@
             data.data.forEach((row) => {
               const tr = document.createElement("tr");
               tr.innerHTML = `
-                <td>${row.Station || '<span class="null-value">N/A</span>'}</td>
+                <td>${
+                  row.Station_Id || '<span class="null-value">N/A</span>'
+                }</td>
                 <td>${
                   row.Location || '<span class="null-value">N/A</span>'
                 }</td>
-                <td>${row.Item || '<span class="null-value">N/A</span>'}</td>
+                <td>${
+                  row.Short_Description || '<span class="null-value">N/A</span>'
+                }</td>
+                <td>${
+                  row.Item_Number || '<span class="null-value">N/A</span>'
+                }</td>
                 <td class="number">${
                   row.Quantity !== null && row.Quantity !== undefined
                     ? row.Quantity
@@ -207,11 +413,62 @@
           })
           .catch((error) => {
             console.error("Error fetching inventory:", error);
-            tbody.innerHTML = `<tr><td colspan="4" class="message error">Error loading data: ${error.message}</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="5" class="message error">Error loading data: ${error.message}</td></tr>`;
           });
       }
 
-      // Add event listener
+      // Input event handler
+      document.getElementById("searchInput").addEventListener("input", (e) => {
+        const searchType = getSearchType();
+
+        if (searchType === "description") {
+          // Enable autocomplete for description search
+          clearTimeout(autocompleteTimeout);
+          const query = e.target.value.trim();
+
+          if (query.length < 2) {
+            hideAutocomplete();
+            return;
+          }
+
+          // Debounce: wait 300ms after user stops typing
+          autocompleteTimeout = setTimeout(() => {
+            doAutocompleteSearch(query);
+          }, 300);
+        } else {
+          // Hide autocomplete for number search
+          hideAutocomplete();
+        }
+      });
+
+      // Keyboard navigation
+      document
+        .getElementById("searchInput")
+        .addEventListener("keydown", handleAutocompleteKeyboard);
+
+      // Radio button change - clear autocomplete and reset
+      document.querySelectorAll('input[name="searchType"]').forEach((radio) => {
+        radio.addEventListener("change", () => {
+          hideAutocomplete();
+          document.getElementById("searchInput").value = "";
+          const placeholder =
+            radio.value === "number"
+              ? "Enter item number..."
+              : "Enter description...";
+          document.getElementById("searchInput").placeholder = placeholder;
+        });
+      });
+
+      // Click outside to close autocomplete
+      document.addEventListener("click", (e) => {
+        const searchInput = document.getElementById("searchInput");
+        const resultsDiv = document.getElementById("autocomplete-results");
+        if (!searchInput.contains(e.target) && !resultsDiv.contains(e.target)) {
+          hideAutocomplete();
+        }
+      });
+
+      // Search button click
       document
         .getElementById("searchBtn")
         .addEventListener("click", searchInventory);

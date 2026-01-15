@@ -37,32 +37,68 @@ app.post("/inventory", async (req, res) => {
 app.get("/api/item-inventory", async (req, res) => {
   try {
     const itemNumber = req.query.item_number;
-    const vamcIds = req.query.vamc_ids; // Expects comma-separated string: "123,456,789"
+    const itemDescription = req.query.item_description;
+    const vamcIds = req.query.vamc_ids;
 
     console.log("itemNumber: ", itemNumber);
+    console.log("itemDescription: ", itemDescription);
     console.log("VAMC IDs: ", vamcIds);
-    console.log("VAMCIds type: ", typeof vamcIds);
-
-    if (!itemNumber) {
-      return res.status(400).json({ error: "No item_number provided" });
-    }
 
     if (!vamcIds || vamcIds.length === 0) {
       return res.status(400).json({ error: "No vamc_ids provided" });
     }
 
-    const pool = await poolPromise; // or poolPromiseOtherDB depending on your database
+    const pool = await poolPromise;
+    const request = pool.request();
 
-    const result = await pool
-      .request()
-      .input("ItemNumber", sql.VarChar(50), itemNumber)
-      .input("VAMCIds", sql.VarChar(1000), vamcIds)
-      .execute("SP_InventoryCheck"); // Replace with your actual SP name
+    request.input("VAMCIds", sql.VarChar(1000), vamcIds);
+
+    let result;
+
+    if (itemDescription) {
+      // Search by description
+      request.input("ItemDescription", sql.NVarChar(100), itemDescription);
+      result = await request.execute("SP_InventoryCheck_Descriptive");
+    } else if (itemNumber) {
+      // Search by item number
+      request.input("ItemNumber", sql.VarChar(50), itemNumber);
+      result = await request.execute("SP_InventoryCheck");
+    } else {
+      return res.status(400).json({ error: "No search term provided" });
+    }
 
     res.json({ data: result.recordset });
   } catch (err) {
     console.error("Error in /api/item-inventory:", err);
     res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/api/search-items", async (req, res) => {
+  try {
+    const searchTerm = req.query.q;
+
+    if (!searchTerm || searchTerm.trim().length < 2) {
+      return res.json([]);
+    }
+
+    const sanitized = searchTerm.trim();
+
+    if (sanitized.length > 100) {
+      return res.status(400).json({ error: "Search term too long" });
+    }
+
+    const pool = await poolPromise;
+
+    const result = await pool
+      .request()
+      .input("SearchTerm", sql.NVarChar(100), sanitized)
+      .execute("SP_InventoryCheck_Autocomplete");
+
+    res.json(result.recordset);
+  } catch (error) {
+    console.error("Autocomplete search error:", error);
+    res.status(500).json({ error: "Search failed" });
   }
 });
 
