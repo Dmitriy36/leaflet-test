@@ -16,7 +16,7 @@ async function getSecret() {
       new GetSecretValueCommand({
         SecretId: secret_name,
         VersionStage: "AWSCURRENT",
-      })
+      }),
     );
 
     // Parse the JSON secret
@@ -39,6 +39,7 @@ async function createPool() {
     options: {
       encrypt: true,
       trustServerCertificate: true,
+      requestTimeout: 60000,
     },
     pool: {
       max: 25,
@@ -63,6 +64,7 @@ async function createPoolOtherDB() {
     options: {
       encrypt: true,
       trustServerCertificate: true,
+      requestTimeout: 60000,
     },
     pool: {
       max: 25,
