@@ -60,6 +60,10 @@
       .number-cell {
         text-align: right;
       }
+
+      .red-item {
+        color: red;
+      }
     </style>
     <script>
       let currentData = [];
@@ -87,11 +91,21 @@
         }
 
         data.forEach((row) => {
+          // Format the item IENs with red color
+          let itemsDisplay = "N/A";
+          if (row.DuplicateItemIENs) {
+            const items = row.DuplicateItemIENs.split(", ");
+            const redItems = items
+              .map((item) => `<span class="red-item">${item}</span>`)
+              .join(", ");
+            itemsDisplay = `Items: ${redItems}`;
+          }
+
           tableBody.innerHTML += `
     <tr>
       <td>${row.PatShortSSN || "N/A"}</td>
       <td class="patient-name">${row.PatientName || "N/A"}</td>
-      <td class="number-cell">${row.TotalDuplicateIssues || 0} (Exact Items: ${row.DuplicateItemIENs || "N/A"})</td>
+      <td class="number-cell">${row.TotalDuplicateIssues || 0} (${itemsDisplay})</td>
       <td class="number-cell">${row.TotalStationsInvolved || 0}</td>
       <td><button onclick="window.opener.APAT_GetOffenderDetails('${row.PatShortSSN}')">View Details</button></td>
     </tr>
