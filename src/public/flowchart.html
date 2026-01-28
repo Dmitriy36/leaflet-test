@@ -180,20 +180,6 @@
         line-height: 0.8;
       }
 
-      .tooltip {
-        position: absolute;
-        background: #ffff99;
-        color: #000000;
-        padding: 15px 20px;
-        border: 2px solid #000000;
-        font-size: 0.9em;
-        display: none;
-        z-index: 1000;
-        max-width: 300px;
-        line-height: 1.5;
-        pointer-events: none;
-      }
-
       .modal {
         display: none;
         position: fixed;
@@ -388,10 +374,7 @@
       <div class="diagram">
         <!-- User Layer -->
         <div class="row">
-          <div
-            class="box user-box"
-            data-tooltip="Business users interact with the system through their web browser"
-          >
+          <div class="box user-box">
             <div class="box-title">Business User</div>
             <div class="box-desc">You!</div>
           </div>
@@ -404,10 +387,7 @@
 
         <!-- Frontend Layer -->
         <div class="row">
-          <div
-            class="box frontend-box"
-            data-tooltip="HTML pages provide the interface. frontend.js handles user actions like searches and button clicks"
-          >
+          <div class="box frontend-box">
             <div class="box-title">Web Pages</div>
             <div class="box-desc">HTML + frontend.js</div>
           </div>
@@ -445,10 +425,7 @@
 
         <!-- Backend Layer -->
         <div class="row">
-          <div
-            class="box backend-box"
-            data-tooltip="server.js receives requests, validates them, and coordinates between the frontend and database"
-          >
+          <div class="box backend-box">
             <div class="box-title">Business Logic</div>
             <div class="box-desc">server.js</div>
           </div>
@@ -486,10 +463,7 @@
 
         <!-- Database Layer -->
         <div class="row">
-          <div
-            class="box db-box"
-            data-tooltip="db.js manages the connection pool. SQL Server stores all your inventory and transaction data"
-          >
+          <div class="box db-box">
             <div class="box-title">Database</div>
             <div class="box-desc">db.js + SQL Server</div>
           </div>
