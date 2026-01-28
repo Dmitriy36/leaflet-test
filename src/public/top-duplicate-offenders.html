@@ -1,12 +1,34 @@
 <!doctype html>
 <html>
   <head>
-    <title>Duplicate Offender Details</title>
+    <title>Top Duplicate Offenders Report</title>
     <style>
       body {
         font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
         font-size: 1em;
         padding: 20px;
+      }
+
+      .controls {
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #f5f5f5;
+        border: 1px solid #ddd;
+      }
+
+      .controls label {
+        font-weight: bold;
+        margin-right: 10px;
+      }
+
+      .controls select {
+        padding: 5px;
+        margin-right: 15px;
+      }
+
+      .controls button {
+        padding: 5px 15px;
+        cursor: pointer;
       }
 
       table {
@@ -32,95 +54,103 @@
       }
 
       .patient-name {
-        width: 20%;
+        width: 25%;
       }
 
       .number-cell {
         text-align: right;
       }
-
-      .loading-message {
-        padding: 20px;
-        text-align: center;
-        font-size: 1.2em;
-        color: #666;
-      }
-
-      .error-message {
-        padding: 20px;
-        text-align: center;
-        color: red;
-      }
     </style>
     <script>
-      window.onload = function () {
-        const tableBody = document.getElementById("tableBody");
+      let currentData = [];
 
-        // Show loading message initially
-        tableBody.innerHTML =
-          '<tr><td colspan="7" class="loading-message">Loading patient details...</td></tr>';
+      window.onload = function () {
+        loadData();
+      };
+
+      function loadData() {
+        const data = JSON.parse(
+          sessionStorage.getItem("topDuplicateOffendersData"),
+        );
+        currentData = data;
+        displayData(data);
+      }
+
+      function displayData(data) {
+        const tableBody = document.getElementById("tableBody");
+        tableBody.innerHTML = ""; // Clear existing rows
+
+        if (!data || data.length === 0) {
+          tableBody.innerHTML =
+            '<tr><td colspan="5">No duplicate offenders found</td></tr>';
+          return;
+        }
+
+        data.forEach((row) => {
+          tableBody.innerHTML += `
+            <tr>
+              <td>${row.PatShortSSN || "N/A"}</td>
+              <td class="patient-name">${row.PatientName || "N/A"}</td>
+              <td class="number-cell">${row.TotalDuplicateIssues || 0}</td>
+              <td class="number-cell">${row.TotalStationsInvolved || 0}</td>
+              <td><button onclick="window.opener.APAT_GetOffenderDetails('${row.PatShortSSN}')">View Details</button></td>
+            </tr>
+          `;
+        });
+      }
+
+      async function refreshData() {
+        const months = document.getElementById("monthsSelect").value;
 
         try {
-          const data = JSON.parse(
-            sessionStorage.getItem("offenderDetailsData"),
+          const response = await fetch(
+            `/top-duplicate-offenders?months=${months}`,
           );
+          const data = await response.json();
 
-          if (!data || data.length === 0) {
-            tableBody.innerHTML =
-              '<tr><td colspan="7" class="error-message">No details found</td></tr>';
-            return;
-          }
-
-          // Clear loading message and display data
-          tableBody.innerHTML = "";
-
-          let rowCount = 0;
-          data.forEach((row) => {
-            const issueDate = row.IssueDate
-              ? new Date(row.IssueDate).toLocaleDateString()
-              : "N/A";
-
-            tableBody.innerHTML += `
-              <tr>
-                <td>${row.PatShortSSN || "N/A"}</td>
-                <td class="patient-name">${row.PatientName || "N/A"}</td>
-                <td>${row.ItemIEN || "N/A"}</td>
-                <td>${row.StationID || "N/A"}</td>
-                <td>${issueDate}</td>
-                <td class="number-cell">${row.TimesIssued || 0}</td>
-                <td>${row.AllStations || "N/A"}</td>
-              </tr>
-            `;
-            rowCount++;
-          });
-
-          // Update title to show row count
-          document.title = `Offender Details (${rowCount} records)`;
+          currentData = data.data;
+          sessionStorage.setItem(
+            "topDuplicateOffendersData",
+            JSON.stringify(data.data),
+          );
+          displayData(data.data);
         } catch (error) {
-          console.error("Error displaying data:", error);
-          tableBody.innerHTML =
-            '<tr><td colspan="7" class="error-message">Error loading data. Please try again.</td></tr>';
+          console.error("Error refreshing data:", error);
+          alert("Error loading data. Please try again.");
         }
-      };
+      }
     </script>
   </head>
   <body>
-    <h2>Duplicate Issue Details</h2>
+    <h2>Top Duplicate Offenders Report</h2>
+
+    <div class="controls">
+      <label for="monthsSelect">Look back period:</label>
+      <select id="monthsSelect">
+        <option value="1">1 month</option>
+        <option value="3">3 months</option>
+        <option value="6">6 months</option>
+        <option value="12" selected>12 months</option>
+        <option value="18">18 months</option>
+        <option value="24">24 months</option>
+        <option value="36">36 months</option>
+        <option value="48">48 months</option>
+        <option value="60">60 months</option>
+      </select>
+      <button onclick="refreshData()">Refresh</button>
+    </div>
+
     <table>
       <thead>
         <tr>
           <th>Patient SSN</th>
           <th class="patient-name">Patient Name</th>
-          <th>Item IEN</th>
-          <th>Station ID</th>
-          <th>Issue Date</th>
-          <th>Times Issued</th>
-          <th>All Stations</th>
+          <th>Total Duplicate Issues</th>
+          <th>Total Stations Involved</th>
+          <th>Actions</th>
         </tr>
       </thead>
-      <tbody id="tableBody">
-        <!-- Loading message shows here initially -->
-      </tbody>
+      <tbody id="tableBody"></tbody>
     </table>
   </body>
 </html>

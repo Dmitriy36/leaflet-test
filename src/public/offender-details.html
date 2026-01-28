@@ -38,35 +38,69 @@
       .number-cell {
         text-align: right;
       }
+
+      .loading-message {
+        padding: 20px;
+        text-align: center;
+        font-size: 1.2em;
+        color: #666;
+      }
+
+      .error-message {
+        padding: 20px;
+        text-align: center;
+        color: red;
+      }
     </style>
     <script>
       window.onload = function () {
-        const data = JSON.parse(sessionStorage.getItem("offenderDetailsData"));
         const tableBody = document.getElementById("tableBody");
 
-        if (!data || data.length === 0) {
+        // Show loading message initially
+        tableBody.innerHTML =
+          '<tr><td colspan="7" class="loading-message">Loading patient details...</td></tr>';
+
+        try {
+          const data = JSON.parse(
+            sessionStorage.getItem("offenderDetailsData"),
+          );
+
+          if (!data || data.length === 0) {
+            tableBody.innerHTML =
+              '<tr><td colspan="7" class="error-message">No details found</td></tr>';
+            return;
+          }
+
+          // Clear loading message and display data
+          tableBody.innerHTML = "";
+
+          let rowCount = 0;
+          data.forEach((row) => {
+            const issueDate = row.IssueDate
+              ? new Date(row.IssueDate).toLocaleDateString()
+              : "N/A";
+
+            tableBody.innerHTML += `
+              <tr>
+                <td>${row.PatShortSSN || "N/A"}</td>
+                <td class="patient-name">${row.PatientName || "N/A"}</td>
+                <td>${row.ItemIEN || "N/A"}</td>
+                <td>${row.StationID || "N/A"}</td>
+                <td>${issueDate}</td>
+                <td class="number-cell">${row.TimesIssued || 0}</td>
+                <td>${row.AllStations || "N/A"}</td>
+              </tr>
+            `;
+            rowCount++;
+          });
+
+          // Update title to show row count
+          document.title = `Offender Details (${rowCount} records)`;
+        } catch (error) {
+          console.error("Error displaying data:", error);
           tableBody.innerHTML =
-            '<tr><td colspan="7">No details found</td></tr>';
-          return;
+            '<tr><td colspan="7" class="error-message">Error loading data. Please try again.</td></tr>';
         }
-
-        data.forEach((row) => {
-          const issueDate = row.IssueDate
-            ? new Date(row.IssueDate).toLocaleDateString()
-            : "N/A";
-
-          tableBody.innerHTML += `
-            <tr>
-              <td>${row.PatShortSSN || "N/A"}</td>
-              <td class="patient-name">${row.PatientName || "N/A"}</td>
-              <td>${row.ItemIEN || "N/A"}</td>
-              <td>${row.StationID || "N/A"}</td>
-              <td>${issueDate}</td>
-              <td class="number-cell">${row.TimesIssued || 0}</td>
-              <td>${row.AllStations || "N/A"}</td>
-            </tr>
-          `;
-        });
       };
     </script>
   </head>
@@ -84,7 +118,9 @@
           <th>All Stations</th>
         </tr>
       </thead>
-      <tbody id="tableBody"></tbody>
+      <tbody id="tableBody">
+        <!-- Loading message shows here initially -->
+      </tbody>
     </table>
   </body>
 </html>
