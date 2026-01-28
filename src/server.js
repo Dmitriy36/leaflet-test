@@ -259,6 +259,24 @@ app.post("/offender-details", async (req, res) => {
   }
 });
 
+// app.post("/byregion", async (req, res) => {   *** OLD VERSION, REFACTORING FROM USING INLINE SQL ***
+//   try {
+//     const region = req.body.region;
+//     if (!region || region.length === 0) {
+//       return res.status(400).json({ error: "No region provided" });
+//     }
+//     const pool = await poolPromise;
+//     const request = pool.request();
+//     const result = await request.query(
+//       `select ExternalId, FacilityName, Longitude, Latitude, VaVisnNumber, Region, TimeZoneId from [Meta].[Facilities_Geo] where region=${region}`,
+//     );
+//     res.json({ data: result.recordset });
+//   } catch (err) {
+//     console.error("Error in /byregion:", err); // *** CHANGED - Added console.error ***
+//     res.status(500).json({ error: "Database query failed" }); // *** CHANGED - Generic error message ***
+//   }
+// });
+
 app.post("/byregion", async (req, res) => {
   try {
     const region = req.body.region;
@@ -266,16 +284,34 @@ app.post("/byregion", async (req, res) => {
       return res.status(400).json({ error: "No region provided" });
     }
     const pool = await poolPromise;
-    const request = pool.request();
-    const result = await request.query(
-      `select ExternalId, FacilityName, Longitude, Latitude, VaVisnNumber, Region, TimeZoneId from [Meta].[Facilities_Geo] where region=${region}`,
-    );
+    const result = await pool
+      .request()
+      .input("Region", sql.Int, region)
+      .execute("SP_GetFacilitiesByRegion");
     res.json({ data: result.recordset });
   } catch (err) {
-    console.error("Error in /byregion:", err); // *** CHANGED - Added console.error ***
-    res.status(500).json({ error: "Database query failed" }); // *** CHANGED - Generic error message ***
+    console.error("Error in /byregion:", err);
+    res.status(500).json({ error: "Database query failed" });
   }
 });
+
+// app.post("/byvisn", async (req, res) => {      *** OLD VERSION, REFACTORING FROM USING INLINE SQL ***
+//   try {
+//     const visn = req.body.visn;
+//     if (!visn || visn.length === 0) {
+//       return res.status(400).json({ error: "No VISN provided" });
+//     }
+//     const pool = await poolPromise;
+//     const request = pool.request();
+//     const result = await request.query(
+//       `select ExternalId, FacilityName, Longitude, Latitude, VaVisnNumber, Region, TimeZoneId from [Meta].[Facilities_Geo] where vavisnnumber=${visn}`,
+//     );
+//     res.json({ data: result.recordset });
+//   } catch (err) {
+//     console.error("Error in /byvisn:", err); // *** CHANGED - Added console.error ***
+//     res.status(500).json({ error: "Database query failed" }); // *** CHANGED - Generic error message ***
+//   }
+// });
 
 app.post("/byvisn", async (req, res) => {
   try {
@@ -284,14 +320,14 @@ app.post("/byvisn", async (req, res) => {
       return res.status(400).json({ error: "No VISN provided" });
     }
     const pool = await poolPromise;
-    const request = pool.request();
-    const result = await request.query(
-      `select ExternalId, FacilityName, Longitude, Latitude, VaVisnNumber, Region, TimeZoneId from [Meta].[Facilities_Geo] where vavisnnumber=${visn}`,
-    );
+    const result = await pool
+      .request()
+      .input("VISN", sql.Int, visn)
+      .execute("SP_GetFacilitiesByVISN");
     res.json({ data: result.recordset });
   } catch (err) {
-    console.error("Error in /byvisn:", err); // *** CHANGED - Added console.error ***
-    res.status(500).json({ error: "Database query failed" }); // *** CHANGED - Generic error message ***
+    console.error("Error in /byvisn:", err);
+    res.status(500).json({ error: "Database query failed" });
   }
 });
 
