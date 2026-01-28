@@ -223,6 +223,42 @@ app.post("/issue-details", async (req, res) => {
   }
 });
 
+// Top Duplicate Offenders endpoint
+app.get("/top-duplicate-offenders", async (req, res) => {
+  try {
+    const months = req.query.months || 12; // Default to 12 months
+    console.log("Starting top-duplicate-offenders endpoint, months:", months);
+
+    const pool = await poolPromiseOtherDB;
+    const result = await pool
+      .request()
+      .input("MonthsBack", sql.Int, parseInt(months))
+      .execute("sp_GetTopDuplicateOffenders"); // ← Your SP name
+
+    console.log("Query executed, rows:", result.recordset.length);
+    res.json({ data: result.recordset });
+  } catch (err) {
+    console.error("Error in /top-duplicate-offenders:", err);
+    res.status(500).json({ error: "Database query failed" });
+  }
+});
+
+// Offender details
+app.post("/offender-details", async (req, res) => {
+  try {
+    const { patSSN } = req.body;
+    const pool = await poolPromiseOtherDB;
+    const result = await pool
+      .request()
+      .input("PatShortSSN", sql.VarChar(50), patSSN)
+      .execute("sp_GetTopDuplicateOffendersDetails2"); // ← Your SP name
+    res.json({ data: result.recordset });
+  } catch (err) {
+    console.error("Error in /offender-details:", err);
+    res.status(500).json({ error: "Database query failed" });
+  }
+});
+
 app.post("/byregion", async (req, res) => {
   try {
     const region = req.body.region;

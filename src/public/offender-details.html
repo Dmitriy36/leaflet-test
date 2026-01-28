@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Duplicate Offender Details</title>
+    <style>
+      body {
+        font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+        font-size: 1em;
+        padding: 20px;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      th,
+      td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #17d1a3ff;
+        position: sticky;
+        top: 0;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+
+      .patient-name {
+        width: 20%;
+      }
+
+      .number-cell {
+        text-align: right;
+      }
+    </style>
+    <script>
+      window.onload = function () {
+        const data = JSON.parse(sessionStorage.getItem("offenderDetailsData"));
+        const tableBody = document.getElementById("tableBody");
+
+        if (!data || data.length === 0) {
+          tableBody.innerHTML =
+            '<tr><td colspan="7">No details found</td></tr>';
+          return;
+        }
+
+        data.forEach((row) => {
+          const issueDate = row.IssueDate
+            ? new Date(row.IssueDate).toLocaleDateString()
+            : "N/A";
+
+          tableBody.innerHTML += `
+            <tr>
+              <td>${row.PatShortSSN || "N/A"}</td>
+              <td class="patient-name">${row.PatientName || "N/A"}</td>
+              <td>${row.ItemIEN || "N/A"}</td>
+              <td>${row.StationID || "N/A"}</td>
+              <td>${issueDate}</td>
+              <td class="number-cell">${row.TimesIssued || 0}</td>
+              <td>${row.AllStations || "N/A"}</td>
+            </tr>
+          `;
+        });
+      };
+    </script>
+  </head>
+  <body>
+    <h2>Duplicate Issue Details</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Patient SSN</th>
+          <th class="patient-name">Patient Name</th>
+          <th>Item IEN</th>
+          <th>Station ID</th>
+          <th>Issue Date</th>
+          <th>Times Issued</th>
+          <th>All Stations</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </body>
+</html>

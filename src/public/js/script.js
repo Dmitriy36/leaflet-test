@@ -33,7 +33,7 @@ function initMaps() {
   }).setView([64.2008, -149.4937], 2);
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {}).addTo(
-    alaskaMap
+    alaskaMap,
   );
 
   hawaiiMap = L.map("hawaii-inset", {
@@ -44,7 +44,7 @@ function initMaps() {
   }).setView([20.7967, -156.3319], 6);
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {}).addTo(
-    hawaiiMap
+    hawaiiMap,
   );
 
   mainMap.on("zoomend moveend viewreset", function () {
@@ -161,7 +161,7 @@ function AnalyticsMenu() {
   window.open(
     "/analytics-menu.html",
     "Analytics",
-    `width=${width},height=${height},left=${left},top=${top}`
+    `width=${width},height=${height},left=${left},top=${top}`,
   );
 }
 
@@ -205,12 +205,12 @@ async function GetAnalyticsPost() {
                      ${data.data
                        .map(
                          (row) =>
-                           `<tr><td>${row.VAMC}</td><td>${row.TotalForks}</td>                 <td>${row.TotalSpoons}</td></tr>`
+                           `<tr><td>${row.VAMC}</td><td>${row.TotalForks}</td>                 <td>${row.TotalSpoons}</td></tr>`,
                        )
                        .join("")}          
        </table>        
        </body>      
-       </html>`
+       </html>`,
       );
     });
 }
@@ -225,6 +225,64 @@ function CallGetCPAReportNoInner() {
 
 function Call_APAT_GetDuplicateIssues() {
   APAT_GetDuplicateIssues().catch((err) => console.error(err));
+}
+
+function Call_APAT_GetTopDuplicateOffenders() {
+  APAT_GetTopDuplicateOffenders().catch((err) => console.error(err));
+}
+
+async function APAT_GetTopDuplicateOffenders() {
+  try {
+    // Default to 12 months - user can change in the popup
+    const response = await fetch("/top-duplicate-offenders?months=12");
+    const data = await response.json();
+
+    sessionStorage.setItem(
+      "topDuplicateOffendersData",
+      JSON.stringify(data.data),
+    );
+
+    const popup = window.open(
+      "/top-duplicate-offenders.html",
+      "Top Duplicate Offenders",
+      "width=1400,height=800",
+    );
+
+    if (!popup) {
+      alert("Popup was blocked. Please allow popups for this site.");
+      return;
+    }
+  } catch (error) {
+    console.error("Error fetching top duplicate offenders:", error);
+    alert("Error loading top duplicate offenders report.");
+  }
+}
+
+async function APAT_GetOffenderDetails(patSSN) {
+  try {
+    const response = await fetch("/offender-details", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ patSSN }),
+    });
+
+    const data = await response.json();
+    sessionStorage.setItem("offenderDetailsData", JSON.stringify(data.data));
+
+    const popup = window.open(
+      "/offender-details.html",
+      "Offender Details",
+      "width=1400,height=800",
+    );
+
+    if (!popup) {
+      alert("Popup was blocked. Please allow popups for this site.");
+      return;
+    }
+  } catch (error) {
+    console.error("Error fetching offender details:", error);
+    alert("Error loading offender details.");
+  }
 }
 
 async function GetCPAReport() {
@@ -258,7 +316,7 @@ async function GetCPAReport() {
       const popup = window.open(
         "",
         "Control Point Activity Report",
-        "width=1400,height=800"
+        "width=1400,height=800",
       );
 
       // ADD THIS CHECK
@@ -336,16 +394,16 @@ ${data.data
           row.approving_official || '<span class="null-value">N/A</span>'
         }</td>
         <td class="currency">${formatCurrency(
-          row.Committed_Estimated_Cost
+          row.Committed_Estimated_Cost,
         )}</td>
         <td class="currency">${formatCurrency(row.Transaction_Amount)}</td>
-      </tr>`
+      </tr>`,
   )
   .join("")}
    
        </table>      
        </body>    
-       </html>`
+       </html>`,
       );
 
       popup.document.close(); // Close the document stream
@@ -391,7 +449,7 @@ async function GetCPAReportNoInner() {
       const popup = window.open(
         "/financial-report.html",
         "Control Point Activity Report",
-        "width=1400,height=800"
+        "width=1400,height=800",
       );
 
       if (!popup) {
@@ -418,7 +476,7 @@ async function OpenInventoryReport() {
   window.open(
     `/inventory-report.html?vamc_ids=${vamcIds.join(",")}`,
     "Inventory Report",
-    "width=1400,height=800"
+    "width=1400,height=800",
   );
 }
 
@@ -437,7 +495,7 @@ async function APAT_GetDuplicateIssues() {
     const popup = window.open(
       "/duplicate-issues.html",
       "Duplicate Issues",
-      "width=1200,height=600"
+      "width=1200,height=600",
     );
 
     if (!popup) {
@@ -465,7 +523,7 @@ async function APAT_GetIssueDetails(patSSN) {
     const popup = window.open(
       "/issue-details.html",
       "Issue Details",
-      "width=1000,height=600"
+      "width=1000,height=600",
     );
 
     if (!popup) {
@@ -564,7 +622,7 @@ async function AddLinesAll() {
   selectedSites.forEach((site, index) => {
     setTimeout(() => {
       let currentVAMCbutton = document.getElementById(
-        `site-${site.ExternalId}-button`
+        `site-${site.ExternalId}-button`,
       );
       HighlightButton(currentVAMCbutton);
       let geoObj = { lat: site.Latitude, lng: site.Longitude };
@@ -602,7 +660,7 @@ async function AddLinesSelected() {
     selectedSites.forEach((site, index) => {
       setTimeout(() => {
         let currentVAMCbutton = document.getElementById(
-          `site-${site.ExternalId}-button`
+          `site-${site.ExternalId}-button`,
         );
         HighlightButton(currentVAMCbutton);
         let geoObj = { lat: site.Latitude, lng: site.Longitude };
@@ -650,7 +708,7 @@ async function AddButtons() {
     button.oncontextmenu = () => {
       event.preventDefault();
       const newSelectedSites = selectedSites.filter(
-        (item) => item.ExternalId !== site.ExternalId
+        (item) => item.ExternalId !== site.ExternalId,
       );
       selectedSites = newSelectedSites;
       button.className = "sidebar-button";
