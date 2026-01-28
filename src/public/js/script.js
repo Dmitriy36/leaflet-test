@@ -265,7 +265,7 @@ async function APAT_GetOffenderDetails(patSSN) {
       alert(
         "Loading patient details... This may take a moment for large datasets.",
       );
-    }, 500); // Show after 500ms if still loading
+    }, 500);
 
     // Fetch the detail data
     const response = await fetch("/offender-details", {
@@ -284,9 +284,15 @@ async function APAT_GetOffenderDetails(patSSN) {
     const maxSize = 5 * 1024 * 1024; // 5MB limit
 
     if (dataSize > maxSize) {
-      alert(
-        `Dataset too large to display (${(dataSize / 1024 / 1024).toFixed(2)}MB). Please contact support.`,
+      // Offer Excel download instead
+      const downloadExcel = confirm(
+        `Dataset too large to display (${(dataSize / 1024 / 1024).toFixed(2)}MB).\n\n` +
+          `Would you like to download as Excel instead?`,
       );
+
+      if (downloadExcel) {
+        downloadOffenderDetailsAsExcel(data.data, patSSN);
+      }
       return;
     }
 
@@ -295,13 +301,18 @@ async function APAT_GetOffenderDetails(patSSN) {
       sessionStorage.setItem("offenderDetailsData", JSON.stringify(data.data));
     } catch (storageError) {
       if (storageError.name === "QuotaExceededError") {
-        alert(
-          "Dataset is too large to display. Please contact support for assistance.",
+        // Offer Excel download
+        const downloadExcel = confirm(
+          "Dataset is too large to display in browser.\n\n" +
+            "Would you like to download as Excel instead?",
         );
-        console.error("Storage quota exceeded:", storageError);
+
+        if (downloadExcel) {
+          downloadOffenderDetailsAsExcel(data.data, patSSN);
+        }
         return;
       }
-      throw storageError; // Re-throw if it's a different error
+      throw storageError;
     }
 
     const popup = window.open(
@@ -317,6 +328,47 @@ async function APAT_GetOffenderDetails(patSSN) {
     console.error("Error fetching offender details:", error);
     alert("Error loading offender details. Please try again.");
   }
+}
+
+// New function to download as Excel
+function downloadOffenderDetailsAsExcel(data, patSSN) {
+  if (!data || data.length === 0) {
+    alert("No data to download.");
+    return;
+  }
+
+  // Create CSV content
+  let csv =
+    "Patient SSN,Patient Name,Item IEN,Station ID,Issue Date,Times Issued,All Stations\n";
+
+  data.forEach((row) => {
+    const issueDate = row.IssueDate
+      ? new Date(row.IssueDate).toLocaleDateString()
+      : "";
+    csv += `"${row.PatShortSSN || ""}",`;
+    csv += `"${row.PatientName || ""}",`;
+    csv += `"${row.ItemIEN || ""}",`;
+    csv += `"${row.StationID || ""}",`;
+    csv += `"${issueDate}",`;
+    csv += `"${row.TimesIssued || ""}",`;
+    csv += `"${row.AllStations || ""}"\n`;
+  });
+
+  // Create download link
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const link = document.createElement("a");
+  const url = URL.createObjectURL(blob);
+
+  link.setAttribute("href", url);
+  link.setAttribute(
+    "download",
+    `offender_details_${patSSN}_${new Date().toISOString().split("T")[0]}.csv`,
+  );
+  link.style.visibility = "hidden";
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 
 async function GetCPAReport() {
