@@ -88,14 +88,14 @@
 
         data.forEach((row) => {
           tableBody.innerHTML += `
-            <tr>
-              <td>${row.PatShortSSN || "N/A"}</td>
-              <td class="patient-name">${row.PatientName || "N/A"}</td>
-              <td class="number-cell">${row.TotalDuplicateIssues || 0}</td>
-              <td class="number-cell">${row.TotalStationsInvolved || 0}</td>
-              <td><button onclick="window.opener.APAT_GetOffenderDetails('${row.PatShortSSN}')">View Details</button></td>
-            </tr>
-          `;
+    <tr>
+      <td>${row.PatShortSSN || "N/A"}</td>
+      <td class="patient-name">${row.PatientName || "N/A"}</td>
+      <td class="number-cell">${row.TotalDuplicateIssues || 0} (Exact Items: ${row.DuplicateItemIENs || "N/A"})</td>
+      <td class="number-cell">${row.TotalStationsInvolved || 0}</td>
+      <td><button onclick="window.opener.APAT_GetOffenderDetails('${row.PatShortSSN}')">View Details</button></td>
+    </tr>
+  `;
         });
       }
 
