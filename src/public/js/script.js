@@ -260,6 +260,14 @@ async function APAT_GetTopDuplicateOffenders() {
 
 async function APAT_GetOffenderDetails(patSSN) {
   try {
+    // Show loading alert
+    const loadingAlert = setTimeout(() => {
+      alert(
+        "Loading patient details... This may take a moment for large datasets.",
+      );
+    }, 500); // Show after 500ms if still loading
+
+    // Fetch the detail data
     const response = await fetch("/offender-details", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -267,7 +275,34 @@ async function APAT_GetOffenderDetails(patSSN) {
     });
 
     const data = await response.json();
-    sessionStorage.setItem("offenderDetailsData", JSON.stringify(data.data));
+
+    // Clear the loading alert
+    clearTimeout(loadingAlert);
+
+    // Check data size before storing
+    const dataSize = JSON.stringify(data.data).length;
+    const maxSize = 5 * 1024 * 1024; // 5MB limit
+
+    if (dataSize > maxSize) {
+      alert(
+        `Dataset too large to display (${(dataSize / 1024 / 1024).toFixed(2)}MB). Please contact support.`,
+      );
+      return;
+    }
+
+    // Try to store in sessionStorage
+    try {
+      sessionStorage.setItem("offenderDetailsData", JSON.stringify(data.data));
+    } catch (storageError) {
+      if (storageError.name === "QuotaExceededError") {
+        alert(
+          "Dataset is too large to display. Please contact support for assistance.",
+        );
+        console.error("Storage quota exceeded:", storageError);
+        return;
+      }
+      throw storageError; // Re-throw if it's a different error
+    }
 
     const popup = window.open(
       "/offender-details.html",
@@ -277,11 +312,10 @@ async function APAT_GetOffenderDetails(patSSN) {
 
     if (!popup) {
       alert("Popup was blocked. Please allow popups for this site.");
-      return;
     }
   } catch (error) {
     console.error("Error fetching offender details:", error);
-    alert("Error loading offender details.");
+    alert("Error loading offender details. Please try again.");
   }
 }
 
