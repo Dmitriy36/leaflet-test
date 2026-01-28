@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>System Architecture - Business View</title>
+    <title>System Architecture Flowchart</title>
     <style>
       * {
         margin: 0;
@@ -368,15 +368,13 @@
   <body>
     <div class="container">
       <h1>Application Architecture</h1>
-      <p class="subtitle">How Your Inventory & Duplicate Issues System Works</p>
-      <p class="click-hint">*** Click any component to learn more! ***</p>
+      <p class="subtitle">How the Integration Project App Works</p>
 
       <div class="diagram">
         <!-- User Layer -->
         <div class="row">
           <div class="box user-box">
-            <div class="box-title">Business User</div>
-            <div class="box-desc">You!</div>
+            <div class="box-title">VA User</div>
           </div>
         </div>
 
@@ -389,14 +387,14 @@
         <div class="row">
           <div class="box frontend-box">
             <div class="box-title">Web Pages</div>
-            <div class="box-desc">HTML + frontend.js</div>
+            <div class="box-desc">HTML + frontend .js</div>
           </div>
         </div>
 
         <!-- Request/Response Flow -->
         <div class="flow-container">
           <div class="flow-label request">
-            Request: "Search for item #12345"
+            Example request: "search for item #12345"
           </div>
 
           <div
@@ -419,14 +417,14 @@
           </div>
 
           <div class="flow-label response">
-            Response: "Here's the inventory data"
+            Example response: "here's the inventory data"
           </div>
         </div>
 
         <!-- Backend Layer -->
         <div class="row">
           <div class="box backend-box">
-            <div class="box-title">Business Logic</div>
+            <div class="box-title">API Layer</div>
             <div class="box-desc">server.js</div>
           </div>
         </div>
@@ -434,7 +432,8 @@
         <!-- Query/Data Flow -->
         <div class="flow-container">
           <div class="flow-label request">
-            Query: "Get inventory for item #12345"
+            Example stored procedure call SP_InventoryCheck (12345) "Get
+            inventory for item #12345"
           </div>
 
           <div
@@ -457,7 +456,9 @@
           </div>
 
           <div class="flow-label response">
-            Data: Location, Quantity, Details
+            Central RDS Database: populated nightly via AWS Lambda function
+            calls (AWS Python SDK), followed by aggregation jobs for pre-defined
+            reports.
           </div>
         </div>
 
@@ -479,11 +480,11 @@
               <li>Inventory search with autocomplete</li>
               <li>Duplicate issues reporting</li>
               <li>Top offenders dashboard</li>
-              <li>Clean, user-friendly interface</li>
+              <li>Clean, simple interface</li>
             </ul>
           </div>
           <div class="feature-item">
-            <h3>Business Logic (Backend)</h3>
+            <h3>API Layer (Backend)</h3>
             <ul>
               <li>Handles all API requests</li>
               <li>Security & validation</li>
@@ -495,8 +496,8 @@
             <h3>Database Layer</h3>
             <ul>
               <li>Stores inventory data</li>
-              <li>Tracks all transactions</li>
-              <li>Optimized queries (5 sec avg)</li>
+              <li>Logs all transactions (who searched for what and where?)</li>
+              <li>Optimized stored procedures</li>
               <li>Connection pooling for speed</li>
             </ul>
           </div>
@@ -527,10 +528,10 @@
           <div class="feature-item">
             <h3>Performance Optimizations</h3>
             <ul>
-              <li>Query time: 98s -> 5s (95% faster!)</li>
-              <li>Added strategic indexes</li>
+              <li>Query time: 98s -> 5s (95% improvement)</li>
+              <li>Correct indexing must be maintained</li>
               <li>Connection pooling</li>
-              <li>Zero crashes since fixes</li>
+              <li>Pre-aggregate before joining</li>
             </ul>
           </div>
         </div>
@@ -556,9 +557,9 @@
             {
               heading: "Who Uses This System?",
               content: [
-                "Inventory managers checking stock levels",
-                "Auditors reviewing duplicate issues",
-                "Station administrators monitoring their locations",
+                "Inventory managers checking stock levels (on theirs or other VAMC sites)",
+                "Auditors reviewing duplicate issues on (on theirs or other VAMC sites)",
+                "Inventory managers deciding which stock items to order, in advance (on theirs or other VAMC sites)",
                 "Compliance officers tracking patterns",
               ],
             },
@@ -566,10 +567,10 @@
               heading: "What Can You Do?",
               content: [
                 "Search for items by number or description",
-                "View real-time inventory across all stations",
+                "View inventory across any VAMC stations",
                 "Generate duplicate issues reports",
-                "Drill down into patient-level details",
-                "Export data for further analysis",
+                "Drill down into details",
+                "Export data as CSV or Excel for further analysis and reporting",
               ],
             },
             {
@@ -578,7 +579,7 @@
                 "Any modern web browser (Chrome, Edge, Firefox)",
                 "Desktop or tablet recommended",
                 "No special software installation needed",
-                "Secure access via company network",
+                "Security: only accessible from a VA device, is HTTPS, AWS WAF protection (DDoS)",
               ],
             },
           ],
@@ -587,11 +588,12 @@
           title: "Web Pages (Frontend)",
           sections: [
             {
-              heading: "Key Pages Built",
+              heading: "Key Pages",
               content: [
                 "inventory-report.html - Search items with autocomplete",
                 "top-duplicate-offenders.html - Main report dashboard",
                 "offender-details.html - Detailed drill-down view",
+                "financial-report.html - a sample aggregate report based on VA's Control Point Activity",
               ],
             },
             {
@@ -676,7 +678,7 @@ Calls /api/item-inventory -> Displays results`,
             {
               heading: "Connection Management (db.js)",
               content: [
-                "Connection pooling: Reuses DB connections (faster!)",
+                "Connection pooling: Reuse pre-opened DB connections from connection pools",
                 "60-second timeout: Prevents hanging queries",
                 "Automatic reconnection: Recovers from network issues",
                 "Multiple requests handled simultaneously",
@@ -685,6 +687,7 @@ Calls /api/item-inventory -> Displays results`,
             {
               heading: "Key Tables",
               content: [
+                '<a href="/images/schema_visual_example.png" target="_blank" style="color: #0000FF; text-decoration: underline;">This schema</a> for each VAMC site: data from live files to be mapped via AWS Lambda (Python SDK) nightly',
                 "Item_Master: All items with descriptions",
                 "inventory_by_locations: Stock levels by station",
                 "ApplianceTransIP: Transaction history (who got what)",
@@ -692,7 +695,7 @@ Calls /api/item-inventory -> Displays results`,
               ],
             },
             {
-              heading: "Stored Procedures Created",
+              heading: "Stored Procedures",
               content: [
                 "SP_InventoryCheck_Autocomplete: Fast search suggestions",
                 "SP_InventoryCheck: Full inventory lookup",
@@ -703,21 +706,21 @@ Calls /api/item-inventory -> Displays results`,
             {
               heading: "Performance Optimizations",
               content: [
-                "Query time reduced: 98 seconds -> 5 seconds (95% faster!)",
-                "Strategic index added on ApplianceTransIP",
+                "Query time reduced: 98 seconds to 5 seconds (correct indexing and pre-aggregation):",
+                "Index added on ApplianceTransIP",
                 "CTE used to parse dates once (not millions of times)",
-                "TRY_CONVERT handles bad data without crashing",
+                "CTEs used to pre-aggregate before joining: joining a billion rows vs few hundred thousand",
+                "things like TRY_CONVERT() to gracefully handle data before crashing",
               ],
             },
             {
-              heading: "The Index That Saved The Day",
+              heading: "Example relevant index mentioned above:",
               code: `CREATE NONCLUSTERED INDEX 
 IX_ApplianceTransIP_Lookup 
 ON ApplianceTransIP 
 (PatShortSSN, ItemIEN, StationID, RequestDate)
 INCLUDE (PatientName);
-
--- This index speeds up lookups by 95%!`,
+`,
             },
           ],
         },
